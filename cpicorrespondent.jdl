@@ -1,0 +1,73 @@
+entity CorrespondentType {
+	correspondentTypeName String required,
+    sortNum Integer required,
+}
+
+
+entity Club {
+	clubName String required,
+	url String,
+	email String,
+    phone String,
+    fax String,
+    mobilePhone String,
+    address String,
+    zip String,
+    remark TextBlob,
+}
+
+entity ClubPerson {
+	clubPersonName String required,
+	url String,
+	email String,
+    phone String,
+    fax String,
+    mobilePhone String,
+    address String,
+    zip String,
+    remark TextBlob,
+}
+
+entity Correspondent {
+	correspondentCode String required,
+    year String required,
+    vesselName String required,
+	clientRef String,
+	keyWord String,
+	registerDate Instant,
+	caseDate Instant,
+	handlerUser Long,
+    remark TextBlob,
+}
+
+
+relationship ManyToOne {
+	Correspondent{correspondentType(correspondentTypeName)} to CorrespondentType
+}
+
+relationship ManyToOne {
+	Correspondent{club(clubName)} to Club
+}
+
+relationship ManyToOne {
+	Correspondent{clubPerson(clubPersonName)} to ClubPerson
+}
+
+relationship ManyToOne {
+	ClubPerson{club(clubName)} to Club
+}
+
+
+// Set pagination options
+//paginate PartnerType with infinite-scroll
+paginate * with pagination
+
+dto * with mapstruct
+
+//Set service options to all except few
+service * with serviceImpl //except PartnerType
+
+filter * //except PartnerType
+
+
+microservice * with cpicorrespondent

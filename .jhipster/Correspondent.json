@@ -1,0 +1,78 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "correspondentType",
+            "otherEntityName": "correspondentType",
+            "otherEntityField": "correspondentTypeName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "club",
+            "otherEntityName": "club",
+            "otherEntityField": "clubName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "clubPerson",
+            "otherEntityName": "clubPerson",
+            "otherEntityField": "clubPersonName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "correspondentCode",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "vesselName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "clientRef",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "keyWord",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "registerDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "caseDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "handlerUser",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "remark",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "changelogDate": "20180606061937",
+    "entityTableName": "correspondent",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "microserviceName": "cpicorrespondent"
+}
