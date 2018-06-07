@@ -28,7 +28,7 @@ entity ClubPerson {
     remark TextBlob,
 }
 
-entity Correspondent {
+entity CPICorrespondent {
 	correspondentCode String required,
     year String required,
     vesselName String required,
@@ -42,15 +42,15 @@ entity Correspondent {
 
 
 relationship ManyToOne {
-	Correspondent{correspondentType(correspondentTypeName)} to CorrespondentType
+	CPICorrespondent{correspondentType(correspondentTypeName)} to CorrespondentType
 }
 
 relationship ManyToOne {
-	Correspondent{club(clubName)} to Club
+	CPICorrespondent{club(clubName)} to Club
 }
 
 relationship ManyToOne {
-	Correspondent{clubPerson(clubPersonName)} to ClubPerson
+	CPICorrespondent{clubPerson(clubPersonName)} to ClubPerson
 }
 
 relationship ManyToOne {
