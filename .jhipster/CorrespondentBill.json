@@ -1,0 +1,83 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "cpiCorrespondent",
+            "otherEntityName": "cPICorrespondent",
+            "otherEntityField": "correspondentCode"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "billFinanceType",
+            "otherEntityName": "billFinanceType",
+            "otherEntityField": "billFinanceTypeName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "numberId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "correspondentBillCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "correspondentBillDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "receiver",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dueDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "currency",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "currencyRate",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "exchangeDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "exchangeCurrency",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "exchangeRate",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "exchangeAmount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "remark",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "changelogDate": "20180611083502",
+    "entityTableName": "correspondent_bill",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "microserviceName": "cpicorrespondent"
+}

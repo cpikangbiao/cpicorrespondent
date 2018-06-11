@@ -56,6 +56,39 @@ entity CorrespondentFee {
     remark TextBlob,
 }
 
+entity CorrespondentBill {
+    numberId Integer,
+	year String ,
+	correspondentBillCode String ,
+	correspondentBillDate Instant ,
+	receiver String,
+	dueDate Instant ,
+	amount BigDecimal,
+	currency Long,
+	currencyRate Float,
+	exchangeDate Instant,
+	exchangeCurrency Long,
+	exchangeRate Float,
+	exchangeAmount BigDecimal,
+    remark TextBlob,
+}
+
+entity BillFinanceType {
+	billFinanceTypeName String required,
+    sortNum Integer required,
+}
+
+entity CorrespondentFeeAndBill {
+}
+
+
+relationship ManyToOne {
+	CorrespondentBill{cpiCorrespondent(correspondentCode)} to CPICorrespondent
+}
+
+relationship ManyToOne {
+	CorrespondentBill{billFinanceType(billFinanceTypeName)} to BillFinanceType
+}
 
 relationship ManyToOne {
 	CorrespondentFee{correspondentFeeType(CorrespondentFeeTypeName)} to CorrespondentFeeType
@@ -79,6 +112,20 @@ relationship ManyToOne {
 
 relationship ManyToOne {
 	ClubPerson{club(clubName)} to Club
+}
+
+
+
+relationship ManyToOne {
+	CorrespondentFeeAndBill{correspondentDebitBill(correspondentBillCode)} to CorrespondentBill
+}
+
+relationship ManyToOne {
+	CorrespondentFeeAndBill{correspondentFee(clientNo)} to CorrespondentFee
+}
+
+relationship ManyToOne {
+	CorrespondentFeeAndBill{correspondentCreditBill(correspondentBillCode)} to CorrespondentBill
 }
 
 

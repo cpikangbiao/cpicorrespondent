@@ -1,4 +1,24 @@
-alter table `cpicorrespondent`.`correspondent` add column  `created_by` varchar(50) NOT NULL;
-alter table `cpicorrespondent`.`correspondent` add column  `created_date` timestamp NOT NULL;
-alter table `cpicorrespondent`.`correspondent` add column  `last_modified_by` varchar(50) DEFAULT NULL;
-alter table `cpicorrespondent`.`correspondent` add column  `last_modified_date` timestamp NULL DEFAULT NULL;
+alter table `cpicorrespondent`.`cpi_correspondent` add column  `created_by` varchar(50) NOT NULL;
+alter table `cpicorrespondent`.`cpi_correspondent` add column  `created_date` timestamp NOT NULL;
+alter table `cpicorrespondent`.`cpi_correspondent` add column  `last_modified_by` varchar(50) DEFAULT NULL;
+alter table `cpicorrespondent`.`cpi_correspondent` add column  `last_modified_date` timestamp NULL DEFAULT NULL;
+
+
+alter table `cpicorrespondent`.`correspondent_fee` add column  `created_by` varchar(50) NOT NULL;
+alter table `cpicorrespondent`.`correspondent_fee` add column  `created_date` timestamp NOT NULL;
+alter table `cpicorrespondent`.`correspondent_fee` add column  `last_modified_by` varchar(50) DEFAULT NULL;
+alter table `cpicorrespondent`.`correspondent_fee` add column  `last_modified_date` timestamp NULL DEFAULT NULL;
+
+
+
+alter table `cpicorrespondent`.`correspondent_bill` add column  `created_by` varchar(50) NOT NULL;
+alter table `cpicorrespondent`.`correspondent_bill` add column  `created_date` timestamp NOT NULL;
+alter table `cpicorrespondent`.`correspondent_bill` add column  `last_modified_by` varchar(50) DEFAULT NULL;
+alter table `cpicorrespondent`.`correspondent_bill` add column  `last_modified_date` timestamp NULL DEFAULT NULL;
+
+alter table `cpicorrespondent`.`correspondent_fee_and_bill` add column  `created_by` varchar(50) NOT NULL;
+alter table `cpicorrespondent`.`correspondent_fee_and_bill` add column  `created_date` timestamp NOT NULL;
+alter table `cpicorrespondent`.`correspondent_fee_and_bill` add column  `last_modified_by` varchar(50) DEFAULT NULL;
+alter table `cpicorrespondent`.`correspondent_fee_and_bill` add column  `last_modified_date` timestamp NULL DEFAULT NULL;
+
+

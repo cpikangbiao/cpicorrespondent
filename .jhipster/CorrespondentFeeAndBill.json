@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "correspondentDebitBill",
+            "otherEntityName": "correspondentBill",
+            "otherEntityField": "correspondentBillCode"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "correspondentFee",
+            "otherEntityName": "correspondentFee",
+            "otherEntityField": "clientNo"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "correspondentCreditBill",
+            "otherEntityName": "correspondentBill",
+            "otherEntityField": "correspondentBillCode"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20180611084936",
+    "entityTableName": "correspondent_fee_and_bill",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "microserviceName": "cpicorrespondent"
+}
