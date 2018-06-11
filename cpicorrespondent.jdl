@@ -40,6 +40,30 @@ entity CPICorrespondent {
     remark TextBlob,
 }
 
+entity CorrespondentFeeType {
+	correspondentFeeTypeName String required,
+    sortNum Integer required,
+}
+
+entity CorrespondentFee {
+	clientNo String ,
+    numberId Integer,
+	currency Long,
+	currencyRate Float,
+    cost BigDecimal,
+	costDate Instant,
+	costDollar BigDecimal,
+    remark TextBlob,
+}
+
+
+relationship ManyToOne {
+	CorrespondentFee{correspondentFeeType(CorrespondentFeeTypeName)} to CorrespondentFeeType
+}
+
+relationship ManyToOne {
+	CorrespondentFee{cpiCorrespondent(correspondentCode)} to CPICorrespondent
+}
 
 relationship ManyToOne {
 	CPICorrespondent{correspondentType(correspondentTypeName)} to CorrespondentType
