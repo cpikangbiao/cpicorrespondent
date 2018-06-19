@@ -2,6 +2,7 @@ package com.cpi.correspondent.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.service.CPICorrespondentService;
+import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
 import com.cpi.correspondent.web.rest.util.PaginationUtil;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -129,5 +131,27 @@ public class CPICorrespondentResource {
         log.debug("REST request to delete CPICorrespondent : {}", id);
         cPICorrespondentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+
+    @GetMapping("/cpi-correspondents/statistics")
+    @Timed
+    public ResponseEntity<byte[]> getStatsForCPICorrespondents(CPICorrespondentCriteria criteria) {
+        log.debug("REST request to get CPICorrespondents by criteria: {}", criteria);
+        List<CPICorrespondentDTO> cpiCorrespondentDTOS = cPICorrespondentQueryService.findByCriteria(criteria);
+        List<CPICorrespondentBean> cpiCorrespondentBeans = new ArrayList<>();
+        for (CPICorrespondentDTO cpiCorrespondentDTO : cpiCorrespondentDTOS) {
+            CPICorrespondentBean cpiCorrespondentBean = new CPICorrespondentBean();
+            cpiCorrespondentBean.init(cpiCorrespondentDTO);
+            cpiCorrespondentBeans.add(cpiCorrespondentBean);
+        }
+
+        byte[] body = jasperReportService.exportBatchPDF("Correspondent.jasper", parameter, dataSource);
+
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.add("Content-Disposition","attachment;filename=11.pdf");
+
+        return new ResponseEntity<>(body, headers, HttpStatus.OK);
     }
 }

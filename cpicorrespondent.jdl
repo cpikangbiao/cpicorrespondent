@@ -82,6 +82,8 @@ entity CorrespondentFeeAndBill {
 }
 
 
+
+
 relationship ManyToOne {
 	CorrespondentBill{cpiCorrespondent(correspondentCode)} to CPICorrespondent
 }

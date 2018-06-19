@@ -43,6 +43,7 @@ public class MicroserviceSecurityConfiguration extends ResourceServerConfigurerA
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
             .authorizeRequests()
+            .antMatchers("/v2/api-docs").permitAll()
             .antMatchers("/api/profile-info").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
