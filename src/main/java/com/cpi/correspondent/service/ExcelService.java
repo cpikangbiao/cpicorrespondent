@@ -48,7 +48,7 @@ public class ExcelService {
 
 
 //        StringBuilder path = new StringBuilder().append("classpath:reports/").append(fileName);
-        StringBuilder path = new StringBuilder().append("reports/").append(fileName);
+        StringBuilder path = new StringBuilder().append(fileName);
 
         ClassPathResource classPathResource = new ClassPathResource(path.toString());
         try {

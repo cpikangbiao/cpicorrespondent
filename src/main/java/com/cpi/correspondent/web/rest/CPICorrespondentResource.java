@@ -159,11 +159,11 @@ public class CPICorrespondentResource {
         }
 
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("result", cpiCorrespondentBeans);
+        map.put("results", cpiCorrespondentBeans);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         if (cpiCorrespondentBeans.size() > 0) {
-            outputStream = excelService.exportExcelFromTemplate("StatsForCorrespondentOverview.xlsx", map);
+            outputStream = excelService.exportExcelFromTemplate("reports/StatsforCorrespondent.xlsx", map);
         }
 
 //        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);

@@ -25,8 +25,6 @@ import java.util.Objects;
  */
 public class CPICorrespondentBean {
 
-    private CPICorrespondentDTO cpiCorrespondentDTO;
-
     private String correspondentCode;
 
     private String vesselName;
@@ -52,7 +50,6 @@ public class CPICorrespondentBean {
     @Override
     public String toString() {
         return "CPICorrespondentBean{" +
-            "cpiCorrespondentDTO=" + cpiCorrespondentDTO +
             ", correspondentCode='" + correspondentCode + '\'' +
             ", vesselName='" + vesselName + '\'' +
             ", clientRef='" + clientRef + '\'' +
@@ -72,7 +69,7 @@ public class CPICorrespondentBean {
         if (this == o) return true;
         if (!(o instanceof CPICorrespondentBean)) return false;
         CPICorrespondentBean that = (CPICorrespondentBean) o;
-        return Objects.equals(getCpiCorrespondentDTO(), that.getCpiCorrespondentDTO()) &&
+        return
             Objects.equals(getCorrespondentCode(), that.getCorrespondentCode()) &&
             Objects.equals(getVesselName(), that.getVesselName()) &&
             Objects.equals(getClientRef(), that.getClientRef()) &&
@@ -89,51 +86,21 @@ public class CPICorrespondentBean {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getCpiCorrespondentDTO(), getCorrespondentCode(), getVesselName(), getClientRef(), getYear(), getPortName(), getCorrespondentTypeName(), getRegistDate(), getCaseDate(), getPiClubName(), getPiClubPersonName(), getHandleUser());
+        return Objects.hash(getCorrespondentCode(), getVesselName(), getClientRef(), getYear(), getPortName(), getCorrespondentTypeName(), getRegistDate(), getCaseDate(), getPiClubName(), getPiClubPersonName(), getHandleUser());
     }
 
     public void init(CPICorrespondentDTO cpiCorrespondentDTO) {
-        this.cpiCorrespondentDTO = cpiCorrespondentDTO;
-        this.correspondentCode = " ";
-        this.vesselName = " ";
-        this.clientRef = " ";
-        this.year = " ";
-        this.portName = " ";
-        this.correspondentTypeName = " ";
-        this.registDate = new Date();
-        this.caseDate = new Date();
-        this.piClubName = " ";
-        this.piClubPersonName = " ";
+        this.correspondentCode = cpiCorrespondentDTO.getCorrespondentCode();
+        this.vesselName = cpiCorrespondentDTO.getVesselName();
+        this.clientRef = cpiCorrespondentDTO.getClientRef();
+        this.year = cpiCorrespondentDTO.getYear();
+        this.portName = "";
+        this.correspondentTypeName = cpiCorrespondentDTO.getCorrespondentTypeCorrespondentTypeName();
+        this.registDate = Date.from(cpiCorrespondentDTO.getRegisterDate());
+        this.caseDate = Date.from(cpiCorrespondentDTO.getCaseDate());
+        this.piClubName = cpiCorrespondentDTO.getClubClubName();
+        this.piClubPersonName = cpiCorrespondentDTO.getClubPersonClubPersonName();
         this.handleUser = " ";
-
-//        this.correspondentCode = correspondent.getCorrespondentCode();
-//        this.vesselName = correspondent.getVesselName();
-//        this.clientRef = correspondent.getClientRef();
-//        this.year = correspondent.getYear();
-//        if (correspondent.getPortId() != null)
-//            this.portName = correspondent.getPortId().getPortName();
-//        if (correspondent.getCorrespondentTypeId() != null) {
-//            this.correspondentTypeName = correspondent.getCorrespondentTypeId().getName();
-//        }
-//        this.registDate = correspondent.getRegistDate();
-//        this.caseDate = correspondent.getCaseDate();
-//        if (correspondent.getPiClubId() != null) {
-//            this.piClubName = correspondent.getPiClubId().getPiclubName();
-//        }
-//        if (correspondent.getPiClubPersonId() != null) {
-//            this.piClubPersonName = correspondent.getPiClubPersonId().getPersonName();
-//        }
-//        if (correspondent.getAssignedUser() != null) {
-//            this.handleUser = correspondent.getAssignedUser().getUserName();
-//        }
-    }
-
-    public CPICorrespondentDTO getCpiCorrespondentDTO() {
-        return cpiCorrespondentDTO;
-    }
-
-    public void setCpiCorrespondentDTO(CPICorrespondentDTO cpiCorrespondentDTO) {
-        this.cpiCorrespondentDTO = cpiCorrespondentDTO;
     }
 
     public String getCorrespondentCode() {
