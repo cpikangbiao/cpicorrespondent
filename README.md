@@ -1,5 +1,5 @@
 # cpicorrespondent
-This application was generated using JHipster 4.14.4, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.14.4](http://www.jhipster.tech/documentation-archive/v4.14.4).
+This application was generated using JHipster 4.14.5, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.14.5](http://www.jhipster.tech/documentation-archive/v4.14.5).
 
 This is a "microservice" application intended to be part of a microservice architecture, please refer to the [Doing microservices with JHipster][] page of the documentation for more information.
 
@@ -65,13 +65,13 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
 [JHipster Homepage and latest documentation]: http://www.jhipster.tech
-[JHipster 4.14.4 archive]: http://www.jhipster.tech/documentation-archive/v4.14.4
-[Doing microservices with JHipster]: http://www.jhipster.tech/documentation-archive/v4.14.4/microservices-architecture/
-[Using JHipster in development]: http://www.jhipster.tech/documentation-archive/v4.14.4/development/
-[Service Discovery and Configuration with the JHipster-Registry]: http://www.jhipster.tech/documentation-archive/v4.14.4/microservices-architecture/#jhipster-registry
-[Using Docker and Docker-Compose]: http://www.jhipster.tech/documentation-archive/v4.14.4/docker-compose
-[Using JHipster in production]: http://www.jhipster.tech/documentation-archive/v4.14.4/production/
-[Running tests page]: http://www.jhipster.tech/documentation-archive/v4.14.4/running-tests/
-[Setting up Continuous Integration]: http://www.jhipster.tech/documentation-archive/v4.14.4/setting-up-ci/
+[JHipster 4.14.5 archive]: http://www.jhipster.tech/documentation-archive/v4.14.5
+[Doing microservices with JHipster]: http://www.jhipster.tech/documentation-archive/v4.14.5/microservices-architecture/
+[Using JHipster in development]: http://www.jhipster.tech/documentation-archive/v4.14.5/development/
+[Service Discovery and Configuration with the JHipster-Registry]: http://www.jhipster.tech/documentation-archive/v4.14.5/microservices-architecture/#jhipster-registry
+[Using Docker and Docker-Compose]: http://www.jhipster.tech/documentation-archive/v4.14.5/docker-compose
+[Using JHipster in production]: http://www.jhipster.tech/documentation-archive/v4.14.5/production/
+[Running tests page]: http://www.jhipster.tech/documentation-archive/v4.14.5/running-tests/
+[Setting up Continuous Integration]: http://www.jhipster.tech/documentation-archive/v4.14.5/setting-up-ci/
 
 
