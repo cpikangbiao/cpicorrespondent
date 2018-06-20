@@ -19,10 +19,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -158,23 +161,28 @@ public class CPICorrespondentResource {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("result", cpiCorrespondentBeans);
 
-        byte[] body = null;
-//        if (cpiCorrespondentBeans.size() > 0) {
-//            body = excelService.exportExcelFromTemplate("StatsForCorrespondentOverview.xlsx", map);
-//        }
-
-        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         if (cpiCorrespondentBeans.size() > 0) {
-            responseEntity = excelRepository.processExcel(EXCEL_TEMPLATE_FOR_1, map);
-            body = responseEntity.getBody();
+            outputStream = excelService.exportExcelFromTemplate("StatsForCorrespondentOverview.xlsx", map);
         }
 
+//        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
+//        map.put("jxlid", EXCEL_TEMPLATE_FOR_1);
+//        if (cpiCorrespondentBeans.size() > 0) {
+//            responseEntity = excelRepository.processExcel(map);
+//            body = responseEntity.getBody();
+//        }
+
         StringBuilder fileName = new StringBuilder();
-        fileName.append("Stats for Correspondent").append(".pdf");
+        fileName.append("\"Stats_for_Correspondent").append(".xlsx\"");
 
-        HttpHeaders headers=new HttpHeaders();
-        headers.add("Content-Disposition","attachment;filename=" + fileName.toString());
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(
+            MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+        header.set(HttpHeaders.CONTENT_DISPOSITION,
+            "attachment; filename=" + fileName.toString());
+        header.setContentLength(outputStream.toByteArray().length);
 
-        return new ResponseEntity<>(body, headers, HttpStatus.OK);
+        return new ResponseEntity<>(outputStream.toByteArray(), header, HttpStatus.OK);
     }
 }

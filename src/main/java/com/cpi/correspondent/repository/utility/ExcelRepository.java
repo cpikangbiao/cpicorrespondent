@@ -43,7 +43,7 @@ public interface ExcelRepository {
 
 
     @RequestMapping(value = "/api/test/excel", method = RequestMethod.POST)
-    ResponseEntity<byte[]> processExcel(@RequestParam("jxlid") Long jxlid, @RequestParam("datamap") Map mapData) ;
+    ResponseEntity<byte[]> processExcel(@RequestParam("datamap") Map mapData) ;
 
 
 //    private RestTemplate restTemplate = new RestTemplate();
