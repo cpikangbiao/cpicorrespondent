@@ -13,6 +13,7 @@ package com.cpi.correspondent.web.bean;
 import com.cpi.correspondent.service.dto.CPICorrespondentDTO;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -48,19 +49,62 @@ public class CPICorrespondentBean {
 
     private String handleUser;
 
+    @Override
+    public String toString() {
+        return "CPICorrespondentBean{" +
+            "cpiCorrespondentDTO=" + cpiCorrespondentDTO +
+            ", correspondentCode='" + correspondentCode + '\'' +
+            ", vesselName='" + vesselName + '\'' +
+            ", clientRef='" + clientRef + '\'' +
+            ", year='" + year + '\'' +
+            ", portName='" + portName + '\'' +
+            ", correspondentTypeName='" + correspondentTypeName + '\'' +
+            ", registDate=" + registDate +
+            ", caseDate=" + caseDate +
+            ", piClubName='" + piClubName + '\'' +
+            ", piClubPersonName='" + piClubPersonName + '\'' +
+            ", handleUser='" + handleUser + '\'' +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CPICorrespondentBean)) return false;
+        CPICorrespondentBean that = (CPICorrespondentBean) o;
+        return Objects.equals(getCpiCorrespondentDTO(), that.getCpiCorrespondentDTO()) &&
+            Objects.equals(getCorrespondentCode(), that.getCorrespondentCode()) &&
+            Objects.equals(getVesselName(), that.getVesselName()) &&
+            Objects.equals(getClientRef(), that.getClientRef()) &&
+            Objects.equals(getYear(), that.getYear()) &&
+            Objects.equals(getPortName(), that.getPortName()) &&
+            Objects.equals(getCorrespondentTypeName(), that.getCorrespondentTypeName()) &&
+            Objects.equals(getRegistDate(), that.getRegistDate()) &&
+            Objects.equals(getCaseDate(), that.getCaseDate()) &&
+            Objects.equals(getPiClubName(), that.getPiClubName()) &&
+            Objects.equals(getPiClubPersonName(), that.getPiClubPersonName()) &&
+            Objects.equals(getHandleUser(), that.getHandleUser());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getCpiCorrespondentDTO(), getCorrespondentCode(), getVesselName(), getClientRef(), getYear(), getPortName(), getCorrespondentTypeName(), getRegistDate(), getCaseDate(), getPiClubName(), getPiClubPersonName(), getHandleUser());
+    }
+
     public void init(CPICorrespondentDTO cpiCorrespondentDTO) {
         this.cpiCorrespondentDTO = cpiCorrespondentDTO;
-        this.correspondentCode = correspondentCode;
-        this.vesselName = vesselName;
-        this.clientRef = clientRef;
-        this.year = year;
-        this.portName = portName;
-        this.correspondentTypeName = correspondentTypeName;
-        this.registDate = registDate;
-        this.caseDate = caseDate;
-        this.piClubName = piClubName;
-        this.piClubPersonName = piClubPersonName;
-        this.handleUser = handleUser;
+        this.correspondentCode = " ";
+        this.vesselName = " ";
+        this.clientRef = " ";
+        this.year = " ";
+        this.portName = " ";
+        this.correspondentTypeName = " ";
+        this.registDate = new Date();
+        this.caseDate = new Date();
+        this.piClubName = " ";
+        this.piClubPersonName = " ";
+        this.handleUser = " ";
 
 //        this.correspondentCode = correspondent.getCorrespondentCode();
 //        this.vesselName = correspondent.getVesselName();

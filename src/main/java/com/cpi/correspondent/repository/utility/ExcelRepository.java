@@ -10,12 +10,11 @@
  */
 package com.cpi.correspondent.repository.utility;
 
-import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.client.AuthorizedFeignClient;
-import com.cpi.jasperreport.client.AuthorizedFeignClient;
-import com.cpi.jasperreport.config.LongTimeFeignConfiguration;
+
+import com.cpi.correspondent.config.LongTimeFeignConfiguration;
+import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,18 +32,18 @@ import java.util.Map;
  */
 
 
-@AuthorizedFeignClient(name = "cpiexcel", configuration = LongTimecFeignConfiguration.class) // , fallback = TicketClientHystrix.class)
+@AuthorizedFeignClient(name = "cpiexcel", configuration = LongTimeFeignConfiguration.class) // , fallback = TicketClientHystrix.class)
 public interface ExcelRepository {
 //    @RequestMapping(value = "/api/teams/", method = RequestMethod.GET)
 //    List<Team> findTeams();
 //
-    @RequestMapping(value = "/api/test/ports", method = RequestMethod.GET)
-//    @HystrixProperty(name = "hystrix.command.default.execution.timeout.enabled", value = "false")
-    List findPorts();
+//    @RequestMapping(value = "/api/test/ports", method = RequestMethod.GET)
+////    @HystrixProperty(name = "hystrix.command.default.execution.timeout.enabled", value = "false")
+//    List findPorts();
 
 
     @RequestMapping(value = "/api/test/excel", method = RequestMethod.GET)
-    ResponseEntity<byte[]> processExcel(Long jxlid, List listData, Map mapData) ;
+    ResponseEntity<byte[]> processExcel(@RequestParam("jxlid") Long jxlid, @RequestParam("datalist") List<CPICorrespondentBean> listData, @RequestParam("datamap") Map mapData) ;
 
 
 //    private RestTemplate restTemplate = new RestTemplate();

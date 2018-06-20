@@ -1,7 +1,9 @@
 package com.cpi.correspondent.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.cpi.correspondent.repository.utility.ExcelRepository;
 import com.cpi.correspondent.service.CPICorrespondentService;
+import com.cpi.correspondent.service.ExcelService;
 import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
@@ -12,6 +14,7 @@ import com.cpi.correspondent.service.CPICorrespondentQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +40,15 @@ public class CPICorrespondentResource {
 
     private final Logger log = LoggerFactory.getLogger(CPICorrespondentResource.class);
 
+    private final static  Long EXCEL_TEMPLATE_FOR_1 = new Long(1);
+
     private static final String ENTITY_NAME = "cPICorrespondent";
+
+    @Autowired
+    private ExcelRepository excelRepository;
+
+    @Autowired
+    private ExcelService excelService;
 
     private final CPICorrespondentService cPICorrespondentService;
 
@@ -146,11 +158,17 @@ public class CPICorrespondentResource {
             cpiCorrespondentBeans.add(cpiCorrespondentBean);
         }
 
-        byte[] body = jasperReportService.exportBatchPDF("Correspondent.jasper", parameter, dataSource);
+        byte[] body = null;
+        if (cpiCorrespondentBeans.size() > 0) {
+            body = excelService.exportExcelFromTemplate("StatsForCorrespondentOverview.xlsx", cpiCorrespondentBeans, new HashMap<String, Object>());
+                // excelRepository.processExcel(EXCEL_TEMPLATE_FOR_1, cpiCorrespondentBeans, new HashMap());
+        }
 
+        StringBuilder fileName = new StringBuilder();
+        fileName.append("Stats for Correspondent").append(".pdf");
 
         HttpHeaders headers=new HttpHeaders();
-        headers.add("Content-Disposition","attachment;filename=11.pdf");
+        headers.add("Content-Disposition","attachment;filename=" + fileName.toString());
 
         return new ResponseEntity<>(body, headers, HttpStatus.OK);
     }
