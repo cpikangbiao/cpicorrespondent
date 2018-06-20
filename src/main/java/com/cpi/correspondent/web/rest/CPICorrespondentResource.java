@@ -26,10 +26,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing CPICorrespondent.
@@ -158,10 +155,18 @@ public class CPICorrespondentResource {
             cpiCorrespondentBeans.add(cpiCorrespondentBean);
         }
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("result", cpiCorrespondentBeans);
+
         byte[] body = null;
+//        if (cpiCorrespondentBeans.size() > 0) {
+//            body = excelService.exportExcelFromTemplate("StatsForCorrespondentOverview.xlsx", map);
+//        }
+
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
         if (cpiCorrespondentBeans.size() > 0) {
-            body = excelService.exportExcelFromTemplate("StatsForCorrespondentOverview.xlsx", cpiCorrespondentBeans, new HashMap<String, Object>());
-                // excelRepository.processExcel(EXCEL_TEMPLATE_FOR_1, cpiCorrespondentBeans, new HashMap());
+            responseEntity = excelRepository.processExcel(EXCEL_TEMPLATE_FOR_1, map);
+            body = responseEntity.getBody();
         }
 
         StringBuilder fileName = new StringBuilder();

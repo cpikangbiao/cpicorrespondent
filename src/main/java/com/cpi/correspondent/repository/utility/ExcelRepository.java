@@ -42,8 +42,8 @@ public interface ExcelRepository {
 //    List findPorts();
 
 
-    @RequestMapping(value = "/api/test/excel", method = RequestMethod.GET)
-    ResponseEntity<byte[]> processExcel(@RequestParam("jxlid") Long jxlid, @RequestParam("datalist") List<CPICorrespondentBean> listData, @RequestParam("datamap") Map mapData) ;
+    @RequestMapping(value = "/api/test/excel", method = RequestMethod.POST)
+    ResponseEntity<byte[]> processExcel(@RequestParam("jxlid") Long jxlid, @RequestParam("datamap") Map mapData) ;
 
 
 //    private RestTemplate restTemplate = new RestTemplate();

@@ -32,12 +32,10 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class ExcelService {
 
-    public final byte[] exportExcelFromTemplate(String fileName, List data, Map<String, Object> parameters) {
+    public final byte[] exportExcelFromTemplate(String fileName, Map<String, Object> parameters) {
         byte[] body = null;
 
         Context context = new Context();
-        context.putVar("result", data);
-
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             context.putVar(entry.getKey(), entry.getValue());
         }
