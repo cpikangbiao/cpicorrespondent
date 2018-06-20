@@ -1,0 +1,40 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.cpi.correspondent",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "4.14.4",
+    "baseName": "cpicorrespondent",
+    "packageName": "com.cpi.correspondent",
+    "packageFolder": "com/cpi/correspondent",
+    "serverPort": "8078",
+    "authenticationType": "uaa",
+    "uaaBaseName": "cpiuaa",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSocialSignIn": false,
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "336f5c7b85a78f19ccc95f934cdb491e7a900244",
+    "enableTranslation": true,
+    "applicationType": "microservice",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "nativeLanguage": "en",
+    "languages": [
+      "en",
+      "zh-cn"
+    ],
+    "clientPackageManager": "yarn",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}

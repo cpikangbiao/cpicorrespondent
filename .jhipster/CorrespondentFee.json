@@ -1,0 +1,59 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "correspondentFeeType",
+            "otherEntityName": "correspondentFeeType",
+            "otherEntityField": "correspondentFeeTypeName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "cpiCorrespondent",
+            "otherEntityName": "cPICorrespondent",
+            "otherEntityField": "correspondentCode"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "clientNo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "numberId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "currency",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "currencyRate",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "cost",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "costDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "costDollar",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "remark",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "changelogDate": "20180611021348",
+    "entityTableName": "correspondent_fee",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "microserviceName": "cpicorrespondent"
+}

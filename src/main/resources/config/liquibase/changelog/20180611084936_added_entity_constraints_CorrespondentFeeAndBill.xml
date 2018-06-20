@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity CorrespondentFeeAndBill.
+    -->
+    <changeSet id="20180611084936-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="correspondent_debit_bill_id"
+                                 baseTableName="correspondent_fee_and_bill"
+                                 constraintName="fk_correspondent_fee_and_bill_correspondent_debit_bill_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="correspondent_bill"/>
+
+        <addForeignKeyConstraint baseColumnNames="correspondent_fee_id"
+                                 baseTableName="correspondent_fee_and_bill"
+                                 constraintName="fk_correspondent_fee_and_bill_correspondent_fee_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="correspondent_fee"/>
+
+        <addForeignKeyConstraint baseColumnNames="correspondent_credit_bill_id"
+                                 baseTableName="correspondent_fee_and_bill"
+                                 constraintName="fk_correspondent_fee_and_bill_correspondent_credit_bill_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="correspondent_bill"/>
+
+    </changeSet>
+</databaseChangeLog>
