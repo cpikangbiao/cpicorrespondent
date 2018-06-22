@@ -1,7 +1,7 @@
 package com.cpi.correspondent.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.cpi.correspondent.repository.utility.ExcelRepository;
+import com.cpi.correspondent.repository.utility.ExcelUtility;
 import com.cpi.correspondent.service.CPICorrespondentService;
 import com.cpi.correspondent.service.ExcelService;
 import com.cpi.correspondent.web.bean.CPICorrespondentBean;
@@ -24,8 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -45,7 +43,7 @@ public class CPICorrespondentResource {
     private static final String ENTITY_NAME = "cPICorrespondent";
 
     @Autowired
-    private ExcelRepository excelRepository;
+    private ExcelUtility excelRepository;
 
     @Autowired
     private ExcelService excelService;

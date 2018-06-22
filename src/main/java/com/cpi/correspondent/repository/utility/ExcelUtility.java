@@ -32,7 +32,7 @@ import java.util.Map;
 
 
 @AuthorizedFeignClient(name = "cpiexcel", configuration = LongTimeFeignConfiguration.class) // , fallback = TicketClientHystrix.class)
-public interface ExcelRepository {
+public interface ExcelUtility {
 
     @RequestMapping(value = "/api/excel/export", method = RequestMethod.POST)
     ResponseEntity<byte[]> processExcel(@RequestBody() Map mapData) ;
