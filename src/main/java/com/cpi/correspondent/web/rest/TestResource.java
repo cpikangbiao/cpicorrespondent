@@ -43,6 +43,9 @@ public class TestResource {
     @Autowired
     private ExcelService excelService;
 
+    @Autowired
+    private ExcelRepository excelRepository;
+
     private final CPICorrespondentService cPICorrespondentService;
 
     private final CPICorrespondentQueryService cPICorrespondentQueryService;
@@ -70,16 +73,16 @@ public class TestResource {
         map.put("results", cpiCorrespondentBeans);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        if (cpiCorrespondentBeans.size() > 0) {
-            outputStream = excelService.exportExcelFromTemplate("reports/StatsforCorrespondent.xlsx", map);
-        }
-
-//        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
-//        map.put("jxlid", EXCEL_TEMPLATE_FOR_1);
 //        if (cpiCorrespondentBeans.size() > 0) {
-//            responseEntity = excelRepository.processExcel(map);
-//            body = responseEntity.getBody();
+//            outputStream = excelService.exportExcelFromTemplate("reports/StatsforCorrespondent.xlsx", map);
 //        }
+
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
+        map.put("jxlid", EXCEL_TEMPLATE_FOR_1);
+        if (cpiCorrespondentBeans.size() > 0) {
+            responseEntity = excelRepository.processExcel(map);
+//            body = responseEntity.getBody();
+        }
 
         StringBuilder fileName = new StringBuilder();
         fileName.append("\"Stats_for_Correspondent").append(".xlsx\"");
@@ -89,8 +92,11 @@ public class TestResource {
             MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
         header.set(HttpHeaders.CONTENT_DISPOSITION,
             "attachment; filename=" + fileName.toString());
-        header.setContentLength(outputStream.toByteArray().length);
+//        header.setContentLength(outputStream.toByteArray().length);
+//
+//        return new ResponseEntity<>(outputStream.toByteArray(), header, HttpStatus.OK);
+        header.setContentLength(responseEntity.getBody().length);
 
-        return new ResponseEntity<>(outputStream.toByteArray(), header, HttpStatus.OK);
+        return new ResponseEntity<>(responseEntity.getBody(), header, HttpStatus.OK);
     }
 }

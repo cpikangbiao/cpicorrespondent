@@ -2,6 +2,7 @@ package com.cpi.correspondent.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.service.CorrespondentFeeAndBillService;
+import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
 import com.cpi.correspondent.web.rest.util.PaginationUtil;
@@ -129,4 +130,8 @@ public class CorrespondentFeeAndBillResource {
         correspondentFeeAndBillService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+
+
+
 }

@@ -10,11 +10,19 @@
  */
 package com.cpi.correspondent.service;
 
+import com.cpi.correspondent.domain.*;
+import com.cpi.correspondent.repository.*;
+import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
+import com.cpi.correspondent.service.mapper.CorrespondentBillMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.time.Instant;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,13 +42,34 @@ public class CreateBillService {
     @Autowired
     private CorrespondentFeeService correspondentFeeService;
 
-    public void CreateCreditBill(List<Long> feeIDs) {
+    @Autowired
+    private CorrespondentBillRepository correspondentBillRepository;
+
+    @Autowired
+    private CPICorrespondentRepository cpiCorrespondentRepository;
+
+    @Autowired
+    private CorrespondentFeeRepository correspondentFeeRepository;
+
+    @Autowired
+    private CorrespondentFeeAndBillRepository correspondentFeeAndBillRepository;
+
+    @Autowired
+    private BillFinanceTypeRepository billFinanceTypeRepository;
+
+    @Autowired
+    private CorrespondentBillMapper correspondentBillMapper;
+
+    public CorrespondentBillDTO CreateCorrespondentBill(List<Long> feeIDs, Long billFinanceTypeId) {
+        CorrespondentBillDTO correspondentBillDTO = null;
         List<CorrespondentFeeDTO> correspondentFees = new ArrayList();
         HashSet<Long> currencySet = new HashSet();
+        Long cpiCorrespondentId = null;
         for (Long feeID : feeIDs) {
             CorrespondentFeeDTO correspondentFeeDTO = correspondentFeeService.findOne(feeID);
             currencySet.add(correspondentFeeDTO.getCurrency());
             correspondentFees.add(correspondentFeeDTO);
+            cpiCorrespondentId = correspondentFeeDTO.getCpiCorrespondentId();
         }
 
         for (Long currency : currencySet) {
@@ -49,20 +78,88 @@ public class CreateBillService {
                 if (correspondentFee.getCurrency().equals(currency)) {
                     newCorrespondentFees.add(correspondentFee);
                 }
-
-
             }
+
+            correspondentBillDTO = CreateBill(newCorrespondentFees, billFinanceTypeId, cpiCorrespondentId, currency);
         }
 
-
+        return correspondentBillDTO;
     }
 
-    public void CreateDebitBill(List<Long> feeIDs) {
+    private CorrespondentBillDTO CreateBill(List<CorrespondentFeeDTO> correspondentFeeDTOs, Long billFinanceTypeId, Long cpiCorrespondentId, Long currency) {
+        CorrespondentBill correspondentBill = new CorrespondentBill();
 
+        CPICorrespondent cpiCorrespondent = cpiCorrespondentRepository.findOne(cpiCorrespondentId);
+        correspondentBill.setCpiCorrespondent(cpiCorrespondent);
+
+        BillFinanceType billFinanceType = billFinanceTypeRepository.findOne(billFinanceTypeId);
+        correspondentBill.setBillFinanceType(billFinanceType);
+        correspondentBill.setAmount(new BigDecimal(0.0));
+
+
+        correspondentBill.setCorrespondentBillDate(Instant.now());
+        correspondentBill.setCurrency(currency);
+        correspondentBill.setCurrencyRate(new Float(1.0));
+        correspondentBill.setDueDate(Instant.now());
+        correspondentBill.setExchangeAmount(new BigDecimal(0.0));
+        correspondentBill.setExchangeCurrency(currency);
+        correspondentBill.setExchangeDate(Instant.now());
+        correspondentBill.setExchangeRate(new Float(1.0));
+
+        correspondentBill.setYear(Year.now().toString());
+        CorrespondentBill maxBill  = correspondentBillRepository.findTopByYearOrderByNumberIdDesc(correspondentBill.getYear());
+        Integer maxNumber = null;
+        if (maxBill != null) {
+            maxNumber = maxBill.getNumberId();
+        }
+
+        if (maxNumber == null) {
+            maxNumber = 0;
+        }
+        correspondentBill.setNumberId(maxNumber + 1);
+        correspondentBill.setCorrespondentBillCode(CreateBillCode(correspondentBill.getYear(), correspondentBill.getNumberId()));
+
+        correspondentBill.setReceiver(null);
+        correspondentBill.setRemark(null);
+
+        correspondentBillRepository.save(correspondentBill);
+
+        BigDecimal amount = new BigDecimal(0.0);
+        for (CorrespondentFeeDTO correspondentFeeDTO : correspondentFeeDTOs) {
+            CreateCorrespondentFeeAndBill(correspondentFeeDTO, correspondentBill, billFinanceTypeId);
+            amount = amount.add(correspondentFeeDTO.getCost());
+        }
+        correspondentBill.setAmount(amount);
+        correspondentBill.setExchangeAmount(amount);
+
+        correspondentBillRepository.save(correspondentBill);
+
+        return  correspondentBillMapper.toDto(correspondentBill);
     }
 
-    private void CreateBill() {
+    private CorrespondentFeeAndBill CreateCorrespondentFeeAndBill(CorrespondentFeeDTO correspondentFeeDTO, CorrespondentBill correspondentBill, Long billFinanceType) {
+        CorrespondentFeeAndBill correspondentFeeAndBill = new CorrespondentFeeAndBill();
 
+        if (billFinanceType.equals(BillFinanceType.BILL_FINANCE_TYPE_CREDIT)) {
+            correspondentFeeAndBill.setCorrespondentCreditBill(correspondentBill);
+        } else {
+            correspondentFeeAndBill.setCorrespondentDebitBill(correspondentBill);
+        }
+
+        CorrespondentFee correspondentFee = correspondentFeeRepository.findOne(correspondentFeeDTO.getId());
+        correspondentFeeAndBill.setCorrespondentFee(correspondentFee);
+
+        correspondentFeeAndBillRepository.save(correspondentFeeAndBill);
+
+        return correspondentFeeAndBill;
+    }
+
+    private String CreateBillCode(String year, Integer numberId) {
+        StringBuilder billCode = new StringBuilder();
+        NumberFormat formatter3 = new DecimalFormat("000");
+        billCode.append("C").append(year).append(formatter3.format(numberId));
+
+        return billCode.toString();
     }
 
 }

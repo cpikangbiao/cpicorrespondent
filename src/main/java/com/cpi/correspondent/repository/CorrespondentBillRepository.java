@@ -13,4 +13,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface CorrespondentBillRepository extends JpaRepository<CorrespondentBill, Long>, JpaSpecificationExecutor<CorrespondentBill> {
 
+//    Integer getMaxNumberIdByYear(String year);
+
+    CorrespondentBill findTopByYearOrderByNumberIdDesc(String year);
 }

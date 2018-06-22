@@ -19,6 +19,10 @@ public class BillFinanceType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public  static final Long BILL_FINANCE_TYPE_CREDIT = new Long(1);
+
+    public  static final Long BILL_FINANCE_TYPE_DEBIT  = new Long(2);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

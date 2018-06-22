@@ -161,17 +161,16 @@ public class CPICorrespondentResource {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("results", cpiCorrespondentBeans);
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        if (cpiCorrespondentBeans.size() > 0) {
-            outputStream = excelService.exportExcelFromTemplate("reports/StatsforCorrespondent.xlsx", map);
-        }
-
-//        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
-//        map.put("jxlid", EXCEL_TEMPLATE_FOR_1);
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 //        if (cpiCorrespondentBeans.size() > 0) {
-//            responseEntity = excelRepository.processExcel(map);
-//            body = responseEntity.getBody();
+//            outputStream = excelService.exportExcelFromTemplate("reports/StatsforCorrespondent.xlsx", map);
 //        }
+
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
+        map.put("jxlid", EXCEL_TEMPLATE_FOR_1);
+        if (cpiCorrespondentBeans.size() > 0) {
+            responseEntity = excelRepository.processExcel(map);
+        }
 
         StringBuilder fileName = new StringBuilder();
         fileName.append("\"Stats_for_Correspondent").append(".xlsx\"");
@@ -179,10 +178,9 @@ public class CPICorrespondentResource {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(
             MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-        header.set(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment; filename=" + fileName.toString());
-        header.setContentLength(outputStream.toByteArray().length);
+        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.toString());
+        header.setContentLength(responseEntity.getBody().length);
 
-        return new ResponseEntity<>(outputStream.toByteArray(), header, HttpStatus.OK);
+        return new ResponseEntity<>(responseEntity.getBody(), header, HttpStatus.OK);
     }
 }
