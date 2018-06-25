@@ -57,7 +57,7 @@ public class TestResource {
 
         Map<String, Object> parameter = new HashMap<String, Object>();
 //        parameter.putAll(jasperReportUtility.addImageMapParamete("reports", "cherry.jpg", "cherryImage"));
-        ResponseEntity<byte[]> responseEntity = jasperReportUtility.processPDF("Test.jasper", parameter);
+        ResponseEntity<byte[]> responseEntity = jasperReportUtility.processPDF(1, parameter);
 
         HttpHeaders headers=new HttpHeaders();
         headers.add("Content-Disposition","attachment;filename=11.pdf");

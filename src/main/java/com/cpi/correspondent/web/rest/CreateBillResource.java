@@ -10,10 +10,12 @@ import com.cpi.correspondent.repository.CorrespondentFeeRepository;
 import com.cpi.correspondent.service.CorrespondentFeeQueryService;
 import com.cpi.correspondent.service.CorrespondentFeeService;
 import com.cpi.correspondent.service.CreateBillService;
+import com.cpi.correspondent.service.dto.CPICorrespondentDTO;
 import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import com.cpi.correspondent.service.dto.CorrespondentFeeCriteria;
 import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentBillMapper;
+import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
 import com.cpi.correspondent.web.rest.util.PaginationUtil;
@@ -26,13 +28,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing CorrespondentFee.
@@ -135,4 +138,6 @@ public class CreateBillResource {
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(correspondentBillDTO));
     }
+
+
 }

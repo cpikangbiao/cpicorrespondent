@@ -29,8 +29,8 @@ import java.util.Map;
 @AuthorizedFeignClient(name = "cpijasperreport", configuration = LongTimeFeignConfiguration.class)
 public interface JasperReportUtility {
 
-    @RequestMapping(value = "/api/test/pdf", method = RequestMethod.POST)
-    ResponseEntity<byte[]> processPDF(@RequestParam(value = "filename", required = true)  String jasperFileName,
+    @RequestMapping(value = "/api/jasperreport/pdf-withid", method = RequestMethod.POST)
+    public ResponseEntity<byte[]> processPDF(@RequestParam(value = "typeid", required = true)  Integer typeid,
                                              @RequestBody Map<String, Object> parameters);
 
     @PostMapping("/api/test/addimage")
