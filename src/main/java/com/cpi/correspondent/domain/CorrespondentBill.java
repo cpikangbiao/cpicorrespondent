@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "correspondent_bill")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorrespondentBill   extends AbstractAuditingEntity  implements Serializable {
+public class CorrespondentBill extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,6 +66,9 @@ public class CorrespondentBill   extends AbstractAuditingEntity  implements Seri
     @Lob
     @Column(name = "remark")
     private String remark;
+
+    @ManyToOne
+    private Credit credit;
 
     @ManyToOne
     private CPICorrespondent cpiCorrespondent;
@@ -262,6 +265,19 @@ public class CorrespondentBill   extends AbstractAuditingEntity  implements Seri
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Credit getCredit() {
+        return credit;
+    }
+
+    public CorrespondentBill credit(Credit credit) {
+        this.credit = credit;
+        return this;
+    }
+
+    public void setCredit(Credit credit) {
+        this.credit = credit;
     }
 
     public CPICorrespondent getCpiCorrespondent() {

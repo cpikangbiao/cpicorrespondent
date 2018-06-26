@@ -113,7 +113,9 @@ public class CreateBillResource {
             }
         }
 
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(correspondentBillDTO));
+        return ResponseEntity.ok()
+            .body(correspondentBillDTO);
+//        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(correspondentBillDTO));
     }
 
     @GetMapping("/get-bill-from-fee/debit/{id}")
@@ -136,7 +138,9 @@ public class CreateBillResource {
             }
         }
 
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(correspondentBillDTO));
+//        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(correspondentBillDTO));
+        return ResponseEntity.ok()
+            .body(correspondentBillDTO);
     }
 
 

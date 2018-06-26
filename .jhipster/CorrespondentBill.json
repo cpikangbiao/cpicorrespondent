@@ -3,6 +3,12 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipName": "credit",
+            "otherEntityName": "credit",
+            "otherEntityField": "accountNo"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "cpiCorrespondent",
             "otherEntityName": "cPICorrespondent",
             "otherEntityField": "correspondentCode"

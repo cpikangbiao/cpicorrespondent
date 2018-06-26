@@ -45,6 +45,10 @@ public class CorrespondentBillDTO implements Serializable {
     @Lob
     private String remark;
 
+    private Long creditId;
+
+    private String creditAccountNo;
+
     private Long cpiCorrespondentId;
 
     private String cpiCorrespondentCorrespondentCode;
@@ -171,6 +175,22 @@ public class CorrespondentBillDTO implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getCreditId() {
+        return creditId;
+    }
+
+    public void setCreditId(Long creditId) {
+        this.creditId = creditId;
+    }
+
+    public String getCreditAccountNo() {
+        return creditAccountNo;
+    }
+
+    public void setCreditAccountNo(String creditAccountNo) {
+        this.creditAccountNo = creditAccountNo;
     }
 
     public Long getCpiCorrespondentId() {

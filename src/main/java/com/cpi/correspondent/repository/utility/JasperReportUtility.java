@@ -13,9 +13,11 @@ package com.cpi.correspondent.repository.utility;
 import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.client.AuthorizedFeignClient;
 import com.cpi.correspondent.config.LongTimeFeignConfiguration;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -30,7 +32,11 @@ import java.util.Map;
 public interface JasperReportUtility {
 
     @RequestMapping(value = "/api/jasperreport/pdf-withid", method = RequestMethod.POST)
-    public ResponseEntity<byte[]> processPDF(@RequestParam(value = "typeid", required = true)  Integer typeid,
+    ResponseEntity<byte[]> processPDF(@RequestParam(value = "typeid", required = true)  Integer typeid,
+                                             @RequestBody Map<String, Object> parameters);
+
+    @RequestMapping(value = "/api/jasperreport/pdf-withfile", method = RequestMethod.POST)
+    ResponseEntity<byte[]> processPDF(@RequestParam(value = "filename", required = true)  String jasperFileName,
                                              @RequestBody Map<String, Object> parameters);
 
     @PostMapping("/api/test/addimage")

@@ -1,0 +1,45 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "numberId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "creditorName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "creditorAddress",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "bankName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "bankAddress",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "accountNo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "corrBankName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "corrBankAddress",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180625094502",
+    "entityTableName": "credit",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "microserviceName": "cpicorrespondent"
+}

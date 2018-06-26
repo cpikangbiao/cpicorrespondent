@@ -82,7 +82,20 @@ entity CorrespondentFeeAndBill {
 }
 
 
+entity Credit {
+    numberId Integer,
+	creditorName String ,
+	creditorAddress String ,
+	bankName String ,
+	bankAddress String ,
+	accountNo String ,
+	corrBankName String ,
+	corrBankAddress String ,
+}
 
+relationship ManyToOne {
+	CorrespondentBill{credit(accountNo)} to Credit
+}
 
 relationship ManyToOne {
 	CorrespondentBill{cpiCorrespondent(correspondentCode)} to CPICorrespondent
