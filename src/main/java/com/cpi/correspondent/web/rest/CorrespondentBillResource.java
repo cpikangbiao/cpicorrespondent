@@ -4,13 +4,10 @@ import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.domain.BillFinanceType;
 import com.cpi.correspondent.domain.CorrespondentBill;
 import com.cpi.correspondent.repository.CorrespondentBillRepository;
-import com.cpi.correspondent.repository.CorrespondentFeeAndBillRepository;
 import com.cpi.correspondent.repository.common.CurrencyRepository;
 import com.cpi.correspondent.repository.utility.JasperReportUtility;
 import com.cpi.correspondent.service.CorrespondentBillService;
-import com.cpi.correspondent.service.dto.CPICorrespondentDTO;
 import com.cpi.correspondent.service.dto.common.CurrencyDTO;
-import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
 import com.cpi.correspondent.web.rest.util.PaginationUtil;
@@ -29,11 +26,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -160,7 +158,7 @@ public class CorrespondentBillResource {
     @Timed
     public ResponseEntity<byte[]> getPDFFileForBill(@PathVariable Long id) {
         CorrespondentBill correspondentBill = correspondentBillRepository.findOne(id);
-        ResponseEntity<byte[]> responseEntity  = null;
+        ResponseEntity<byte[]> responseEntity  = new ResponseEntity(HttpStatus.OK);
         if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_CREDIT)) {
             responseEntity  = jasperReportUtility.processPDF(CORR_BILL_PDF_TEMPLATE_CREDIT, createCreditBillMap(correspondentBill));
         } else if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_DEBIT)) {
@@ -172,10 +170,8 @@ public class CorrespondentBillResource {
         fileName.append("\"Correspondent_Bill").append(".pdf\"");
 
         HttpHeaders header = new HttpHeaders();
-        header.setContentType(
-            MediaType.parseMediaType("application/pdf"));
-        header.set(HttpHeaders.CONTENT_DISPOSITION,
-            "attachment; filename=" + fileName.toString());
+        header.setContentType(MediaType.parseMediaType("application/pdf"));
+        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.toString());
 
         header.setContentLength(responseEntity.getBody().length);
 
@@ -184,12 +180,13 @@ public class CorrespondentBillResource {
 
     private Map<String, Object> createCreditBillMap(CorrespondentBill correspondentbill) {
         Map<String, Object> map = new HashMap<String, Object>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        map.put("reciever", correspondentbill.getReceiver());
+        map.put("receiver", correspondentbill.getReceiver());
         map.put("DebitNoteCode", correspondentbill.getCorrespondentBillCode());
+
         if (correspondentbill.getCorrespondentBillDate() != null) {
-            map.put("DebiteDate", sdf.format(correspondentbill.getCorrespondentBillDate()));
+            LocalDateTime localDateTime = LocalDateTime.ofInstant(correspondentbill.getCorrespondentBillDate(), ZoneId.systemDefault());
+            map.put("DebitDate", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
 
         if (correspondentbill.getCpiCorrespondent() != null) {
@@ -214,33 +211,31 @@ public class CorrespondentBillResource {
     }
 
     private Map<String, Object> createDebitBillMap(CorrespondentBill correspondentbill) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> parameter = new HashMap<String, Object>();
 
-//        parameter.put("reciever", correspondentbill.getReciever());
-//        parameter.put("DebitNoteCode", correspondentbill.getCorrespondentBillCode());
-//        if (correspondentbill.getCorrespondentBillDate() != null) {
-//            parameter.put("DebiteDate", sdf.format(correspondentbill.getCorrespondentBillDate()));
-//        }
-//        if (correspondentbill.getCorrespondent().getPiClubId() != null) {
-//            parameter.put("co", correspondentbill.getCorrespondent().getPiClubId().getPiclubName());
-//        }
-//
-//        if (correspondentbill.getCorrespondent() != null) {
-//            parameter.put("cpiRef", correspondentbill.getCorrespondent().getCorrespondentCode());
-//            parameter.put("clientRef", correspondentbill.getCorrespondent().getClientRef());
-//            parameter.put("attition", correspondentbill.getCorrespondent().getPiClubId().getPiclubName());
-//        }
-//        if (correspondentbill.getCorrespondent().getPiClubPersonId() != null) {
-//            parameter.put("attition", correspondentbill.getCorrespondent().getPiClubPersonId().getPersonName());
-//            parameter.put("email", correspondentbill.getCorrespondent().getPiClubPersonId().getEmail());
-//        }
-//
-//        parameter.put("mv", correspondentbill.getRemark());
-//
-//        String root_path = request.getSession().getServletContext().getRealPath("/");
-//        root_path = root_path + "/report/";
-//        parameter.put("SUBREPORT_DIR", root_path);
-//
+        parameter.put("reciever", correspondentbill.getReceiver());
+        parameter.put("DebitNoteCode", correspondentbill.getCorrespondentBillCode());
+        if (correspondentbill.getCorrespondentBillDate() != null) {
+            LocalDateTime localDateTime = LocalDateTime.ofInstant(correspondentbill.getCorrespondentBillDate(), ZoneId.systemDefault());
+            parameter.put("DebitDate", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        if (correspondentbill.getCpiCorrespondent().getClub() != null) {
+            parameter.put("co", correspondentbill.getCpiCorrespondent().getClub().getClubName());
+        }
+
+        if (correspondentbill.getCpiCorrespondent() != null) {
+            parameter.put("cpiRef", correspondentbill.getCpiCorrespondent().getCorrespondentCode());
+            parameter.put("clientRef", correspondentbill.getCpiCorrespondent().getClientRef());
+            parameter.put("attition", correspondentbill.getCpiCorrespondent().getClub().getClubName());
+        }
+        if (correspondentbill.getCpiCorrespondent().getClubPerson() != null) {
+            parameter.put("attition", correspondentbill.getCpiCorrespondent().getClubPerson().getClubPersonName());
+            parameter.put("email", correspondentbill.getCpiCorrespondent().getClubPerson().getEmail());
+        }
+
+        parameter.put("mv", correspondentbill.getRemark());
+
+
 //        ArrayList<CorrFeeDetailBean> corrFeeDetails = new ArrayList<CorrFeeDetailBean>();
 //        List<CorrFeeVO> corrFees = new CorrFeeAndBillDAO().getCorrFee(correspondentbill);
 //        for (CorrFeeVO corrFee : corrFees) {
@@ -251,6 +246,6 @@ public class CorrespondentBillResource {
 //        JRBeanCollectionDataSource dataSet_en = new JRBeanCollectionDataSource(corrFeeDetails);
 //        parameter.put("details", dataSet_en);
 
-        return map;
+        return parameter;
     }
 }

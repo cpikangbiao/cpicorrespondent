@@ -177,7 +177,12 @@ public class CPICorrespondentResource {
         header.setContentType(
             MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
         header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.toString());
-        header.setContentLength(responseEntity.getBody().length);
+        if (responseEntity.getBody() != null) {
+            header.setContentLength(responseEntity.getBody().length);
+        } else {
+            header.setContentLength(0);
+        }
+
 
         return new ResponseEntity<>(responseEntity.getBody(), header, HttpStatus.OK);
     }
