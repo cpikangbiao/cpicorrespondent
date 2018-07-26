@@ -1,9 +1,12 @@
 package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CorrespondentBill;
+import com.cpi.correspondent.domain.CorrespondentFee;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -14,6 +17,9 @@ import org.springframework.data.jpa.repository.*;
 public interface CorrespondentBillRepository extends JpaRepository<CorrespondentBill, Long>, JpaSpecificationExecutor<CorrespondentBill> {
 
 //    Integer getMaxNumberIdByYear(String year);
+
+
+    List<CorrespondentBill> findByCpiCorrespondentId(Long cpiCorrespondentId);
 
     CorrespondentBill findTopByYearOrderByNumberIdDesc(String year);
 }

@@ -56,6 +56,11 @@ public class CorrespondentBillQueryService extends QueryService<CorrespondentBil
         return correspondentBillMapper.toDto(correspondentBillRepository.findAll(specification));
     }
 
+    @Transactional(readOnly = true)
+    public List<CorrespondentBillDTO> findByCpiCorrespondent(Long cpiCorrespondentId) {
+        log.debug("find by cpiCorrespondentId : {}", cpiCorrespondentId);
+        return correspondentBillMapper.toDto(correspondentBillRepository.findByCpiCorrespondentId(cpiCorrespondentId));
+    }
     /**
      * Return a {@link Page} of {@link CorrespondentBillDTO} which matches the criteria from the database
      * @param criteria The object which holds all the filters, which the entities should match.

@@ -1,9 +1,9 @@
 package com.cpi.correspondent.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.cpi.correspondent.domain.BillFinanceType;
-import com.cpi.correspondent.domain.CorrespondentBill;
+import com.cpi.correspondent.domain.*;
 import com.cpi.correspondent.repository.CorrespondentBillRepository;
+import com.cpi.correspondent.repository.CorrespondentFeeAndBillRepository;
 import com.cpi.correspondent.repository.common.CurrencyRepository;
 import com.cpi.correspondent.repository.utility.JasperReportUtility;
 import com.cpi.correspondent.service.CorrespondentBillService;
@@ -26,9 +26,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +44,16 @@ import java.util.*;
 public class CorrespondentBillResource {
 
     private final Logger log = LoggerFactory.getLogger(CorrespondentBillResource.class);
+
+    private static final int CORRESPONDENT_FEE_TYPE_CORRESPONDENT = 5;
+
+    private static final int CORRESPONDENT_FEE_TYPE_OTHER = 4;
+
+    private static final int CORRESPONDENT_FEE_TYPE_SURVEYOR = 1;
+
+    private static final int CORRESPONDENT_FEE_TYPE_LAWAY = 2;
+
+    private static final int CORRESPONDENT_FEE_TYPE_EXPERT = 3;
 
     private static final String ENTITY_NAME = "correspondentBill";
 
@@ -57,6 +69,9 @@ public class CorrespondentBillResource {
 
     @Autowired
     private CorrespondentBillRepository correspondentBillRepository;
+
+    @Autowired
+    private CorrespondentFeeAndBillRepository correspondentFeeAndBillRepository;
 
     private final CorrespondentBillService correspondentBillService;
 
@@ -162,7 +177,8 @@ public class CorrespondentBillResource {
         if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_CREDIT)) {
             responseEntity  = jasperReportUtility.processPDF(CORR_BILL_PDF_TEMPLATE_CREDIT, createCreditBillMap(correspondentBill));
         } else if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_DEBIT)) {
-            responseEntity  = jasperReportUtility.processPDF("HullCorrespondentDebitBill.jasper", createDebitBillMap(correspondentBill));
+//            responseEntity  = jasperReportUtility.processPDF("HullCorrespondentDebitBill.jasper", createDebitBillMap(correspondentBill));
+            responseEntity  = jasperReportUtility.processPDF(CORR_BILL_PDF_TEMPLATE_DEBIT, createDebitBillMap(correspondentBill));
         }
 
 
@@ -215,6 +231,7 @@ public class CorrespondentBillResource {
 
         parameter.put("reciever", correspondentbill.getReceiver());
         parameter.put("DebitNoteCode", correspondentbill.getCorrespondentBillCode());
+
         if (correspondentbill.getCorrespondentBillDate() != null) {
             LocalDateTime localDateTime = LocalDateTime.ofInstant(correspondentbill.getCorrespondentBillDate(), ZoneId.systemDefault());
             parameter.put("DebitDate", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
@@ -225,6 +242,7 @@ public class CorrespondentBillResource {
 
         if (correspondentbill.getCpiCorrespondent() != null) {
             parameter.put("cpiRef", correspondentbill.getCpiCorrespondent().getCorrespondentCode());
+            parameter.put("yourRef", correspondentbill.getCpiCorrespondent().getClientRef());
             parameter.put("clientRef", correspondentbill.getCpiCorrespondent().getClientRef());
             parameter.put("attition", correspondentbill.getCpiCorrespondent().getClub().getClubName());
         }
@@ -234,6 +252,96 @@ public class CorrespondentBillResource {
         }
 
         parameter.put("mv", correspondentbill.getRemark());
+
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        StringBuilder surveyFeeDetailString = new StringBuilder();
+        StringBuilder serviceFeeDetailString = new StringBuilder();
+        StringBuilder otherFeeDetailString = new StringBuilder();
+
+        BigDecimal surveyFeeSum = new BigDecimal(0.0);
+        BigDecimal serviceFeeSum = new BigDecimal(0.0);
+        BigDecimal otherFeeSum = new BigDecimal(0.0);
+        BigDecimal sumAll = new BigDecimal(0.0);
+
+        List<CorrespondentFeeAndBill> correspondentFeeAndBills = correspondentFeeAndBillRepository.findAllByCorrespondentDebitBill(correspondentbill);
+        for (CorrespondentFeeAndBill correspondentFeeAndBill : correspondentFeeAndBills) {
+            CorrespondentFee correspondentFee = correspondentFeeAndBill.getCorrespondentFee();
+            switch (correspondentFee.getCorrespondentFeeType().getId().intValue()) {
+                case CORRESPONDENT_FEE_TYPE_OTHER: { //for other
+                    otherFeeDetailString.append(decimalFormat.format(correspondentFee.getCostDollar()));
+                    if (correspondentFee.getRemark() != null && correspondentFee.getRemark().length() > 0) {
+                        otherFeeDetailString.append("(").append(correspondentFee.getRemark()).append(")");
+                    }
+                    otherFeeDetailString.append("\n");
+                    otherFeeSum = otherFeeSum.add(correspondentFee.getCostDollar());
+                    }
+                    break;
+                case CORRESPONDENT_FEE_TYPE_CORRESPONDENT: //Correspondent Fee
+                    {
+                        serviceFeeDetailString.append(decimalFormat.format(correspondentFee.getCostDollar()));
+                        if (correspondentFee.getRemark() != null && correspondentFee.getRemark().length() > 0) {
+                            serviceFeeDetailString.append("(").append(correspondentFee.getRemark()).append(")");
+                        }
+                        serviceFeeDetailString.append("\n");
+                        serviceFeeSum = serviceFeeSum.add(correspondentFee.getCostDollar());
+                    }
+                        break;
+
+                case CORRESPONDENT_FEE_TYPE_SURVEYOR:
+                case CORRESPONDENT_FEE_TYPE_LAWAY:
+                case CORRESPONDENT_FEE_TYPE_EXPERT:
+                default:
+                     {
+                        surveyFeeDetailString.append(decimalFormat.format(correspondentFee.getCostDollar()));
+                        if (correspondentFee.getRemark() != null && correspondentFee.getRemark().length() > 0) {
+                            surveyFeeDetailString.append("(").append(correspondentFee.getRemark()).append(")");
+                        }
+                        surveyFeeDetailString.append("\n");
+                        surveyFeeSum = surveyFeeSum.add(correspondentFee.getCostDollar());
+                    }
+                    break;
+            }
+
+//            if (correspondentFee.getCorrespondentFeeType().getId().equals(CorrespondentFeeType.CORRESPONDENT_FEE_TYPE_OTHER)) {
+//                otherFeeDetailString.append(decimalFormat.format(correspondentFee.getCostDollar()));
+//                if (correspondentFee.getRemark() != null && correspondentFee.getRemark().length() > 0) {
+//                    otherFeeDetailString.append("(").append(correspondentFee.getRemark()).append(")");
+//                }
+//                otherFeeDetailString.append("\n");
+//                otherFeeSum = otherFeeSum.add(correspondentFee.getCostDollar());
+//            } else if (correspondentFee.getCorrespondentFeeType().getId().equals(CorrespondentFeeType.CORRESPONDENT_FEE_TYPE_CORRESPONDENT)) {
+//                serviceFeeDetailString.append(decimalFormat.format(correspondentFee.getCostDollar()));
+//                if (correspondentFee.getRemark() != null && correspondentFee.getRemark().length() > 0) {
+//                    serviceFeeDetailString.append("(").append(correspondentFee.getRemark()).append(")");
+//                }
+//                serviceFeeDetailString.append("\n");
+//                serviceFeeSum = serviceFeeSum.add(correspondentFee.getCostDollar());
+//            } else {
+//                surveyFeeDetailString.append(decimalFormat.format(correspondentFee.getCostDollar()));
+//                if (correspondentFee.getRemark() != null && correspondentFee.getRemark().length() > 0) {
+//                    surveyFeeDetailString.append("(").append(correspondentFee.getRemark()).append(")");
+//                }
+//                surveyFeeDetailString.append("\n");
+//                surveyFeeSum = surveyFeeSum.add(correspondentFee.getCostDollar());
+//            }
+
+        }
+
+        parameter.put("surveyFeeDetail", surveyFeeDetailString.toString());
+        parameter.put("surveyFeeSum", decimalFormat.format(surveyFeeSum));
+
+        parameter.put("serviceFeeDetail", serviceFeeDetailString.toString());
+        parameter.put("serviceFeeSum", decimalFormat.format(serviceFeeSum));
+
+        parameter.put("otherFeeDetail", otherFeeDetailString.toString());
+        parameter.put("otherFeeSum", decimalFormat.format(otherFeeSum));
+
+        sumAll = sumAll.add(surveyFeeSum).add(serviceFeeSum).add(otherFeeSum);
+
+        parameter.put("sumAll", decimalFormat.format(sumAll));
+
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(correspondentbill.getDueDate(), ZoneId.systemDefault());
+        parameter.put("dueDate", localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
 
 //        ArrayList<CorrFeeDetailBean> corrFeeDetails = new ArrayList<CorrFeeDetailBean>();

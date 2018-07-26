@@ -19,6 +19,16 @@ public class CorrespondentFeeType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final Long CORRESPONDENT_FEE_TYPE_CORRESPONDENT = new Long(5);
+
+    public static final Long CORRESPONDENT_FEE_TYPE_OTHER = new Long(4);
+
+    public static final Long CORRESPONDENT_FEE_TYPE_SURVEYOR = new Long(1);
+
+    public static final Long CORRESPONDENT_FEE_TYPE_LAWAY = new Long(2);
+
+    public static final Long CORRESPONDENT_FEE_TYPE_EXPERT = new Long(3);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

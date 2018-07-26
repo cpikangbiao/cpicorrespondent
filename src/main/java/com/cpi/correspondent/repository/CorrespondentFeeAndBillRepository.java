@@ -18,4 +18,6 @@ import java.util.List;
 public interface CorrespondentFeeAndBillRepository extends JpaRepository<CorrespondentFeeAndBill, Long>, JpaSpecificationExecutor<CorrespondentFeeAndBill> {
 
     List<CorrespondentFeeAndBill> findAllByCorrespondentFee(CorrespondentFee correspondentFee);
+
+    List<CorrespondentFeeAndBill> findAllByCorrespondentDebitBill(CorrespondentBill correspondentDebitBill);
 }
