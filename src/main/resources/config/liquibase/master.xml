@@ -18,6 +18,7 @@
 
     <!--<include file="config/liquibase/changelog/20180625094502_added_entity_Credit.xml" relativeToChangelogFile="false"/>-->
     <include file="config/liquibase/changelog/20180801090420_added_entity_CorrespondentDocs.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180801120049_added_entity_CorrespondentBillStatus.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!--<include file="config/liquibase/changelog/20180606061937_added_entity_constraints_Correspondent.xml" relativeToChangelogFile="false"/>-->
     <!--<include file="config/liquibase/changelog/20180606061816_added_entity_constraints_ClubPerson.xml" relativeToChangelogFile="false"/>-->

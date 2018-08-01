@@ -3,6 +3,12 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipName": "correspondentBillStatus",
+            "otherEntityName": "correspondentBillStatus",
+            "otherEntityField": "correspondentBillStatusName"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "credit",
             "otherEntityName": "credit",
             "otherEntityField": "accountNo"

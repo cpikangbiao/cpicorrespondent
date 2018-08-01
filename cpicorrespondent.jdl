@@ -73,6 +73,8 @@ entity CorrespondentBill {
     remark TextBlob,
 }
 
+
+
 entity BillFinanceType {
 	billFinanceTypeName String required,
     sortNum Integer required,
@@ -97,6 +99,16 @@ entity CorrespondentDocs {
 	documentName String ,
 	uploadDate Instant ,
 	document AnyBlob,
+}
+
+
+entity CorrespondentBillStatus {
+	correspondentBillStatusName String required,
+    sortNum Integer required,
+}
+
+relationship ManyToOne {
+	CorrespondentBill{correspondentBillStatus(correspondentBillStatusName)} to CorrespondentBillStatus
 }
 
 relationship ManyToOne {
