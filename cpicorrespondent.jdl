@@ -93,6 +93,17 @@ entity Credit {
 	corrBankAddress String ,
 }
 
+entity CorrespondentDocs {
+	documentName String ,
+	uploadDate Instant ,
+	document AnyBlob,
+}
+
+relationship ManyToOne {
+	CorrespondentDocs{cpiCorrespondent(correspondentCode)} to CPICorrespondent
+}
+
+
 relationship ManyToOne {
 	CorrespondentBill{credit(accountNo)} to Credit
 }

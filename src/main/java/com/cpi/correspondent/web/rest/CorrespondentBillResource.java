@@ -55,6 +55,8 @@ public class CorrespondentBillResource {
 
     private static final int CORRESPONDENT_FEE_TYPE_EXPERT = 3;
 
+    private static final int CORRESPONDENT_FEE_TYPE_BAIL = 6;
+
     private static final String ENTITY_NAME = "correspondentBill";
 
     private static final Integer CORR_BILL_PDF_TEMPLATE_CREDIT = 1;
@@ -243,7 +245,11 @@ public class CorrespondentBillResource {
         if (correspondentbill.getCpiCorrespondent() != null) {
             parameter.put("cpiRef", correspondentbill.getCpiCorrespondent().getCorrespondentCode());
             parameter.put("yourRef", correspondentbill.getCpiCorrespondent().getClientRef());
-            parameter.put("clientRef", correspondentbill.getCpiCorrespondent().getClientRef());
+
+            if (correspondentbill.getCpiCorrespondent().getClubPerson() != null) {
+                parameter.put("clientRef", correspondentbill.getCpiCorrespondent().getClubPerson().getClubPersonName());
+            }
+
             parameter.put("attition", correspondentbill.getCpiCorrespondent().getClub().getClubName());
         }
         if (correspondentbill.getCpiCorrespondent().getClubPerson() != null) {
@@ -290,6 +296,7 @@ public class CorrespondentBillResource {
                 case CORRESPONDENT_FEE_TYPE_SURVEYOR:
                 case CORRESPONDENT_FEE_TYPE_LAWAY:
                 case CORRESPONDENT_FEE_TYPE_EXPERT:
+                case CORRESPONDENT_FEE_TYPE_BAIL:
                 default:
                      {
                         surveyFeeDetailString.append(decimalFormat.format(correspondentFee.getCostDollar()));

@@ -1,0 +1,94 @@
+package com.cpi.correspondent.service;
+
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import io.github.jhipster.service.QueryService;
+
+import com.cpi.correspondent.domain.CorrespondentDocs;
+import com.cpi.correspondent.domain.*; // for static metamodels
+import com.cpi.correspondent.repository.CorrespondentDocsRepository;
+import com.cpi.correspondent.service.dto.CorrespondentDocsCriteria;
+
+import com.cpi.correspondent.service.dto.CorrespondentDocsDTO;
+import com.cpi.correspondent.service.mapper.CorrespondentDocsMapper;
+
+/**
+ * Service for executing complex queries for CorrespondentDocs entities in the database.
+ * The main input is a {@link CorrespondentDocsCriteria} which get's converted to {@link Specifications},
+ * in a way that all the filters must apply.
+ * It returns a {@link List} of {@link CorrespondentDocsDTO} or a {@link Page} of {@link CorrespondentDocsDTO} which fulfills the criteria.
+ */
+@Service
+@Transactional(readOnly = true)
+public class CorrespondentDocsQueryService extends QueryService<CorrespondentDocs> {
+
+    private final Logger log = LoggerFactory.getLogger(CorrespondentDocsQueryService.class);
+
+
+    private final CorrespondentDocsRepository correspondentDocsRepository;
+
+    private final CorrespondentDocsMapper correspondentDocsMapper;
+
+    public CorrespondentDocsQueryService(CorrespondentDocsRepository correspondentDocsRepository, CorrespondentDocsMapper correspondentDocsMapper) {
+        this.correspondentDocsRepository = correspondentDocsRepository;
+        this.correspondentDocsMapper = correspondentDocsMapper;
+    }
+
+    /**
+     * Return a {@link List} of {@link CorrespondentDocsDTO} which matches the criteria from the database
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public List<CorrespondentDocsDTO> findByCriteria(CorrespondentDocsCriteria criteria) {
+        log.debug("find by criteria : {}", criteria);
+        final Specifications<CorrespondentDocs> specification = createSpecification(criteria);
+        return correspondentDocsMapper.toDto(correspondentDocsRepository.findAll(specification));
+    }
+
+    /**
+     * Return a {@link Page} of {@link CorrespondentDocsDTO} which matches the criteria from the database
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @param page The page, which should be returned.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public Page<CorrespondentDocsDTO> findByCriteria(CorrespondentDocsCriteria criteria, Pageable page) {
+        log.debug("find by criteria : {}, page: {}", criteria, page);
+        final Specifications<CorrespondentDocs> specification = createSpecification(criteria);
+        final Page<CorrespondentDocs> result = correspondentDocsRepository.findAll(specification, page);
+        return result.map(correspondentDocsMapper::toDto);
+    }
+
+    /**
+     * Function to convert CorrespondentDocsCriteria to a {@link Specifications}
+     */
+    private Specifications<CorrespondentDocs> createSpecification(CorrespondentDocsCriteria criteria) {
+        Specifications<CorrespondentDocs> specification = Specifications.where(null);
+        if (criteria != null) {
+            if (criteria.getId() != null) {
+                specification = specification.and(buildSpecification(criteria.getId(), CorrespondentDocs_.id));
+            }
+            if (criteria.getDocumentName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDocumentName(), CorrespondentDocs_.documentName));
+            }
+            if (criteria.getUploadDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getUploadDate(), CorrespondentDocs_.uploadDate));
+            }
+            if (criteria.getCpiCorrespondentId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getCpiCorrespondentId(), CorrespondentDocs_.cpiCorrespondent, CPICorrespondent_.id));
+            }
+        }
+        return specification;
+    }
+
+}

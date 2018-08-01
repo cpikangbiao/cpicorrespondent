@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "cpiCorrespondent",
+            "otherEntityName": "cPICorrespondent",
+            "otherEntityField": "correspondentCode"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "documentName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "uploadDate",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "document",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        }
+    ],
+    "changelogDate": "20180801090420",
+    "entityTableName": "correspondent_docs",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "microserviceName": "cpicorrespondent"
+}
