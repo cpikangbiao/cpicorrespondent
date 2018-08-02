@@ -123,6 +123,9 @@ public class CorrespondentBillQueryService extends QueryService<CorrespondentBil
             if (criteria.getExchangeAmount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getExchangeAmount(), CorrespondentBill_.exchangeAmount));
             }
+            if (criteria.getCorrespondentBillStatusId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getCorrespondentBillStatusId(), CorrespondentBill_.correspondentBillStatus, CorrespondentBillStatus_.id));
+            }
             if (criteria.getCreditId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getCreditId(), CorrespondentBill_.credit, Credit_.id));
             }

@@ -8,6 +8,12 @@
     -->
     <changeSet id="20180611083502-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="correspondent_bill_status_id"
+                                 baseTableName="correspondent_bill"
+                                 constraintName="fk_correspondent_bill_correspondent_bill_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="correspondent_bill_status"/>
+
         <addForeignKeyConstraint baseColumnNames="credit_id"
                                  baseTableName="correspondent_bill"
                                  constraintName="fk_correspondent_bill_credit_id"

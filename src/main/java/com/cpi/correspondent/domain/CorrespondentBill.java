@@ -68,6 +68,9 @@ public class CorrespondentBill extends AbstractAuditingEntity implements Seriali
     private String remark;
 
     @ManyToOne
+    private CorrespondentBillStatus correspondentBillStatus;
+
+    @ManyToOne
     private Credit credit;
 
     @ManyToOne
@@ -265,6 +268,19 @@ public class CorrespondentBill extends AbstractAuditingEntity implements Seriali
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public CorrespondentBillStatus getCorrespondentBillStatus() {
+        return correspondentBillStatus;
+    }
+
+    public CorrespondentBill correspondentBillStatus(CorrespondentBillStatus correspondentBillStatus) {
+        this.correspondentBillStatus = correspondentBillStatus;
+        return this;
+    }
+
+    public void setCorrespondentBillStatus(CorrespondentBillStatus correspondentBillStatus) {
+        this.correspondentBillStatus = correspondentBillStatus;
     }
 
     public Credit getCredit() {

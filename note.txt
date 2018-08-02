@@ -22,4 +22,7 @@ alter table `cpicorrespondent`.`correspondent_fee_and_bill` add column  `last_mo
 alter table `cpicorrespondent`.`correspondent_fee_and_bill` add column  `last_modified_date` DATETIME NULL DEFAULT NULL;
 
 
-
+alter table `cpicorrespondent`.`correspondent_docs` add column  `created_by` varchar(50) NOT NULL;
+alter table `cpicorrespondent`.`correspondent_docs` add column  `created_date` DATETIME NOT NULL;
+alter table `cpicorrespondent`.`correspondent_docs` add column  `last_modified_by` varchar(50) DEFAULT NULL;
+alter table `cpicorrespondent`.`correspondent_docs` add column  `last_modified_date` DATETIME NULL DEFAULT NULL;

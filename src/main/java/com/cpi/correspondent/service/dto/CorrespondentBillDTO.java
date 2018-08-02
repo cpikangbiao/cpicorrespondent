@@ -45,6 +45,10 @@ public class CorrespondentBillDTO implements Serializable {
     @Lob
     private String remark;
 
+    private Long correspondentBillStatusId;
+
+    private String correspondentBillStatusCorrespondentBillStatusName;
+
     private Long creditId;
 
     private String creditAccountNo;
@@ -175,6 +179,22 @@ public class CorrespondentBillDTO implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getCorrespondentBillStatusId() {
+        return correspondentBillStatusId;
+    }
+
+    public void setCorrespondentBillStatusId(Long correspondentBillStatusId) {
+        this.correspondentBillStatusId = correspondentBillStatusId;
+    }
+
+    public String getCorrespondentBillStatusCorrespondentBillStatusName() {
+        return correspondentBillStatusCorrespondentBillStatusName;
+    }
+
+    public void setCorrespondentBillStatusCorrespondentBillStatusName(String correspondentBillStatusCorrespondentBillStatusName) {
+        this.correspondentBillStatusCorrespondentBillStatusName = correspondentBillStatusCorrespondentBillStatusName;
     }
 
     public Long getCreditId() {

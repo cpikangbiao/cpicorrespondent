@@ -54,6 +54,8 @@ public class CorrespondentBillCriteria implements Serializable {
 
     private BigDecimalFilter exchangeAmount;
 
+    private LongFilter correspondentBillStatusId;
+
     private LongFilter creditId;
 
     private LongFilter cpiCorrespondentId;
@@ -175,6 +177,14 @@ public class CorrespondentBillCriteria implements Serializable {
         this.exchangeAmount = exchangeAmount;
     }
 
+    public LongFilter getCorrespondentBillStatusId() {
+        return correspondentBillStatusId;
+    }
+
+    public void setCorrespondentBillStatusId(LongFilter correspondentBillStatusId) {
+        this.correspondentBillStatusId = correspondentBillStatusId;
+    }
+
     public LongFilter getCreditId() {
         return creditId;
     }
@@ -216,6 +226,7 @@ public class CorrespondentBillCriteria implements Serializable {
                 (exchangeCurrency != null ? "exchangeCurrency=" + exchangeCurrency + ", " : "") +
                 (exchangeRate != null ? "exchangeRate=" + exchangeRate + ", " : "") +
                 (exchangeAmount != null ? "exchangeAmount=" + exchangeAmount + ", " : "") +
+                (correspondentBillStatusId != null ? "correspondentBillStatusId=" + correspondentBillStatusId + ", " : "") +
                 (creditId != null ? "creditId=" + creditId + ", " : "") +
                 (cpiCorrespondentId != null ? "cpiCorrespondentId=" + cpiCorrespondentId + ", " : "") +
                 (billFinanceTypeId != null ? "billFinanceTypeId=" + billFinanceTypeId + ", " : "") +

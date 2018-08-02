@@ -8,9 +8,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity CorrespondentBill and its DTO CorrespondentBillDTO.
  */
-@Mapper(componentModel = "spring", uses = {CreditMapper.class, CPICorrespondentMapper.class, BillFinanceTypeMapper.class})
+@Mapper(componentModel = "spring", uses = {CorrespondentBillStatusMapper.class, CreditMapper.class, CPICorrespondentMapper.class, BillFinanceTypeMapper.class})
 public interface CorrespondentBillMapper extends EntityMapper<CorrespondentBillDTO, CorrespondentBill> {
 
+    @Mapping(source = "correspondentBillStatus.id", target = "correspondentBillStatusId")
+    @Mapping(source = "correspondentBillStatus.correspondentBillStatusName", target = "correspondentBillStatusCorrespondentBillStatusName")
     @Mapping(source = "credit.id", target = "creditId")
     @Mapping(source = "credit.accountNo", target = "creditAccountNo")
     @Mapping(source = "cpiCorrespondent.id", target = "cpiCorrespondentId")
@@ -19,6 +21,7 @@ public interface CorrespondentBillMapper extends EntityMapper<CorrespondentBillD
     @Mapping(source = "billFinanceType.billFinanceTypeName", target = "billFinanceTypeBillFinanceTypeName")
     CorrespondentBillDTO toDto(CorrespondentBill correspondentBill);
 
+    @Mapping(source = "correspondentBillStatusId", target = "correspondentBillStatus")
     @Mapping(source = "creditId", target = "credit")
     @Mapping(source = "cpiCorrespondentId", target = "cpiCorrespondent")
     @Mapping(source = "billFinanceTypeId", target = "billFinanceType")

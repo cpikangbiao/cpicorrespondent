@@ -5,6 +5,7 @@ import com.cpi.correspondent.CpicorrespondentApp;
 import com.cpi.correspondent.config.SecurityBeanOverrideConfiguration;
 
 import com.cpi.correspondent.domain.CorrespondentBill;
+import com.cpi.correspondent.domain.CorrespondentBillStatus;
 import com.cpi.correspondent.domain.Credit;
 import com.cpi.correspondent.domain.CPICorrespondent;
 import com.cpi.correspondent.domain.BillFinanceType;
@@ -856,6 +857,25 @@ public class CorrespondentBillResourceIntTest {
         // Get all the correspondentBillList where exchangeAmount is null
         defaultCorrespondentBillShouldNotBeFound("exchangeAmount.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllCorrespondentBillsByCorrespondentBillStatusIsEqualToSomething() throws Exception {
+        // Initialize the database
+        CorrespondentBillStatus correspondentBillStatus = CorrespondentBillStatusResourceIntTest.createEntity(em);
+        em.persist(correspondentBillStatus);
+        em.flush();
+        correspondentBill.setCorrespondentBillStatus(correspondentBillStatus);
+        correspondentBillRepository.saveAndFlush(correspondentBill);
+        Long correspondentBillStatusId = correspondentBillStatus.getId();
+
+        // Get all the correspondentBillList where correspondentBillStatus equals to correspondentBillStatusId
+        defaultCorrespondentBillShouldBeFound("correspondentBillStatusId.equals=" + correspondentBillStatusId);
+
+        // Get all the correspondentBillList where correspondentBillStatus equals to correspondentBillStatusId + 1
+        defaultCorrespondentBillShouldNotBeFound("correspondentBillStatusId.equals=" + (correspondentBillStatusId + 1));
+    }
+
 
     @Test
     @Transactional
