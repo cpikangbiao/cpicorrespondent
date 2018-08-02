@@ -103,6 +103,15 @@ public class CorrespondentBillStatusLogResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/correspondent-bill-status-logs/by-bill/{billId}")
+    @Timed
+    public ResponseEntity<List<CorrespondentBillStatusLogDTO>> getAllCorrespondentBillStatusLogs(@PathVariable Long billId) {
+        log.debug("REST request to get CorrespondentBillStatusLogs by billId: {}", billId);
+        List<CorrespondentBillStatusLogDTO> page = correspondentBillStatusLogQueryService.findByCorrespondentBillId(billId);
+        return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+
     /**
      * GET  /correspondent-bill-status-logs/:id : get the "id" correspondentBillStatusLog.
      *
