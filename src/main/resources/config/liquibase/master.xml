@@ -19,6 +19,7 @@
     <!--<include file="config/liquibase/changelog/20180625094502_added_entity_Credit.xml" relativeToChangelogFile="false"/>-->
     <!--<include file="config/liquibase/changelog/20180801090420_added_entity_CorrespondentDocs.xml" relativeToChangelogFile="false"/>-->
     <!--<include file="config/liquibase/changelog/20180801120049_added_entity_CorrespondentBillStatus.xml" relativeToChangelogFile="false"/>-->
+    <include file="config/liquibase/changelog/20180802052655_added_entity_CorrespondentBillStatusLog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!--<include file="config/liquibase/changelog/20180606061937_added_entity_constraints_Correspondent.xml" relativeToChangelogFile="false"/>-->
     <!--<include file="config/liquibase/changelog/20180606061816_added_entity_constraints_ClubPerson.xml" relativeToChangelogFile="false"/>-->
@@ -27,5 +28,6 @@
     <!--<include file="config/liquibase/changelog/20180611083502_added_entity_constraints_CorrespondentBill.xml" relativeToChangelogFile="false"/>-->
     <!--<include file="config/liquibase/changelog/20180611084936_added_entity_constraints_CorrespondentFeeAndBill.xml" relativeToChangelogFile="false"/>-->
     <!--<include file="config/liquibase/changelog/20180801090420_added_entity_constraints_CorrespondentDocs.xml" relativeToChangelogFile="false"/>-->
+    <include file="config/liquibase/changelog/20180802052655_added_entity_constraints_CorrespondentBillStatusLog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

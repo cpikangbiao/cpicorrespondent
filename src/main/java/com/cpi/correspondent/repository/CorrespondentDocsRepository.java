@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the CorrespondentDocs entity.
@@ -13,4 +15,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface CorrespondentDocsRepository extends JpaRepository<CorrespondentDocs, Long>, JpaSpecificationExecutor<CorrespondentDocs> {
 
+    List<CorrespondentDocs> findByCpiCorrespondentId(Long cpiCorrespondentId);
 }

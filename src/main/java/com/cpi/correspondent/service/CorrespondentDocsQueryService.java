@@ -3,6 +3,7 @@ package com.cpi.correspondent.service;
 
 import java.util.List;
 
+import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -53,6 +54,12 @@ public class CorrespondentDocsQueryService extends QueryService<CorrespondentDoc
         log.debug("find by criteria : {}", criteria);
         final Specifications<CorrespondentDocs> specification = createSpecification(criteria);
         return correspondentDocsMapper.toDto(correspondentDocsRepository.findAll(specification));
+    }
+
+    @Transactional(readOnly = true)
+    public List<CorrespondentDocsDTO> findByCpiCorrespondent(Long cpiCorrespondentId) {
+        log.debug("find by cpiCorrespondentId : {}", cpiCorrespondentId);
+        return correspondentDocsMapper.toDto(correspondentDocsRepository.findByCpiCorrespondentId(cpiCorrespondentId));
     }
 
     /**

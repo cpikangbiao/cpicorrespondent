@@ -107,6 +107,16 @@ entity CorrespondentBillStatus {
     sortNum Integer required,
 }
 
+entity CorrespondentBillStatusLog {
+	billStatusName String required,
+    updateTime Instant required,
+    updateUser Instant required,
+}
+
+relationship ManyToOne {
+	CorrespondentBillStatusLog{correspondentBill(correspondentBillCode)} to CorrespondentBill
+}
+
 relationship ManyToOne {
 	CorrespondentBill{correspondentBillStatus(correspondentBillStatusName)} to CorrespondentBillStatus
 }
