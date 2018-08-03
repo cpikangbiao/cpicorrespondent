@@ -19,6 +19,10 @@ public class CorrespondentBillStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public  static final Long CORRESPONDENT_BILL_STATUS_NOPAID = new Long(1);
+
+    public  static final Long CORRESPONDENT_BILL_STATUS_PAIDED = new Long(1);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

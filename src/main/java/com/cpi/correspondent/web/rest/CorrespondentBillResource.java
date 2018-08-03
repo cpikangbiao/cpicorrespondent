@@ -142,6 +142,19 @@ public class CorrespondentBillResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/correspondent-bills/debit/duedate")
+    @Timed
+    public ResponseEntity<List<CorrespondentBillDTO>> getAllCorrespondentBillsOrderByDueDate(Pageable pageable) {
+        log.debug("REST request to get getAllCorrespondentBillsOrderByDueDate");
+        Page<CorrespondentBillDTO> page = correspondentBillQueryService.findByBillFinanceType(
+                    BillFinanceType.BILL_FINANCE_TYPE_DEBIT,
+                    CorrespondentBillStatus.CORRESPONDENT_BILL_STATUS_NOPAID,
+                    pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api//correspondent-bills/debit/duedate");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
     /**
      * GET  /correspondent-bills/:id : get the "id" correspondentBill.
      *
@@ -259,7 +272,7 @@ public class CorrespondentBillResource {
 
         parameter.put("mv", correspondentbill.getRemark());
 
-        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        DecimalFormat decimalFormat = new DecimalFormat(",###,##0.00");
         StringBuilder surveyFeeDetailString = new StringBuilder();
         StringBuilder serviceFeeDetailString = new StringBuilder();
         StringBuilder otherFeeDetailString = new StringBuilder();

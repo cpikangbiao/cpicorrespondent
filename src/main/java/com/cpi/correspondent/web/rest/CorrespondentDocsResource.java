@@ -1,6 +1,8 @@
 package com.cpi.correspondent.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.cpi.correspondent.domain.BillFinanceType;
+import com.cpi.correspondent.domain.CorrespondentBill;
 import com.cpi.correspondent.service.CorrespondentDocsService;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -128,5 +131,24 @@ public class CorrespondentDocsResource {
         log.debug("REST request to delete CorrespondentDocs : {}", id);
         correspondentDocsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/correspondent-docs/{id}/download")
+    @Timed
+    public ResponseEntity<byte[]> downloadDocFile(@PathVariable Long id) {
+        CorrespondentDocsDTO correspondentDocsDTO = correspondentDocsService.findOne(id);
+
+        byte[] bytes = correspondentDocsDTO.getDocument();
+
+        StringBuilder fileName = new StringBuilder();
+        fileName.append("\"").append(correspondentDocsDTO.getDocumentName()).append("\"");
+
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.parseMediaType(correspondentDocsDTO.getDocumentContentType()));
+        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.toString());
+
+        header.setContentLength(bytes.length);
+
+        return new ResponseEntity<>(bytes, header, HttpStatus.OK);
     }
 }
