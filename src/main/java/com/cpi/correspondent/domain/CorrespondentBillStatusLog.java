@@ -32,9 +32,8 @@ public class CorrespondentBillStatusLog implements Serializable {
     @Column(name = "update_time", nullable = false)
     private Instant updateTime;
 
-    @NotNull
-    @Column(name = "update_user", nullable = false)
-    private Instant updateUser;
+    @Column(name = "update_user")
+    private Long updateUser;
 
     @ManyToOne
     private CorrespondentBill correspondentBill;
@@ -74,16 +73,16 @@ public class CorrespondentBillStatusLog implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Instant getUpdateUser() {
+    public Long getUpdateUser() {
         return updateUser;
     }
 
-    public CorrespondentBillStatusLog updateUser(Instant updateUser) {
+    public CorrespondentBillStatusLog updateUser(Long updateUser) {
         this.updateUser = updateUser;
         return this;
     }
 
-    public void setUpdateUser(Instant updateUser) {
+    public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
     }
 
@@ -127,7 +126,7 @@ public class CorrespondentBillStatusLog implements Serializable {
             "id=" + getId() +
             ", billStatusName='" + getBillStatusName() + "'" +
             ", updateTime='" + getUpdateTime() + "'" +
-            ", updateUser='" + getUpdateUser() + "'" +
+            ", updateUser=" + getUpdateUser() +
             "}";
     }
 }

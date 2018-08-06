@@ -30,8 +30,8 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="update_user" type="timestamp">
-                <constraints nullable="false" />
+            <column name="update_user" type="bigint">
+                <constraints nullable="true" />
             </column>
 
             <column name="correspondent_bill_id" type="bigint">
@@ -41,7 +41,6 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="correspondent_bill_status_log" columnName="update_time" columnDataType="datetime"/>
-        <dropDefaultValue tableName="correspondent_bill_status_log" columnName="update_user" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

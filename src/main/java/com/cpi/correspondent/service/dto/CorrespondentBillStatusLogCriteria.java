@@ -32,7 +32,7 @@ public class CorrespondentBillStatusLogCriteria implements Serializable {
 
     private InstantFilter updateTime;
 
-    private InstantFilter updateUser;
+    private LongFilter updateUser;
 
     private LongFilter correspondentBillId;
 
@@ -63,11 +63,11 @@ public class CorrespondentBillStatusLogCriteria implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public InstantFilter getUpdateUser() {
+    public LongFilter getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(InstantFilter updateUser) {
+    public void setUpdateUser(LongFilter updateUser) {
         this.updateUser = updateUser;
     }
 

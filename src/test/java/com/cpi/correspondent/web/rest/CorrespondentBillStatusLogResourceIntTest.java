@@ -54,8 +54,8 @@ public class CorrespondentBillStatusLogResourceIntTest {
     private static final Instant DEFAULT_UPDATE_TIME = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_UPDATE_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final Instant DEFAULT_UPDATE_USER = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_UPDATE_USER = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Long DEFAULT_UPDATE_USER = 1L;
+    private static final Long UPDATED_UPDATE_USER = 2L;
 
     @Autowired
     private CorrespondentBillStatusLogRepository correspondentBillStatusLogRepository;
@@ -196,25 +196,6 @@ public class CorrespondentBillStatusLogResourceIntTest {
 
     @Test
     @Transactional
-    public void checkUpdateUserIsRequired() throws Exception {
-        int databaseSizeBeforeTest = correspondentBillStatusLogRepository.findAll().size();
-        // set the field null
-        correspondentBillStatusLog.setUpdateUser(null);
-
-        // Create the CorrespondentBillStatusLog, which fails.
-        CorrespondentBillStatusLogDTO correspondentBillStatusLogDTO = correspondentBillStatusLogMapper.toDto(correspondentBillStatusLog);
-
-        restCorrespondentBillStatusLogMockMvc.perform(post("/api/correspondent-bill-status-logs")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(correspondentBillStatusLogDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<CorrespondentBillStatusLog> correspondentBillStatusLogList = correspondentBillStatusLogRepository.findAll();
-        assertThat(correspondentBillStatusLogList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllCorrespondentBillStatusLogs() throws Exception {
         // Initialize the database
         correspondentBillStatusLogRepository.saveAndFlush(correspondentBillStatusLog);
@@ -226,7 +207,7 @@ public class CorrespondentBillStatusLogResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(correspondentBillStatusLog.getId().intValue())))
             .andExpect(jsonPath("$.[*].billStatusName").value(hasItem(DEFAULT_BILL_STATUS_NAME.toString())))
             .andExpect(jsonPath("$.[*].updateTime").value(hasItem(DEFAULT_UPDATE_TIME.toString())))
-            .andExpect(jsonPath("$.[*].updateUser").value(hasItem(DEFAULT_UPDATE_USER.toString())));
+            .andExpect(jsonPath("$.[*].updateUser").value(hasItem(DEFAULT_UPDATE_USER.intValue())));
     }
 
     @Test
@@ -242,7 +223,7 @@ public class CorrespondentBillStatusLogResourceIntTest {
             .andExpect(jsonPath("$.id").value(correspondentBillStatusLog.getId().intValue()))
             .andExpect(jsonPath("$.billStatusName").value(DEFAULT_BILL_STATUS_NAME.toString()))
             .andExpect(jsonPath("$.updateTime").value(DEFAULT_UPDATE_TIME.toString()))
-            .andExpect(jsonPath("$.updateUser").value(DEFAULT_UPDATE_USER.toString()));
+            .andExpect(jsonPath("$.updateUser").value(DEFAULT_UPDATE_USER.intValue()));
     }
 
     @Test
@@ -364,6 +345,33 @@ public class CorrespondentBillStatusLogResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllCorrespondentBillStatusLogsByUpdateUserIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        correspondentBillStatusLogRepository.saveAndFlush(correspondentBillStatusLog);
+
+        // Get all the correspondentBillStatusLogList where updateUser greater than or equals to DEFAULT_UPDATE_USER
+        defaultCorrespondentBillStatusLogShouldBeFound("updateUser.greaterOrEqualThan=" + DEFAULT_UPDATE_USER);
+
+        // Get all the correspondentBillStatusLogList where updateUser greater than or equals to UPDATED_UPDATE_USER
+        defaultCorrespondentBillStatusLogShouldNotBeFound("updateUser.greaterOrEqualThan=" + UPDATED_UPDATE_USER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorrespondentBillStatusLogsByUpdateUserIsLessThanSomething() throws Exception {
+        // Initialize the database
+        correspondentBillStatusLogRepository.saveAndFlush(correspondentBillStatusLog);
+
+        // Get all the correspondentBillStatusLogList where updateUser less than or equals to DEFAULT_UPDATE_USER
+        defaultCorrespondentBillStatusLogShouldNotBeFound("updateUser.lessThan=" + DEFAULT_UPDATE_USER);
+
+        // Get all the correspondentBillStatusLogList where updateUser less than or equals to UPDATED_UPDATE_USER
+        defaultCorrespondentBillStatusLogShouldBeFound("updateUser.lessThan=" + UPDATED_UPDATE_USER);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllCorrespondentBillStatusLogsByCorrespondentBillIsEqualToSomething() throws Exception {
         // Initialize the database
         CorrespondentBill correspondentBill = CorrespondentBillResourceIntTest.createEntity(em);
@@ -390,7 +398,7 @@ public class CorrespondentBillStatusLogResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(correspondentBillStatusLog.getId().intValue())))
             .andExpect(jsonPath("$.[*].billStatusName").value(hasItem(DEFAULT_BILL_STATUS_NAME.toString())))
             .andExpect(jsonPath("$.[*].updateTime").value(hasItem(DEFAULT_UPDATE_TIME.toString())))
-            .andExpect(jsonPath("$.[*].updateUser").value(hasItem(DEFAULT_UPDATE_USER.toString())));
+            .andExpect(jsonPath("$.[*].updateUser").value(hasItem(DEFAULT_UPDATE_USER.intValue())));
     }
 
     /**

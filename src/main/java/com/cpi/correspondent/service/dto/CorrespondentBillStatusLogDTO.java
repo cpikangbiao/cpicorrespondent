@@ -21,8 +21,7 @@ public class CorrespondentBillStatusLogDTO implements Serializable {
     @NotNull
     private Instant updateTime;
 
-    @NotNull
-    private Instant updateUser;
+    private Long updateUser;
 
     private Long correspondentBillId;
 
@@ -52,11 +51,11 @@ public class CorrespondentBillStatusLogDTO implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Instant getUpdateUser() {
+    public Long getUpdateUser() {
         return updateUser;
     }
 
-    public void setUpdateUser(Instant updateUser) {
+    public void setUpdateUser(Long updateUser) {
         this.updateUser = updateUser;
     }
 
@@ -103,7 +102,7 @@ public class CorrespondentBillStatusLogDTO implements Serializable {
             "id=" + getId() +
             ", billStatusName='" + getBillStatusName() + "'" +
             ", updateTime='" + getUpdateTime() + "'" +
-            ", updateUser='" + getUpdateUser() + "'" +
+            ", updateUser=" + getUpdateUser() +
             "}";
     }
 }
