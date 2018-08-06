@@ -142,17 +142,17 @@ public class CorrespondentBillResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/correspondent-bills/debit/duedate")
-    @Timed
-    public ResponseEntity<List<CorrespondentBillDTO>> getAllCorrespondentBillsOrderByDueDate(Pageable pageable) {
-        log.debug("REST request to get getAllCorrespondentBillsOrderByDueDate");
-        Page<CorrespondentBillDTO> page = correspondentBillQueryService.findByBillFinanceType(
-                    BillFinanceType.BILL_FINANCE_TYPE_DEBIT,
-                    CorrespondentBillStatus.CORRESPONDENT_BILL_STATUS_NOPAID,
-                    pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api//correspondent-bills/debit/duedate");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+//    @GetMapping("/correspondent-bills/debit/duedate")
+//    @Timed
+//    public ResponseEntity<List<CorrespondentBillDTO>> getAllCorrespondentBillsOrderByDueDate(Pageable pageable) {
+//        log.debug("REST request to get getAllCorrespondentBillsOrderByDueDate");
+//        Page<CorrespondentBillDTO> page = correspondentBillQueryService.findByBillFinanceType(
+//                    BillFinanceType.BILL_FINANCE_TYPE_DEBIT,
+//                    CorrespondentBillStatus.CORRESPONDENT_BILL_STATUS_NOPAID,
+//                    pageable);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api//correspondent-bills/debit/duedate");
+//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+//    }
 
 
     /**

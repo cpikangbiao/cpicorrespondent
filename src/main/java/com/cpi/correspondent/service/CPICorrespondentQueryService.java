@@ -3,6 +3,7 @@ package com.cpi.correspondent.service;
 
 import java.util.List;
 
+import com.cpi.correspondent.repository.other.YearCountStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -113,6 +114,12 @@ public class CPICorrespondentQueryService extends QueryService<CPICorrespondent>
             }
         }
         return specification;
+    }
+
+    @Transactional(readOnly = true)
+    public List<YearCountStatistics> findYearCountStatistics() {
+        log.debug("find by YearCountStatistics ");
+        return cPICorrespondentRepository.findYearStatsCount();
     }
 
 }

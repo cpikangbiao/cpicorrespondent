@@ -60,6 +60,9 @@ public class CreateBillService {
     @Autowired
     private CorrespondentBillMapper correspondentBillMapper;
 
+    @Autowired
+    private CorrespondentBillStatusRepository correspondentBillStatusRepository;
+
     public CorrespondentBillDTO CreateCorrespondentBill(List<Long> feeIDs, Long billFinanceTypeId) {
         CorrespondentBillDTO correspondentBillDTO = null;
         List<CorrespondentFeeDTO> correspondentFees = new ArrayList();
@@ -96,6 +99,8 @@ public class CreateBillService {
         correspondentBill.setBillFinanceType(billFinanceType);
         correspondentBill.setAmount(new BigDecimal(0.0));
 
+        CorrespondentBillStatus correspondentBillStatus = correspondentBillStatusRepository.findOne(CorrespondentBillStatus.CORRESPONDENT_BILL_STATUS_NOPAID);
+        correspondentBill.setCorrespondentBillStatus(correspondentBillStatus);
 
         correspondentBill.setCorrespondentBillDate(Instant.now());
         correspondentBill.setCurrency(currency);

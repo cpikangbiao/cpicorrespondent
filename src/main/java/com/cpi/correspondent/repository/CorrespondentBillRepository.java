@@ -26,5 +26,5 @@ public interface CorrespondentBillRepository extends JpaRepository<Correspondent
 
     CorrespondentBill findTopByYearOrderByNumberIdDesc(String year);
 
-    Page<CorrespondentBill> findAllByBillFinanceTypeIdAAndCorrespondentBillStatusIdOrderByDueDateDesc(Long billFinanceTypeId, Long correspondentBillStatusId, Pageable pageable);
+//    Page<CorrespondentBill> findAllByBillFinanceTypeIdAAndCorrespondentBillStatusIdOrderByDueDateDesc(Long billFinanceTypeId, Long correspondentBillStatusId, Pageable pageable);
 }

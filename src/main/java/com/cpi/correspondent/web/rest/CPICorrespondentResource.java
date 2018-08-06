@@ -3,6 +3,7 @@ package com.cpi.correspondent.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.repository.CorrespondentFeeRepository;
 import com.cpi.correspondent.repository.common.UserRepository;
+import com.cpi.correspondent.repository.other.YearCountStatistics;
 import com.cpi.correspondent.repository.utility.ExcelUtility;
 import com.cpi.correspondent.service.*;
 import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
@@ -154,6 +155,11 @@ public class CPICorrespondentResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    @GetMapping("/cpi-correspondents/statistics/year")
+    @Timed
+    public ResponseEntity<List<YearCountStatistics>> getStatsForGroupByYear() {
+        return new ResponseEntity<>(cPICorrespondentQueryService.findYearCountStatistics(), HttpStatus.OK);
+    }
 
     @GetMapping("/cpi-correspondents/statistics")
     @Timed

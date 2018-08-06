@@ -21,9 +21,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 
@@ -141,11 +143,15 @@ public class CorrespondentDocsResource {
         byte[] bytes = correspondentDocsDTO.getDocument();
 
         StringBuilder fileName = new StringBuilder();
-        fileName.append("\"").append(correspondentDocsDTO.getDocumentName()).append("\"");
+        fileName.append(correspondentDocsDTO.getDocumentName());
 
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.parseMediaType(correspondentDocsDTO.getDocumentContentType()));
-        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.toString());
+        try {
+            header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + URLEncoder.encode(fileName.toString(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         header.setContentLength(bytes.length);
 

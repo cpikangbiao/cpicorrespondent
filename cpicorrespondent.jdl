@@ -110,7 +110,7 @@ entity CorrespondentBillStatus {
 entity CorrespondentBillStatusLog {
 	billStatusName String required,
     updateTime Instant required,
-    updateUser Instant required,
+    updateUser Long ,
 }
 
 relationship ManyToOne {

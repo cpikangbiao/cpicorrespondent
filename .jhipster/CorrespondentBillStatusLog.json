@@ -25,10 +25,7 @@
         },
         {
             "fieldName": "updateUser",
-            "fieldType": "Instant",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Long"
         }
     ],
     "changelogDate": "20180802052655",

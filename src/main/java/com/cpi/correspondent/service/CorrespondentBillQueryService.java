@@ -62,12 +62,12 @@ public class CorrespondentBillQueryService extends QueryService<CorrespondentBil
         return correspondentBillMapper.toDto(correspondentBillRepository.findByCpiCorrespondentId(cpiCorrespondentId));
     }
 
-    @Transactional(readOnly = true)
-    public Page<CorrespondentBillDTO>  findByBillFinanceType(Long billFinanceTypeId, Long  correspondentBillStatusId, Pageable page) {
-        log.debug("find by billFinanceTypeId : {}", billFinanceTypeId);
-        final Page<CorrespondentBill> result = correspondentBillRepository.findAllByBillFinanceTypeIdAAndCorrespondentBillStatusIdOrderByDueDateDesc(billFinanceTypeId, correspondentBillStatusId, page);
-        return result.map(correspondentBillMapper::toDto);
-    }
+//    @Transactional(readOnly = true)
+//    public Page<CorrespondentBillDTO>  findByBillFinanceType(Long billFinanceTypeId, Long  correspondentBillStatusId, Pageable page) {
+//        log.debug("find by billFinanceTypeId : {}", billFinanceTypeId);
+//        final Page<CorrespondentBill> result = correspondentBillRepository.findAllByBillFinanceTypeIdAAndCorrespondentBillStatusIdOrderByDueDateDesc(billFinanceTypeId, correspondentBillStatusId, page);
+//        return result.map(correspondentBillMapper::toDto);
+//    }
 
     /**
      * Return a {@link Page} of {@link CorrespondentBillDTO} which matches the criteria from the database
