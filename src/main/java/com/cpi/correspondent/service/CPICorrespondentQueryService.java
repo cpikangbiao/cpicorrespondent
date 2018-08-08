@@ -1,8 +1,11 @@
 package com.cpi.correspondent.service;
 
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.List;
 
+import com.cpi.correspondent.repository.other.MonthCountStatistics;
 import com.cpi.correspondent.repository.other.YearCountStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,6 +123,14 @@ public class CPICorrespondentQueryService extends QueryService<CPICorrespondent>
     public List<YearCountStatistics> findYearCountStatistics() {
         log.debug("find by YearCountStatistics ");
         return cPICorrespondentRepository.findYearStatsCount();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MonthCountStatistics> findMonthCountStatistics() {
+        log.debug("find by findMonthCountStatistics ");
+        Instant startDate = ZonedDateTime.now().minusYears(1).toInstant();
+        Instant endDate = Instant.now();
+        return cPICorrespondentRepository.findMonthStatsCount(startDate, endDate);
     }
 
 }

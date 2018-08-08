@@ -22,8 +22,11 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.Year;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -105,11 +108,16 @@ public class CreateBillService {
         correspondentBill.setCorrespondentBillDate(Instant.now());
         correspondentBill.setCurrency(currency);
         correspondentBill.setCurrencyRate(new Float(1.0));
-        correspondentBill.setDueDate(Instant.now());
+
         correspondentBill.setExchangeAmount(new BigDecimal(0.0));
         correspondentBill.setExchangeCurrency(currency);
         correspondentBill.setExchangeDate(Instant.now());
         correspondentBill.setExchangeRate(new Float(1.0));
+
+        //1.4.8 	2018-08-06 	新加账单时，Due Date默认为当前时间的后一个月为默认时间。 	新需求开发 	防损部 	韦毓良
+        LocalDateTime localDateTime = (new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        localDateTime = localDateTime.plusMonths(1);
+        correspondentBill.setDueDate(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
         correspondentBill.setYear(Year.now().toString());
         CorrespondentBill maxBill  = correspondentBillRepository.findTopByYearOrderByNumberIdDesc(correspondentBill.getYear());
