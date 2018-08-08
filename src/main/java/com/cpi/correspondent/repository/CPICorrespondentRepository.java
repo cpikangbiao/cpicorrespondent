@@ -21,9 +21,9 @@ public interface CPICorrespondentRepository extends JpaRepository<CPICorresponde
 
     @Query("SELECT " +
         "    new com.cpi.correspondent.repository.other.YearCountStatistics(v.year, count(v)) " +
-        "FROM " +
+        " FROM " +
         "    CPICorrespondent v " +
-        "GROUP BY " +
+        " GROUP BY " +
         "    v.year")
     List<YearCountStatistics> findYearStatsCount();
 

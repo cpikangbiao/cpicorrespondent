@@ -7,6 +7,7 @@ import com.cpi.correspondent.repository.other.MonthCountStatistics;
 import com.cpi.correspondent.repository.other.YearCountStatistics;
 import com.cpi.correspondent.repository.utility.ExcelUtility;
 import com.cpi.correspondent.service.*;
+import com.cpi.correspondent.service.bean.CpiCorrespondentTimeLineService;
 import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
 import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
@@ -60,6 +61,9 @@ public class CPICorrespondentResource {
 
     @Autowired
     private ExcelService excelService;
+
+    @Autowired
+    private CpiCorrespondentTimeLineService cpiCorrespondentTimeLineService;
 
     private final CPICorrespondentService cPICorrespondentService;
 
@@ -166,6 +170,12 @@ public class CPICorrespondentResource {
     @Timed
     public ResponseEntity<List<MonthCountStatistics>> getStatsForGroupByMonth() {
         return new ResponseEntity<>(cPICorrespondentQueryService.findMonthCountStatistics(), HttpStatus.OK);
+    }
+
+    @GetMapping("/cpi-correspondents/timeline/{id}")
+    @Timed
+    public ResponseEntity<List> getTimeline(@PathVariable Long id) {
+        return new ResponseEntity<>(cpiCorrespondentTimeLineService.getCpiCorrespondentTimeLineBeans(id), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics")
