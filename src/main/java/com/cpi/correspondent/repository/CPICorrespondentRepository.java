@@ -2,6 +2,7 @@ package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CPICorrespondent;
 import com.cpi.correspondent.repository.other.MonthCountStatistics;
+import com.cpi.correspondent.repository.other.TypeCountStatistics;
 import com.cpi.correspondent.repository.other.YearCountStatistics;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -33,4 +34,19 @@ public interface CPICorrespondentRepository extends JpaRepository<CPICorresponde
         + " WHERE v.caseDate BETWEEN :startDate AND :endDate"
         + " GROUP BY DATE_FORMAT(v.caseDate, '%Y-%m')")
     List<MonthCountStatistics> findMonthStatsCount(@Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+
+    @Query(value = "SELECT "
+        + " new com.cpi.correspondent.repository.other.TypeCountStatistics( t.correspondentTypeName, COUNT(v) ) "
+        + " FROM CPICorrespondent v, CorrespondentType t"
+        + " WHERE v.correspondentType.id = t.id"
+        + " GROUP BY v.correspondentType.correspondentTypeName ")
+    List<TypeCountStatistics> findTypeStatsCount();
+
+    @Query(value = "SELECT "
+        + " new com.cpi.correspondent.repository.other.TypeCountStatistics( t.clubName, COUNT(v) ) "
+        + " FROM CPICorrespondent v, Club t"
+        + " WHERE v.club.id = t.id"
+        + " GROUP BY v.club.clubName ")
+    List<TypeCountStatistics> findClubStatsCount();
+
 }

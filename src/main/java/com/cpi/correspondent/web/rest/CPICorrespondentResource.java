@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.repository.CorrespondentFeeRepository;
 import com.cpi.correspondent.repository.common.UserRepository;
 import com.cpi.correspondent.repository.other.MonthCountStatistics;
+import com.cpi.correspondent.repository.other.TypeCountStatistics;
 import com.cpi.correspondent.repository.other.YearCountStatistics;
 import com.cpi.correspondent.repository.utility.ExcelUtility;
 import com.cpi.correspondent.service.*;
@@ -170,6 +171,18 @@ public class CPICorrespondentResource {
     @Timed
     public ResponseEntity<List<MonthCountStatistics>> getStatsForGroupByMonth() {
         return new ResponseEntity<>(cPICorrespondentQueryService.findMonthCountStatistics(), HttpStatus.OK);
+    }
+
+    @GetMapping("/cpi-correspondents/statistics/type")
+    @Timed
+    public ResponseEntity<List<TypeCountStatistics>> getStatsForType() {
+        return new ResponseEntity<>(cPICorrespondentQueryService.findTypeCountStatistics(), HttpStatus.OK);
+    }
+
+    @GetMapping("/cpi-correspondents/statistics/club")
+    @Timed
+    public ResponseEntity<List<TypeCountStatistics>> getStatsForClub() {
+        return new ResponseEntity<>(cPICorrespondentQueryService.findClubCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/timeline/{id}")

@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.cpi.correspondent.repository.other.MonthCountStatistics;
+import com.cpi.correspondent.repository.other.TypeCountStatistics;
 import com.cpi.correspondent.repository.other.YearCountStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,5 +134,15 @@ public class CPICorrespondentQueryService extends QueryService<CPICorrespondent>
         return cPICorrespondentRepository.findMonthStatsCount(startDate, endDate);
     }
 
+    @Transactional(readOnly = true)
+    public List<TypeCountStatistics> findTypeCountStatistics() {
+        log.debug("find by findTypeCountStatistics ");
+        return cPICorrespondentRepository.findTypeStatsCount();
+    }
 
+    @Transactional(readOnly = true)
+    public List<TypeCountStatistics> findClubCountStatistics() {
+        log.debug("find by findTypeCountStatistics ");
+        return cPICorrespondentRepository.findClubStatsCount();
+    }
 }
