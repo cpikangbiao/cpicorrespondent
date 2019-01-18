@@ -48,7 +48,7 @@ public class CPICorrespondentStatisticsResource {
     private ExcelRepository excelRepository;
 
     @Autowired
-    private CpiCorrespondentTimeLineService cpiCorrespondentTimeLineService;
+    private CPICorrespondentStatisticsService cpiCorrespondentStatisticsService;
 
     private final CPICorrespondentService cPICorrespondentService;
 
@@ -64,25 +64,25 @@ public class CPICorrespondentStatisticsResource {
     @GetMapping("/cpi-correspondents/statistics/year")
     @Timed
     public ResponseEntity<List<YearCountStatistics>> getStatsForGroupByYear() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findYearCountStatistics(), HttpStatus.OK);
+        return new ResponseEntity<>(cpiCorrespondentStatisticsService.findYearCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics/month")
     @Timed
     public ResponseEntity<List<MonthCountStatistics>> getStatsForGroupByMonth() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findMonthCountStatistics(), HttpStatus.OK);
+        return new ResponseEntity<>(cpiCorrespondentStatisticsService.findMonthCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics/type")
     @Timed
     public ResponseEntity<List<TypeCountStatistics>> getStatsForType() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findTypeCountStatistics(), HttpStatus.OK);
+        return new ResponseEntity<>(cpiCorrespondentStatisticsService.findTypeCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics/club")
     @Timed
     public ResponseEntity<List<TypeCountStatistics>> getStatsForClub() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findClubCountStatistics(), HttpStatus.OK);
+        return new ResponseEntity<>(cpiCorrespondentStatisticsService.findClubCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics")

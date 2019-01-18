@@ -120,29 +120,5 @@ public class CPICorrespondentQueryService extends QueryService<CPICorrespondent>
         return specification;
     }
 
-    @Transactional(readOnly = true)
-    public List<YearCountStatistics> findYearCountStatistics() {
-        log.debug("find by YearCountStatistics ");
-        return cPICorrespondentRepository.findYearStatsCount();
-    }
 
-    @Transactional(readOnly = true)
-    public List<MonthCountStatistics> findMonthCountStatistics() {
-        log.debug("find by findMonthCountStatistics ");
-        Instant startDate = ZonedDateTime.now().minusYears(1).toInstant();
-        Instant endDate = Instant.now();
-        return cPICorrespondentRepository.findMonthStatsCount(startDate, endDate);
-    }
-
-    @Transactional(readOnly = true)
-    public List<TypeCountStatistics> findTypeCountStatistics() {
-        log.debug("find by findTypeCountStatistics ");
-        return cPICorrespondentRepository.findTypeStatsCount();
-    }
-
-    @Transactional(readOnly = true)
-    public List<TypeCountStatistics> findClubCountStatistics() {
-        log.debug("find by findTypeCountStatistics ");
-        return cPICorrespondentRepository.findClubStatsCount();
-    }
 }
