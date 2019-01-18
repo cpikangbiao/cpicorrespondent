@@ -7,33 +7,17 @@ import com.cpi.correspondent.domain.CorrespondentFee;
 import com.cpi.correspondent.domain.CorrespondentFeeAndBill;
 import com.cpi.correspondent.repository.CorrespondentFeeAndBillRepository;
 import com.cpi.correspondent.repository.CorrespondentFeeRepository;
-import com.cpi.correspondent.service.CorrespondentFeeQueryService;
-import com.cpi.correspondent.service.CorrespondentFeeService;
-import com.cpi.correspondent.service.CreateBillService;
-import com.cpi.correspondent.service.dto.CPICorrespondentDTO;
+import com.cpi.correspondent.service.CorrespondentBillCreateService;
 import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
-import com.cpi.correspondent.service.dto.CorrespondentFeeCriteria;
-import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentBillMapper;
-import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
-import com.cpi.correspondent.web.rest.util.PaginationUtil;
-import com.netflix.discovery.converters.Auto;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -42,9 +26,9 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
-public class CreateBillResource {
+public class CorrespondentBillCreateResource {
 
-    private final Logger log = LoggerFactory.getLogger(CreateBillResource.class);
+    private final Logger log = LoggerFactory.getLogger(CorrespondentBillCreateResource.class);
 
     private static final String ENTITY_NAME = "correspondentBill";
 
@@ -57,10 +41,10 @@ public class CreateBillResource {
     @Autowired
     private CorrespondentBillMapper correspondentBillMapper;
 
-    private final CreateBillService createBillService;
+    private final CorrespondentBillCreateService correspondentBillCreateService;
 
-    public CreateBillResource(CreateBillService createBillService) {
-        this.createBillService = createBillService;
+    public CorrespondentBillCreateResource(CorrespondentBillCreateService correspondentBillCreateService) {
+        this.correspondentBillCreateService = correspondentBillCreateService;
     }
 
     @PostMapping("/create-bill/credit")
@@ -72,7 +56,7 @@ public class CreateBillResource {
             throw new BadRequestAlertException("A new correspondentFee cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        CorrespondentBillDTO result = createBillService.CreateCorrespondentBill(ids, BillFinanceType.BILL_FINANCE_TYPE_CREDIT);
+        CorrespondentBillDTO result = correspondentBillCreateService.createCorrespondentBill(ids, BillFinanceType.BILL_FINANCE_TYPE_CREDIT);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getCorrespondentBillCode().toString()))
             .body(result);
@@ -87,7 +71,7 @@ public class CreateBillResource {
             throw new BadRequestAlertException("A new correspondentFee cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        CorrespondentBillDTO result = createBillService.CreateCorrespondentBill(ids, BillFinanceType.BILL_FINANCE_TYPE_DEBIT);
+        CorrespondentBillDTO result = correspondentBillCreateService.createCorrespondentBill(ids, BillFinanceType.BILL_FINANCE_TYPE_DEBIT);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getCorrespondentBillCode().toString()))
             .body(result);

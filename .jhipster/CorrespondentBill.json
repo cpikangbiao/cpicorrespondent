@@ -48,6 +48,10 @@
             "fieldType": "String"
         },
         {
+            "fieldName": "mainContent",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "dueDate",
             "fieldType": "Instant"
         },

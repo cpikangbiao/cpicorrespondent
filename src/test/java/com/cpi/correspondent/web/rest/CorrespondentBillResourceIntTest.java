@@ -68,6 +68,9 @@ public class CorrespondentBillResourceIntTest {
     private static final String DEFAULT_RECEIVER = "AAAAAAAAAA";
     private static final String UPDATED_RECEIVER = "BBBBBBBBBB";
 
+    private static final String DEFAULT_MAIN_CONTENT = "AAAAAAAAAA";
+    private static final String UPDATED_MAIN_CONTENT = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_DUE_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DUE_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -147,6 +150,7 @@ public class CorrespondentBillResourceIntTest {
             .correspondentBillCode(DEFAULT_CORRESPONDENT_BILL_CODE)
             .correspondentBillDate(DEFAULT_CORRESPONDENT_BILL_DATE)
             .receiver(DEFAULT_RECEIVER)
+            .mainContent(DEFAULT_MAIN_CONTENT)
             .dueDate(DEFAULT_DUE_DATE)
             .amount(DEFAULT_AMOUNT)
             .currency(DEFAULT_CURRENCY)
@@ -185,6 +189,7 @@ public class CorrespondentBillResourceIntTest {
         assertThat(testCorrespondentBill.getCorrespondentBillCode()).isEqualTo(DEFAULT_CORRESPONDENT_BILL_CODE);
         assertThat(testCorrespondentBill.getCorrespondentBillDate()).isEqualTo(DEFAULT_CORRESPONDENT_BILL_DATE);
         assertThat(testCorrespondentBill.getReceiver()).isEqualTo(DEFAULT_RECEIVER);
+        assertThat(testCorrespondentBill.getMainContent()).isEqualTo(DEFAULT_MAIN_CONTENT);
         assertThat(testCorrespondentBill.getDueDate()).isEqualTo(DEFAULT_DUE_DATE);
         assertThat(testCorrespondentBill.getAmount()).isEqualTo(DEFAULT_AMOUNT);
         assertThat(testCorrespondentBill.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
@@ -232,6 +237,7 @@ public class CorrespondentBillResourceIntTest {
             .andExpect(jsonPath("$.[*].correspondentBillCode").value(hasItem(DEFAULT_CORRESPONDENT_BILL_CODE.toString())))
             .andExpect(jsonPath("$.[*].correspondentBillDate").value(hasItem(DEFAULT_CORRESPONDENT_BILL_DATE.toString())))
             .andExpect(jsonPath("$.[*].receiver").value(hasItem(DEFAULT_RECEIVER.toString())))
+            .andExpect(jsonPath("$.[*].mainContent").value(hasItem(DEFAULT_MAIN_CONTENT.toString())))
             .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
             .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.intValue())))
@@ -259,6 +265,7 @@ public class CorrespondentBillResourceIntTest {
             .andExpect(jsonPath("$.correspondentBillCode").value(DEFAULT_CORRESPONDENT_BILL_CODE.toString()))
             .andExpect(jsonPath("$.correspondentBillDate").value(DEFAULT_CORRESPONDENT_BILL_DATE.toString()))
             .andExpect(jsonPath("$.receiver").value(DEFAULT_RECEIVER.toString()))
+            .andExpect(jsonPath("$.mainContent").value(DEFAULT_MAIN_CONTENT.toString()))
             .andExpect(jsonPath("$.dueDate").value(DEFAULT_DUE_DATE.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
             .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.intValue()))
@@ -490,6 +497,45 @@ public class CorrespondentBillResourceIntTest {
 
         // Get all the correspondentBillList where receiver is null
         defaultCorrespondentBillShouldNotBeFound("receiver.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorrespondentBillsByMainContentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        correspondentBillRepository.saveAndFlush(correspondentBill);
+
+        // Get all the correspondentBillList where mainContent equals to DEFAULT_MAIN_CONTENT
+        defaultCorrespondentBillShouldBeFound("mainContent.equals=" + DEFAULT_MAIN_CONTENT);
+
+        // Get all the correspondentBillList where mainContent equals to UPDATED_MAIN_CONTENT
+        defaultCorrespondentBillShouldNotBeFound("mainContent.equals=" + UPDATED_MAIN_CONTENT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorrespondentBillsByMainContentIsInShouldWork() throws Exception {
+        // Initialize the database
+        correspondentBillRepository.saveAndFlush(correspondentBill);
+
+        // Get all the correspondentBillList where mainContent in DEFAULT_MAIN_CONTENT or UPDATED_MAIN_CONTENT
+        defaultCorrespondentBillShouldBeFound("mainContent.in=" + DEFAULT_MAIN_CONTENT + "," + UPDATED_MAIN_CONTENT);
+
+        // Get all the correspondentBillList where mainContent equals to UPDATED_MAIN_CONTENT
+        defaultCorrespondentBillShouldNotBeFound("mainContent.in=" + UPDATED_MAIN_CONTENT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorrespondentBillsByMainContentIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        correspondentBillRepository.saveAndFlush(correspondentBill);
+
+        // Get all the correspondentBillList where mainContent is not null
+        defaultCorrespondentBillShouldBeFound("mainContent.specified=true");
+
+        // Get all the correspondentBillList where mainContent is null
+        defaultCorrespondentBillShouldNotBeFound("mainContent.specified=false");
     }
 
     @Test
@@ -946,6 +992,7 @@ public class CorrespondentBillResourceIntTest {
             .andExpect(jsonPath("$.[*].correspondentBillCode").value(hasItem(DEFAULT_CORRESPONDENT_BILL_CODE.toString())))
             .andExpect(jsonPath("$.[*].correspondentBillDate").value(hasItem(DEFAULT_CORRESPONDENT_BILL_DATE.toString())))
             .andExpect(jsonPath("$.[*].receiver").value(hasItem(DEFAULT_RECEIVER.toString())))
+            .andExpect(jsonPath("$.[*].mainContent").value(hasItem(DEFAULT_MAIN_CONTENT.toString())))
             .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
             .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.intValue())))
@@ -994,6 +1041,7 @@ public class CorrespondentBillResourceIntTest {
             .correspondentBillCode(UPDATED_CORRESPONDENT_BILL_CODE)
             .correspondentBillDate(UPDATED_CORRESPONDENT_BILL_DATE)
             .receiver(UPDATED_RECEIVER)
+            .mainContent(UPDATED_MAIN_CONTENT)
             .dueDate(UPDATED_DUE_DATE)
             .amount(UPDATED_AMOUNT)
             .currency(UPDATED_CURRENCY)
@@ -1019,6 +1067,7 @@ public class CorrespondentBillResourceIntTest {
         assertThat(testCorrespondentBill.getCorrespondentBillCode()).isEqualTo(UPDATED_CORRESPONDENT_BILL_CODE);
         assertThat(testCorrespondentBill.getCorrespondentBillDate()).isEqualTo(UPDATED_CORRESPONDENT_BILL_DATE);
         assertThat(testCorrespondentBill.getReceiver()).isEqualTo(UPDATED_RECEIVER);
+        assertThat(testCorrespondentBill.getMainContent()).isEqualTo(UPDATED_MAIN_CONTENT);
         assertThat(testCorrespondentBill.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
         assertThat(testCorrespondentBill.getAmount()).isEqualTo(UPDATED_AMOUNT);
         assertThat(testCorrespondentBill.getCurrency()).isEqualTo(UPDATED_CURRENCY);

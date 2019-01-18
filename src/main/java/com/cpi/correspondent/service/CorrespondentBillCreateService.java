@@ -15,12 +15,11 @@ import com.cpi.correspondent.repository.*;
 import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentBillMapper;
+import com.cpi.correspondent.service.utility.CorrespondentBillCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -40,7 +39,7 @@ import java.util.List;
  */
 
 @Service
-public class CreateBillService {
+public class CorrespondentBillCreateService {
 
     @Autowired
     private CorrespondentFeeService correspondentFeeService;
@@ -66,7 +65,7 @@ public class CreateBillService {
     @Autowired
     private CorrespondentBillStatusRepository correspondentBillStatusRepository;
 
-    public CorrespondentBillDTO CreateCorrespondentBill(List<Long> feeIDs, Long billFinanceTypeId) {
+    public CorrespondentBillDTO createCorrespondentBill(List<Long> feeIDs, Long billFinanceTypeId) {
         CorrespondentBillDTO correspondentBillDTO = null;
         List<CorrespondentFeeDTO> correspondentFees = new ArrayList();
         HashSet<Long> currencySet = new HashSet();
@@ -86,13 +85,13 @@ public class CreateBillService {
                 }
             }
 
-            correspondentBillDTO = CreateBill(newCorrespondentFees, billFinanceTypeId, cpiCorrespondentId, currency);
+            correspondentBillDTO = createCorrespondentBill(newCorrespondentFees, billFinanceTypeId, cpiCorrespondentId, currency);
         }
 
         return correspondentBillDTO;
     }
 
-    private CorrespondentBillDTO CreateBill(List<CorrespondentFeeDTO> correspondentFeeDTOs, Long billFinanceTypeId, Long cpiCorrespondentId, Long currency) {
+    private CorrespondentBillDTO createCorrespondentBill(List<CorrespondentFeeDTO> correspondentFeeDTOs, Long billFinanceTypeId, Long cpiCorrespondentId, Long currency) {
         CorrespondentBill correspondentBill = new CorrespondentBill();
 
         CPICorrespondent cpiCorrespondent = cpiCorrespondentRepository.findOne(cpiCorrespondentId);
@@ -119,8 +118,8 @@ public class CreateBillService {
         localDateTime = localDateTime.plusMonths(1);
         correspondentBill.setDueDate(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
-        correspondentBill.setYear(Year.now().toString());
-        CorrespondentBill maxBill  = correspondentBillRepository.findTopByYearOrderByNumberIdDesc(correspondentBill.getYear());
+        correspondentBill.setYear(cpiCorrespondent.getYear());
+        CorrespondentBill maxBill  = correspondentBillRepository.findTopByYearAndBillFinanceTypeIdOrderByNumberIdDesc(correspondentBill.getYear(), billFinanceTypeId);
         Integer maxNumber = null;
         if (maxBill != null) {
             maxNumber = maxBill.getNumberId();
@@ -130,7 +129,8 @@ public class CreateBillService {
             maxNumber = 0;
         }
         correspondentBill.setNumberId(maxNumber + 1);
-        correspondentBill.setCorrespondentBillCode(CreateBillCode(correspondentBill.getYear(), correspondentBill.getNumberId()));
+        correspondentBill.setCorrespondentBillCode(
+            CorrespondentBillCodeGenerator.createBillCode(correspondentBill.getYear(), correspondentBill.getNumberId(), billFinanceTypeId));
 
         correspondentBill.setReceiver(null);
         correspondentBill.setRemark(null);
@@ -139,7 +139,7 @@ public class CreateBillService {
 
         BigDecimal amount = new BigDecimal(0.0);
         for (CorrespondentFeeDTO correspondentFeeDTO : correspondentFeeDTOs) {
-            CreateCorrespondentFeeAndBill(correspondentFeeDTO, correspondentBill, billFinanceTypeId);
+            createCorrespondentFeeAndBill(correspondentFeeDTO, correspondentBill, billFinanceTypeId);
             amount = amount.add(correspondentFeeDTO.getCost());
         }
         correspondentBill.setAmount(amount);
@@ -150,7 +150,7 @@ public class CreateBillService {
         return  correspondentBillMapper.toDto(correspondentBill);
     }
 
-    private CorrespondentFeeAndBill CreateCorrespondentFeeAndBill(CorrespondentFeeDTO correspondentFeeDTO, CorrespondentBill correspondentBill, Long billFinanceType) {
+    private CorrespondentFeeAndBill createCorrespondentFeeAndBill(CorrespondentFeeDTO correspondentFeeDTO, CorrespondentBill correspondentBill, Long billFinanceType) {
         CorrespondentFeeAndBill correspondentFeeAndBill = new CorrespondentFeeAndBill();
 
         if (billFinanceType.equals(BillFinanceType.BILL_FINANCE_TYPE_CREDIT)) {
@@ -167,12 +167,6 @@ public class CreateBillService {
         return correspondentFeeAndBill;
     }
 
-    private String CreateBillCode(String year, Integer numberId) {
-        StringBuilder billCode = new StringBuilder();
-        NumberFormat formatter3 = new DecimalFormat("000");
-        billCode.append("C").append(year).append(formatter3.format(numberId));
 
-        return billCode.toString();
-    }
 
 }

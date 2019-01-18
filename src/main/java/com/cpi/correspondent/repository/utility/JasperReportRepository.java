@@ -1,6 +1,6 @@
 /**
  * Copyright (C), 2015-2018, XXX有限公司
- * FileName: JasperReportUtility
+ * FileName: JasperReportRepository
  * Author:   admin
  * Date:     2018/6/22 14:55
  * Description:
@@ -29,7 +29,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @AuthorizedFeignClient(name = "cpijasperreport", configuration = LongTimeFeignConfiguration.class)
-public interface JasperReportUtility {
+public interface JasperReportRepository {
 
     @RequestMapping(value = "/api/jasperreport/pdf-withid", method = RequestMethod.POST)
     ResponseEntity<byte[]> processPDF(@RequestParam(value = "typeid", required = true)  Integer typeid,

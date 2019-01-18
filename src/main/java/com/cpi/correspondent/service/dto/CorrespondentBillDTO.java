@@ -26,6 +26,8 @@ public class CorrespondentBillDTO implements Serializable {
 
     private String receiver;
 
+    private String mainContent;
+
     private Instant dueDate;
 
     private BigDecimal amount;
@@ -107,6 +109,14 @@ public class CorrespondentBillDTO implements Serializable {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public String getMainContent() {
+        return mainContent;
+    }
+
+    public void setMainContent(String mainContent) {
+        this.mainContent = mainContent;
     }
 
     public Instant getDueDate() {
@@ -275,6 +285,7 @@ public class CorrespondentBillDTO implements Serializable {
             ", correspondentBillCode='" + getCorrespondentBillCode() + "'" +
             ", correspondentBillDate='" + getCorrespondentBillDate() + "'" +
             ", receiver='" + getReceiver() + "'" +
+            ", mainContent='" + getMainContent() + "'" +
             ", dueDate='" + getDueDate() + "'" +
             ", amount=" + getAmount() +
             ", currency=" + getCurrency() +

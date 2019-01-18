@@ -8,19 +8,9 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.cpi.correspondent.service.bean;
-
-import com.cpi.correspondent.domain.CorrespondentFee;
-import com.cpi.correspondent.repository.CorrespondentFeeRepository;
-import com.cpi.correspondent.service.CPICorrespondentQueryService;
-import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package com.cpi.correspondent.service.bean.timeline;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 
 /**

@@ -39,6 +39,9 @@ public class CorrespondentBill extends AbstractAuditingEntity implements Seriali
     @Column(name = "receiver")
     private String receiver;
 
+    @Column(name = "main_content")
+    private String mainContent;
+
     @Column(name = "due_date")
     private Instant dueDate;
 
@@ -151,6 +154,19 @@ public class CorrespondentBill extends AbstractAuditingEntity implements Seriali
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public String getMainContent() {
+        return mainContent;
+    }
+
+    public CorrespondentBill mainContent(String mainContent) {
+        this.mainContent = mainContent;
+        return this;
+    }
+
+    public void setMainContent(String mainContent) {
+        this.mainContent = mainContent;
     }
 
     public Instant getDueDate() {
@@ -352,6 +368,7 @@ public class CorrespondentBill extends AbstractAuditingEntity implements Seriali
             ", correspondentBillCode='" + getCorrespondentBillCode() + "'" +
             ", correspondentBillDate='" + getCorrespondentBillDate() + "'" +
             ", receiver='" + getReceiver() + "'" +
+            ", mainContent='" + getMainContent() + "'" +
             ", dueDate='" + getDueDate() + "'" +
             ", amount=" + getAmount() +
             ", currency=" + getCurrency() +

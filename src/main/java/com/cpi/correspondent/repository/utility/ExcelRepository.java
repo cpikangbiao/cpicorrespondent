@@ -13,7 +13,6 @@ package com.cpi.correspondent.repository.utility;
 import com.cpi.correspondent.client.AuthorizedFeignClient;
 
 import com.cpi.correspondent.config.LongTimeFeignConfiguration;
-import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,7 @@ import java.util.Map;
 
 
 @AuthorizedFeignClient(name = "cpiexcel", configuration = LongTimeFeignConfiguration.class) // , fallback = TicketClientHystrix.class)
-public interface ExcelUtility {
+public interface ExcelRepository {
 
     @RequestMapping(value = "/api/excel/export", method = RequestMethod.POST)
     ResponseEntity<byte[]> processExcel(@RequestBody() Map mapData) ;

@@ -38,6 +38,8 @@ public class CorrespondentBillCriteria implements Serializable {
 
     private StringFilter receiver;
 
+    private StringFilter mainContent;
+
     private InstantFilter dueDate;
 
     private BigDecimalFilter amount;
@@ -111,6 +113,14 @@ public class CorrespondentBillCriteria implements Serializable {
 
     public void setReceiver(StringFilter receiver) {
         this.receiver = receiver;
+    }
+
+    public StringFilter getMainContent() {
+        return mainContent;
+    }
+
+    public void setMainContent(StringFilter mainContent) {
+        this.mainContent = mainContent;
     }
 
     public InstantFilter getDueDate() {
@@ -218,6 +228,7 @@ public class CorrespondentBillCriteria implements Serializable {
                 (correspondentBillCode != null ? "correspondentBillCode=" + correspondentBillCode + ", " : "") +
                 (correspondentBillDate != null ? "correspondentBillDate=" + correspondentBillDate + ", " : "") +
                 (receiver != null ? "receiver=" + receiver + ", " : "") +
+                (mainContent != null ? "mainContent=" + mainContent + ", " : "") +
                 (dueDate != null ? "dueDate=" + dueDate + ", " : "") +
                 (amount != null ? "amount=" + amount + ", " : "") +
                 (currency != null ? "currency=" + currency + ", " : "") +

@@ -1,31 +1,19 @@
 package com.cpi.correspondent.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.cpi.correspondent.repository.CorrespondentFeeRepository;
-import com.cpi.correspondent.repository.common.UserRepository;
-import com.cpi.correspondent.repository.other.MonthCountStatistics;
-import com.cpi.correspondent.repository.other.TypeCountStatistics;
-import com.cpi.correspondent.repository.other.YearCountStatistics;
-import com.cpi.correspondent.repository.utility.ExcelUtility;
 import com.cpi.correspondent.service.*;
-import com.cpi.correspondent.service.bean.CpiCorrespondentTimeLineService;
-import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
-import com.cpi.correspondent.web.bean.CPICorrespondentBean;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
 import com.cpi.correspondent.web.rest.util.HeaderUtil;
 import com.cpi.correspondent.web.rest.util.PaginationUtil;
 import com.cpi.correspondent.service.dto.CPICorrespondentDTO;
 import com.cpi.correspondent.service.dto.CPICorrespondentCriteria;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,24 +35,6 @@ public class CPICorrespondentResource {
     private final static  Long EXCEL_TEMPLATE_FOR_1 = new Long(1);
 
     private static final String ENTITY_NAME = "cPICorrespondent";
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private CorrespondentFeeQueryService correspondentFeeQueryService;
-
-    @Autowired
-    private CorrespondentBillQueryService correspondentBillQueryService;
-
-    @Autowired
-    private ExcelUtility excelRepository;
-
-    @Autowired
-    private ExcelService excelService;
-
-    @Autowired
-    private CpiCorrespondentTimeLineService cpiCorrespondentTimeLineService;
 
     private final CPICorrespondentService cPICorrespondentService;
 
@@ -161,71 +131,5 @@ public class CPICorrespondentResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @GetMapping("/cpi-correspondents/statistics/year")
-    @Timed
-    public ResponseEntity<List<YearCountStatistics>> getStatsForGroupByYear() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findYearCountStatistics(), HttpStatus.OK);
-    }
 
-    @GetMapping("/cpi-correspondents/statistics/month")
-    @Timed
-    public ResponseEntity<List<MonthCountStatistics>> getStatsForGroupByMonth() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findMonthCountStatistics(), HttpStatus.OK);
-    }
-
-    @GetMapping("/cpi-correspondents/statistics/type")
-    @Timed
-    public ResponseEntity<List<TypeCountStatistics>> getStatsForType() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findTypeCountStatistics(), HttpStatus.OK);
-    }
-
-    @GetMapping("/cpi-correspondents/statistics/club")
-    @Timed
-    public ResponseEntity<List<TypeCountStatistics>> getStatsForClub() {
-        return new ResponseEntity<>(cPICorrespondentQueryService.findClubCountStatistics(), HttpStatus.OK);
-    }
-
-    @GetMapping("/cpi-correspondents/timeline/{id}")
-    @Timed
-    public ResponseEntity<List> getTimeline(@PathVariable Long id) {
-        return new ResponseEntity<>(cpiCorrespondentTimeLineService.getCpiCorrespondentTimeLineBeans(id), HttpStatus.OK);
-    }
-
-    @GetMapping("/cpi-correspondents/statistics")
-    @Timed
-    public ResponseEntity<byte[]> getStatsForCPICorrespondents(CPICorrespondentCriteria criteria) {
-        log.debug("REST request to get CPICorrespondents by criteria: {}", criteria);
-        List<CPICorrespondentDTO> cpiCorrespondentDTOS = cPICorrespondentQueryService.findByCriteria(criteria);
-        List<CPICorrespondentBean> cpiCorrespondentBeans = new ArrayList<>();
-        for (CPICorrespondentDTO cpiCorrespondentDTO : cpiCorrespondentDTOS) {
-            CPICorrespondentBean cpiCorrespondentBean = new CPICorrespondentBean();
-            cpiCorrespondentBean.init(cpiCorrespondentDTO, userRepository, correspondentFeeQueryService, correspondentBillQueryService);
-            cpiCorrespondentBeans.add(cpiCorrespondentBean);
-        }
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("results", cpiCorrespondentBeans);
-
-        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.OK);
-        map.put("jxlid", EXCEL_TEMPLATE_FOR_1);
-        if (cpiCorrespondentBeans.size() > 0) {
-            responseEntity = excelRepository.processExcel(map);
-        }
-
-        StringBuilder fileName = new StringBuilder();
-        fileName.append("\"Stats_for_Correspondent").append(".xlsx\"");
-
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(
-            MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-        header.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName.toString());
-        if (responseEntity.getBody() != null) {
-            header.setContentLength(responseEntity.getBody().length);
-        } else {
-            header.setContentLength(0);
-        }
-
-
-        return new ResponseEntity<>(responseEntity.getBody(), header, HttpStatus.OK);
-    }
 }

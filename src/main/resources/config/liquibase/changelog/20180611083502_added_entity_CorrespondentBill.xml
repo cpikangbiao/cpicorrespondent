@@ -42,6 +42,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="main_content" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="due_date" type="timestamp">
                 <constraints nullable="true" />
             </column>

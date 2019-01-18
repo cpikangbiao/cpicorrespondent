@@ -8,7 +8,7 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.cpi.correspondent.web.bean;
+package com.cpi.correspondent.service.bean;
 
 import com.cpi.correspondent.domain.BillFinanceType;
 import com.cpi.correspondent.repository.common.UserRepository;
@@ -18,14 +18,12 @@ import com.cpi.correspondent.service.dto.CPICorrespondentDTO;
 import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
 import com.cpi.correspondent.service.dto.common.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -80,7 +78,8 @@ public class CPICorrespondentBean {
 
     private BigDecimal billDebitAmount;
 
-    public void init(CPICorrespondentDTO cpiCorrespondentDTO, UserRepository userRepository, CorrespondentFeeQueryService correspondentFeeQueryService,
+    public void init(CPICorrespondentDTO cpiCorrespondentDTO, UserRepository userRepository,
+                     CorrespondentFeeQueryService correspondentFeeQueryService,
                      CorrespondentBillQueryService correspondentBillQueryService) {
         this.userRepository = userRepository;
         this.correspondentCode = cpiCorrespondentDTO.getCorrespondentCode();
@@ -95,7 +94,8 @@ public class CPICorrespondentBean {
             this.registDate = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
         if (cpiCorrespondentDTO.getCaseDate() != null) {
-            this.caseDate   = LocalDateTime.ofInstant(cpiCorrespondentDTO.getCaseDate(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            this.caseDate   = LocalDateTime.ofInstant(cpiCorrespondentDTO.getCaseDate(),
+                ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
 
 

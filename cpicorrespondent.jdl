@@ -62,6 +62,7 @@ entity CorrespondentBill {
 	correspondentBillCode String ,
 	correspondentBillDate Instant ,
 	receiver String,
+	mainContent String,
 	dueDate Instant ,
 	amount BigDecimal,
 	currency Long,

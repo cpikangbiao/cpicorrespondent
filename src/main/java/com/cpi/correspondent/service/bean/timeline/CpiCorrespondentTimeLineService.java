@@ -8,13 +8,12 @@
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-package com.cpi.correspondent.service.bean;
+package com.cpi.correspondent.service.bean.timeline;
 
 import com.cpi.correspondent.domain.*;
 import com.cpi.correspondent.repository.*;
 import com.cpi.correspondent.repository.common.CurrencyRepository;
 import com.cpi.correspondent.repository.common.UserRepository;
-import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
