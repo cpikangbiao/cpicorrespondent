@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.CorrespondentFeeDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentFeeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing CorrespondentFee.
+ * Service Implementation for managing {@link CorrespondentFee}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class CorrespondentFeeServiceImpl implements CorrespondentFeeService {
     /**
      * Save a correspondentFee.
      *
-     * @param correspondentFeeDTO the entity to save
-     * @return the persisted entity
+     * @param correspondentFeeDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public CorrespondentFeeDTO save(CorrespondentFeeDTO correspondentFeeDTO) {
@@ -48,8 +50,8 @@ public class CorrespondentFeeServiceImpl implements CorrespondentFeeService {
     /**
      * Get all the correspondentFees.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class CorrespondentFeeServiceImpl implements CorrespondentFeeService {
             .map(correspondentFeeMapper::toDto);
     }
 
+
     /**
      * Get one correspondentFee by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public CorrespondentFeeDTO findOne(Long id) {
+    public Optional<CorrespondentFeeDTO> findOne(Long id) {
         log.debug("Request to get CorrespondentFee : {}", id);
-        CorrespondentFee correspondentFee = correspondentFeeRepository.findOne(id);
-        return correspondentFeeMapper.toDto(correspondentFee);
+        return correspondentFeeRepository.findById(id)
+            .map(correspondentFeeMapper::toDto);
     }
 
     /**
      * Delete the correspondentFee by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CorrespondentFee : {}", id);
-        correspondentFeeRepository.delete(id);
+        correspondentFeeRepository.deleteById(id);
     }
 }

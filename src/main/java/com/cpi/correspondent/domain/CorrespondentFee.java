@@ -1,5 +1,5 @@
 package com.cpi.correspondent.domain;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Objects;
 
 /**
  * A CorrespondentFee.
@@ -36,13 +35,13 @@ public class CorrespondentFee implements Serializable {
     @Column(name = "currency_rate")
     private Float currencyRate;
 
-    @Column(name = "jhi_cost", precision=10, scale=2)
+    @Column(name = "cost", precision = 21, scale = 2)
     private BigDecimal cost;
 
     @Column(name = "cost_date")
     private Instant costDate;
 
-    @Column(name = "cost_dollar", precision=10, scale=2)
+    @Column(name = "cost_dollar", precision = 21, scale = 2)
     private BigDecimal costDollar;
 
     @Lob
@@ -50,9 +49,11 @@ public class CorrespondentFee implements Serializable {
     private String remark;
 
     @ManyToOne
+    @JsonIgnoreProperties("correspondentFees")
     private CorrespondentFeeType correspondentFeeType;
 
     @ManyToOne
+    @JsonIgnoreProperties("correspondentFees")
     private CPICorrespondent cpiCorrespondent;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -200,19 +201,15 @@ public class CorrespondentFee implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CorrespondentFee)) {
             return false;
         }
-        CorrespondentFee correspondentFee = (CorrespondentFee) o;
-        if (correspondentFee.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), correspondentFee.getId());
+        return id != null && id.equals(((CorrespondentFee) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

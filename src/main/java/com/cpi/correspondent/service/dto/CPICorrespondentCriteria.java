@@ -1,6 +1,8 @@
 package com.cpi.correspondent.service.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
+import io.github.jhipster.service.Criteria;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -8,23 +10,20 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
-
 import io.github.jhipster.service.filter.InstantFilter;
 
-
-
-
 /**
- * Criteria class for the CPICorrespondent entity. This class is used in CPICorrespondentResource to
- * receive all the possible filtering options from the Http GET request parameters.
- * For example the following could be a valid requests:
- * <code> /cpi-correspondents?id.greaterThan=5&amp;attr1.contains=something&amp;attr2.specified=false</code>
+ * Criteria class for the {@link com.cpi.correspondent.domain.CPICorrespondent} entity. This class is used
+ * in {@link com.cpi.correspondent.web.rest.CPICorrespondentResource} to receive all the possible filtering options from
+ * the Http GET request parameters.
+ * For example the following could be a valid request:
+ * {@code /cpi-correspondents?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
  * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
-public class CPICorrespondentCriteria implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class CPICorrespondentCriteria implements Serializable, Criteria {
 
+    private static final long serialVersionUID = 1L;
 
     private LongFilter id;
 
@@ -50,7 +49,27 @@ public class CPICorrespondentCriteria implements Serializable {
 
     private LongFilter clubPersonId;
 
-    public CPICorrespondentCriteria() {
+    public CPICorrespondentCriteria(){
+    }
+
+    public CPICorrespondentCriteria(CPICorrespondentCriteria other){
+        this.id = other.id == null ? null : other.id.copy();
+        this.correspondentCode = other.correspondentCode == null ? null : other.correspondentCode.copy();
+        this.year = other.year == null ? null : other.year.copy();
+        this.vesselName = other.vesselName == null ? null : other.vesselName.copy();
+        this.clientRef = other.clientRef == null ? null : other.clientRef.copy();
+        this.keyWord = other.keyWord == null ? null : other.keyWord.copy();
+        this.registerDate = other.registerDate == null ? null : other.registerDate.copy();
+        this.caseDate = other.caseDate == null ? null : other.caseDate.copy();
+        this.handlerUser = other.handlerUser == null ? null : other.handlerUser.copy();
+        this.correspondentTypeId = other.correspondentTypeId == null ? null : other.correspondentTypeId.copy();
+        this.clubId = other.clubId == null ? null : other.clubId.copy();
+        this.clubPersonId = other.clubPersonId == null ? null : other.clubPersonId.copy();
+    }
+
+    @Override
+    public CPICorrespondentCriteria copy() {
+        return new CPICorrespondentCriteria(this);
     }
 
     public LongFilter getId() {
@@ -147,6 +166,49 @@ public class CPICorrespondentCriteria implements Serializable {
 
     public void setClubPersonId(LongFilter clubPersonId) {
         this.clubPersonId = clubPersonId;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final CPICorrespondentCriteria that = (CPICorrespondentCriteria) o;
+        return
+            Objects.equals(id, that.id) &&
+            Objects.equals(correspondentCode, that.correspondentCode) &&
+            Objects.equals(year, that.year) &&
+            Objects.equals(vesselName, that.vesselName) &&
+            Objects.equals(clientRef, that.clientRef) &&
+            Objects.equals(keyWord, that.keyWord) &&
+            Objects.equals(registerDate, that.registerDate) &&
+            Objects.equals(caseDate, that.caseDate) &&
+            Objects.equals(handlerUser, that.handlerUser) &&
+            Objects.equals(correspondentTypeId, that.correspondentTypeId) &&
+            Objects.equals(clubId, that.clubId) &&
+            Objects.equals(clubPersonId, that.clubPersonId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+        id,
+        correspondentCode,
+        year,
+        vesselName,
+        clientRef,
+        keyWord,
+        registerDate,
+        caseDate,
+        handlerUser,
+        correspondentTypeId,
+        clubId,
+        clubPersonId
+        );
     }
 
     @Override

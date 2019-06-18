@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.CorrespondentFeeAndBillDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentFeeAndBillMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing CorrespondentFeeAndBill.
+ * Service Implementation for managing {@link CorrespondentFeeAndBill}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class CorrespondentFeeAndBillServiceImpl implements CorrespondentFeeAndBi
     /**
      * Save a correspondentFeeAndBill.
      *
-     * @param correspondentFeeAndBillDTO the entity to save
-     * @return the persisted entity
+     * @param correspondentFeeAndBillDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public CorrespondentFeeAndBillDTO save(CorrespondentFeeAndBillDTO correspondentFeeAndBillDTO) {
@@ -48,8 +50,8 @@ public class CorrespondentFeeAndBillServiceImpl implements CorrespondentFeeAndBi
     /**
      * Get all the correspondentFeeAndBills.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class CorrespondentFeeAndBillServiceImpl implements CorrespondentFeeAndBi
             .map(correspondentFeeAndBillMapper::toDto);
     }
 
+
     /**
      * Get one correspondentFeeAndBill by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public CorrespondentFeeAndBillDTO findOne(Long id) {
+    public Optional<CorrespondentFeeAndBillDTO> findOne(Long id) {
         log.debug("Request to get CorrespondentFeeAndBill : {}", id);
-        CorrespondentFeeAndBill correspondentFeeAndBill = correspondentFeeAndBillRepository.findOne(id);
-        return correspondentFeeAndBillMapper.toDto(correspondentFeeAndBill);
+        return correspondentFeeAndBillRepository.findById(id)
+            .map(correspondentFeeAndBillMapper::toDto);
     }
 
     /**
      * Delete the correspondentFeeAndBill by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CorrespondentFeeAndBill : {}", id);
-        correspondentFeeAndBillRepository.delete(id);
+        correspondentFeeAndBillRepository.deleteById(id);
     }
 }

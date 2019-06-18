@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.CorrespondentFeeTypeDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentFeeTypeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing CorrespondentFeeType.
+ * Service Implementation for managing {@link CorrespondentFeeType}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class CorrespondentFeeTypeServiceImpl implements CorrespondentFeeTypeServ
     /**
      * Save a correspondentFeeType.
      *
-     * @param correspondentFeeTypeDTO the entity to save
-     * @return the persisted entity
+     * @param correspondentFeeTypeDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public CorrespondentFeeTypeDTO save(CorrespondentFeeTypeDTO correspondentFeeTypeDTO) {
@@ -48,8 +50,8 @@ public class CorrespondentFeeTypeServiceImpl implements CorrespondentFeeTypeServ
     /**
      * Get all the correspondentFeeTypes.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class CorrespondentFeeTypeServiceImpl implements CorrespondentFeeTypeServ
             .map(correspondentFeeTypeMapper::toDto);
     }
 
+
     /**
      * Get one correspondentFeeType by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public CorrespondentFeeTypeDTO findOne(Long id) {
+    public Optional<CorrespondentFeeTypeDTO> findOne(Long id) {
         log.debug("Request to get CorrespondentFeeType : {}", id);
-        CorrespondentFeeType correspondentFeeType = correspondentFeeTypeRepository.findOne(id);
-        return correspondentFeeTypeMapper.toDto(correspondentFeeType);
+        return correspondentFeeTypeRepository.findById(id)
+            .map(correspondentFeeTypeMapper::toDto);
     }
 
     /**
      * Delete the correspondentFeeType by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CorrespondentFeeType : {}", id);
-        correspondentFeeTypeRepository.delete(id);
+        correspondentFeeTypeRepository.deleteById(id);
     }
 }

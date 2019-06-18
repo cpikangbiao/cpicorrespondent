@@ -1,12 +1,11 @@
 package com.cpi.correspondent.domain;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A CorrespondentFeeAndBill.
@@ -23,12 +22,15 @@ public class CorrespondentFeeAndBill implements Serializable {
     private Long id;
 
     @ManyToOne
+    @JsonIgnoreProperties("correspondentFeeAndBills")
     private CorrespondentBill correspondentDebitBill;
 
     @ManyToOne
+    @JsonIgnoreProperties("correspondentFeeAndBills")
     private CorrespondentFee correspondentFee;
 
     @ManyToOne
+    @JsonIgnoreProperties("correspondentFeeAndBills")
     private CorrespondentBill correspondentCreditBill;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -85,19 +87,15 @@ public class CorrespondentFeeAndBill implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CorrespondentFeeAndBill)) {
             return false;
         }
-        CorrespondentFeeAndBill correspondentFeeAndBill = (CorrespondentFeeAndBill) o;
-        if (correspondentFeeAndBill.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), correspondentFeeAndBill.getId());
+        return id != null && id.equals(((CorrespondentFeeAndBill) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

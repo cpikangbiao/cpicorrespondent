@@ -1,20 +1,23 @@
 package com.cpi.correspondent.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.cpi.correspondent.service.ClubService;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
-import com.cpi.correspondent.web.rest.util.HeaderUtil;
-import com.cpi.correspondent.web.rest.util.PaginationUtil;
 import com.cpi.correspondent.service.dto.ClubDTO;
 import com.cpi.correspondent.service.dto.ClubCriteria;
 import com.cpi.correspondent.service.ClubQueryService;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * REST controller for managing Club.
+ * REST controller for managing {@link com.cpi.correspondent.domain.Club}.
  */
 @RestController
 @RequestMapping("/api")
@@ -34,7 +37,10 @@ public class ClubResource {
 
     private final Logger log = LoggerFactory.getLogger(ClubResource.class);
 
-    private static final String ENTITY_NAME = "club";
+    private static final String ENTITY_NAME = "cpicorrespondentClub";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     private final ClubService clubService;
 
@@ -46,14 +52,13 @@ public class ClubResource {
     }
 
     /**
-     * POST  /clubs : Create a new club.
+     * {@code POST  /clubs} : Create a new club.
      *
-     * @param clubDTO the clubDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new clubDTO, or with status 400 (Bad Request) if the club has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param clubDTO the clubDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new clubDTO, or with status {@code 400 (Bad Request)} if the club has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/clubs")
-    @Timed
     public ResponseEntity<ClubDTO> createClub(@Valid @RequestBody ClubDTO clubDTO) throws URISyntaxException {
         log.debug("REST request to save Club : {}", clubDTO);
         if (clubDTO.getId() != null) {
@@ -61,73 +66,81 @@ public class ClubResource {
         }
         ClubDTO result = clubService.save(clubDTO);
         return ResponseEntity.created(new URI("/api/clubs/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /clubs : Updates an existing club.
+     * {@code PUT  /clubs} : Updates an existing club.
      *
-     * @param clubDTO the clubDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated clubDTO,
-     * or with status 400 (Bad Request) if the clubDTO is not valid,
-     * or with status 500 (Internal Server Error) if the clubDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param clubDTO the clubDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated clubDTO,
+     * or with status {@code 400 (Bad Request)} if the clubDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the clubDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/clubs")
-    @Timed
     public ResponseEntity<ClubDTO> updateClub(@Valid @RequestBody ClubDTO clubDTO) throws URISyntaxException {
         log.debug("REST request to update Club : {}", clubDTO);
         if (clubDTO.getId() == null) {
-            return createClub(clubDTO);
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         ClubDTO result = clubService.save(clubDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, clubDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, clubDTO.getId().toString()))
             .body(result);
     }
 
     /**
-     * GET  /clubs : get all the clubs.
+     * {@code GET  /clubs} : get all the clubs.
      *
-     * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
-     * @return the ResponseEntity with status 200 (OK) and the list of clubs in body
+     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clubs in body.
      */
     @GetMapping("/clubs")
-    @Timed
-    public ResponseEntity<List<ClubDTO>> getAllClubs(ClubCriteria criteria, Pageable pageable) {
+    public ResponseEntity<List<ClubDTO>> getAllClubs(ClubCriteria criteria, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) {
         log.debug("REST request to get Clubs by criteria: {}", criteria);
         Page<ClubDTO> page = clubQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/clubs");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * GET  /clubs/:id : get the "id" club.
+    * {@code GET  /clubs/count} : count all the clubs.
+    *
+    * @param criteria the criteria which the requested entities should match.
+    * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+    */
+    @GetMapping("/clubs/count")
+    public ResponseEntity<Long> countClubs(ClubCriteria criteria) {
+        log.debug("REST request to count Clubs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(clubQueryService.countByCriteria(criteria));
+    }
+
+    /**
+     * {@code GET  /clubs/:id} : get the "id" club.
      *
-     * @param id the id of the clubDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the clubDTO, or with status 404 (Not Found)
+     * @param id the id of the clubDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the clubDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/clubs/{id}")
-    @Timed
     public ResponseEntity<ClubDTO> getClub(@PathVariable Long id) {
         log.debug("REST request to get Club : {}", id);
-        ClubDTO clubDTO = clubService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(clubDTO));
+        Optional<ClubDTO> clubDTO = clubService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(clubDTO);
     }
 
     /**
-     * DELETE  /clubs/:id : delete the "id" club.
+     * {@code DELETE  /clubs/:id} : delete the "id" club.
      *
-     * @param id the id of the clubDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the clubDTO to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/clubs/{id}")
-    @Timed
     public ResponseEntity<Void> deleteClub(@PathVariable Long id) {
         log.debug("REST request to delete Club : {}", id);
         clubService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

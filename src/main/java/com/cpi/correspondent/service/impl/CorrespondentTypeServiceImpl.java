@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.CorrespondentTypeDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentTypeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing CorrespondentType.
+ * Service Implementation for managing {@link CorrespondentType}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class CorrespondentTypeServiceImpl implements CorrespondentTypeService {
     /**
      * Save a correspondentType.
      *
-     * @param correspondentTypeDTO the entity to save
-     * @return the persisted entity
+     * @param correspondentTypeDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public CorrespondentTypeDTO save(CorrespondentTypeDTO correspondentTypeDTO) {
@@ -48,8 +50,8 @@ public class CorrespondentTypeServiceImpl implements CorrespondentTypeService {
     /**
      * Get all the correspondentTypes.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class CorrespondentTypeServiceImpl implements CorrespondentTypeService {
             .map(correspondentTypeMapper::toDto);
     }
 
+
     /**
      * Get one correspondentType by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public CorrespondentTypeDTO findOne(Long id) {
+    public Optional<CorrespondentTypeDTO> findOne(Long id) {
         log.debug("Request to get CorrespondentType : {}", id);
-        CorrespondentType correspondentType = correspondentTypeRepository.findOne(id);
-        return correspondentTypeMapper.toDto(correspondentType);
+        return correspondentTypeRepository.findById(id)
+            .map(correspondentTypeMapper::toDto);
     }
 
     /**
      * Delete the correspondentType by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CorrespondentType : {}", id);
-        correspondentTypeRepository.delete(id);
+        correspondentTypeRepository.deleteById(id);
     }
 }

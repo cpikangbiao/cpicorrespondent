@@ -1,5 +1,4 @@
 package com.cpi.correspondent.domain;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A CorrespondentType.
@@ -72,19 +70,15 @@ public class CorrespondentType implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CorrespondentType)) {
             return false;
         }
-        CorrespondentType correspondentType = (CorrespondentType) o;
-        if (correspondentType.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), correspondentType.getId());
+        return id != null && id.equals(((CorrespondentType) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

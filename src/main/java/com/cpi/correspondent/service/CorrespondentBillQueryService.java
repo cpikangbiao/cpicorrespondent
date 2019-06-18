@@ -1,14 +1,14 @@
 package com.cpi.correspondent.service;
 
-
-import java.math.BigDecimal;
 import java.util.List;
+
+import javax.persistence.criteria.JoinType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +18,12 @@ import com.cpi.correspondent.domain.CorrespondentBill;
 import com.cpi.correspondent.domain.*; // for static metamodels
 import com.cpi.correspondent.repository.CorrespondentBillRepository;
 import com.cpi.correspondent.service.dto.CorrespondentBillCriteria;
-
 import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentBillMapper;
 
 /**
- * Service for executing complex queries for CorrespondentBill entities in the database.
- * The main input is a {@link CorrespondentBillCriteria} which get's converted to {@link Specifications},
+ * Service for executing complex queries for {@link CorrespondentBill} entities in the database.
+ * The main input is a {@link CorrespondentBillCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
  * It returns a {@link List} of {@link CorrespondentBillDTO} or a {@link Page} of {@link CorrespondentBillDTO} which fulfills the criteria.
  */
@@ -33,7 +32,6 @@ import com.cpi.correspondent.service.mapper.CorrespondentBillMapper;
 public class CorrespondentBillQueryService extends QueryService<CorrespondentBill> {
 
     private final Logger log = LoggerFactory.getLogger(CorrespondentBillQueryService.class);
-
 
     private final CorrespondentBillRepository correspondentBillRepository;
 
@@ -45,19 +43,19 @@ public class CorrespondentBillQueryService extends QueryService<CorrespondentBil
     }
 
     /**
-     * Return a {@link List} of {@link CorrespondentBillDTO} which matches the criteria from the database
+     * Return a {@link List} of {@link CorrespondentBillDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
     public List<CorrespondentBillDTO> findByCriteria(CorrespondentBillCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
-        final Specifications<CorrespondentBill> specification = createSpecification(criteria);
+        final Specification<CorrespondentBill> specification = createSpecification(criteria);
         return correspondentBillMapper.toDto(correspondentBillRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link CorrespondentBillDTO} which matches the criteria from the database
+     * Return a {@link Page} of {@link CorrespondentBillDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
@@ -65,16 +63,28 @@ public class CorrespondentBillQueryService extends QueryService<CorrespondentBil
     @Transactional(readOnly = true)
     public Page<CorrespondentBillDTO> findByCriteria(CorrespondentBillCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
-        final Specifications<CorrespondentBill> specification = createSpecification(criteria);
-        final Page<CorrespondentBill> result = correspondentBillRepository.findAll(specification, page);
-        return result.map(correspondentBillMapper::toDto);
+        final Specification<CorrespondentBill> specification = createSpecification(criteria);
+        return correspondentBillRepository.findAll(specification, page)
+            .map(correspondentBillMapper::toDto);
     }
 
     /**
-     * Function to convert CorrespondentBillCriteria to a {@link Specifications}
+     * Return the number of matching entities in the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the number of matching entities.
      */
-    private Specifications<CorrespondentBill> createSpecification(CorrespondentBillCriteria criteria) {
-        Specifications<CorrespondentBill> specification = Specifications.where(null);
+    @Transactional(readOnly = true)
+    public long countByCriteria(CorrespondentBillCriteria criteria) {
+        log.debug("count by criteria : {}", criteria);
+        final Specification<CorrespondentBill> specification = createSpecification(criteria);
+        return correspondentBillRepository.count(specification);
+    }
+
+    /**
+     * Function to convert CorrespondentBillCriteria to a {@link Specification}.
+     */
+    private Specification<CorrespondentBill> createSpecification(CorrespondentBillCriteria criteria) {
+        Specification<CorrespondentBill> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), CorrespondentBill_.id));
@@ -119,13 +129,14 @@ public class CorrespondentBillQueryService extends QueryService<CorrespondentBil
                 specification = specification.and(buildRangeSpecification(criteria.getExchangeAmount(), CorrespondentBill_.exchangeAmount));
             }
             if (criteria.getCpiCorrespondentId() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getCpiCorrespondentId(), CorrespondentBill_.cpiCorrespondent, CPICorrespondent_.id));
+                specification = specification.and(buildSpecification(criteria.getCpiCorrespondentId(),
+                    root -> root.join(CorrespondentBill_.cpiCorrespondent, JoinType.LEFT).get(CPICorrespondent_.id)));
             }
             if (criteria.getBillFinanceTypeId() != null) {
-                specification = specification.and(buildReferringEntitySpecification(criteria.getBillFinanceTypeId(), CorrespondentBill_.billFinanceType, BillFinanceType_.id));
+                specification = specification.and(buildSpecification(criteria.getBillFinanceTypeId(),
+                    root -> root.join(CorrespondentBill_.billFinanceType, JoinType.LEFT).get(BillFinanceType_.id)));
             }
         }
         return specification;
     }
-
 }

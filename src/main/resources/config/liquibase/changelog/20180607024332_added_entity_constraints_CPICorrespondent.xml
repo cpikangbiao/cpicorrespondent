@@ -2,7 +2,7 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
     <!--
         Added the constraints for entity CPICorrespondent.
     -->
@@ -10,19 +10,19 @@
         
         <addForeignKeyConstraint baseColumnNames="correspondent_type_id"
                                  baseTableName="cpi_correspondent"
-                                 constraintName="fk_cpicorrespondent_correspondent_type_id"
+                                 constraintName="fk_cpi_correspondent_correspondent_type_id"
                                  referencedColumnNames="id"
                                  referencedTableName="correspondent_type"/>
 
         <addForeignKeyConstraint baseColumnNames="club_id"
                                  baseTableName="cpi_correspondent"
-                                 constraintName="fk_cpicorrespondent_club_id"
+                                 constraintName="fk_cpi_correspondent_club_id"
                                  referencedColumnNames="id"
                                  referencedTableName="club"/>
 
         <addForeignKeyConstraint baseColumnNames="club_person_id"
                                  baseTableName="cpi_correspondent"
-                                 constraintName="fk_cpicorrespondent_club_person_id"
+                                 constraintName="fk_cpi_correspondent_club_person_id"
                                  referencedColumnNames="id"
                                  referencedTableName="club_person"/>
 

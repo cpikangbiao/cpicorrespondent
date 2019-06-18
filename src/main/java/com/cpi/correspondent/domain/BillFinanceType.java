@@ -1,5 +1,4 @@
 package com.cpi.correspondent.domain;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A BillFinanceType.
@@ -72,19 +70,15 @@ public class BillFinanceType implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof BillFinanceType)) {
             return false;
         }
-        BillFinanceType billFinanceType = (BillFinanceType) o;
-        if (billFinanceType.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), billFinanceType.getId());
+        return id != null && id.equals(((BillFinanceType) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

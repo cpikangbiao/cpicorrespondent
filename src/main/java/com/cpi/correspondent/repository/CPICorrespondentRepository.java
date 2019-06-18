@@ -1,13 +1,12 @@
 package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CPICorrespondent;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the CPICorrespondent entity.
+ * Spring Data  repository for the CPICorrespondent entity.
  */
 @SuppressWarnings("unused")
 @Repository
