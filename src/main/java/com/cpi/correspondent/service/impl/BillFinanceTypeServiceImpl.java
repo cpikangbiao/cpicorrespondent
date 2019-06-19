@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.BillFinanceTypeDTO;
 import com.cpi.correspondent.service.mapper.BillFinanceTypeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing BillFinanceType.
+ * Service Implementation for managing {@link BillFinanceType}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class BillFinanceTypeServiceImpl implements BillFinanceTypeService {
     /**
      * Save a billFinanceType.
      *
-     * @param billFinanceTypeDTO the entity to save
-     * @return the persisted entity
+     * @param billFinanceTypeDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public BillFinanceTypeDTO save(BillFinanceTypeDTO billFinanceTypeDTO) {
@@ -48,8 +50,8 @@ public class BillFinanceTypeServiceImpl implements BillFinanceTypeService {
     /**
      * Get all the billFinanceTypes.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class BillFinanceTypeServiceImpl implements BillFinanceTypeService {
             .map(billFinanceTypeMapper::toDto);
     }
 
+
     /**
      * Get one billFinanceType by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public BillFinanceTypeDTO findOne(Long id) {
+    public Optional<BillFinanceTypeDTO> findOne(Long id) {
         log.debug("Request to get BillFinanceType : {}", id);
-        BillFinanceType billFinanceType = billFinanceTypeRepository.findOne(id);
-        return billFinanceTypeMapper.toDto(billFinanceType);
+        return billFinanceTypeRepository.findById(id)
+            .map(billFinanceTypeMapper::toDto);
     }
 
     /**
      * Delete the billFinanceType by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete BillFinanceType : {}", id);
-        billFinanceTypeRepository.delete(id);
+        billFinanceTypeRepository.deleteById(id);
     }
 }

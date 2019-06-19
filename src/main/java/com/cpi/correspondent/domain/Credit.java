@@ -1,12 +1,10 @@
 package com.cpi.correspondent.domain;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Credit.
@@ -165,19 +163,15 @@ public class Credit implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Credit)) {
             return false;
         }
-        Credit credit = (Credit) o;
-        if (credit.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), credit.getId());
+        return id != null && id.equals(((Credit) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

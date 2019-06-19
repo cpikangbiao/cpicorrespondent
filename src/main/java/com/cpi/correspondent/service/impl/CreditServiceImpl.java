@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.CreditDTO;
 import com.cpi.correspondent.service.mapper.CreditMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing Credit.
+ * Service Implementation for managing {@link Credit}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class CreditServiceImpl implements CreditService {
     /**
      * Save a credit.
      *
-     * @param creditDTO the entity to save
-     * @return the persisted entity
+     * @param creditDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public CreditDTO save(CreditDTO creditDTO) {
@@ -48,8 +50,8 @@ public class CreditServiceImpl implements CreditService {
     /**
      * Get all the credits.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class CreditServiceImpl implements CreditService {
             .map(creditMapper::toDto);
     }
 
+
     /**
      * Get one credit by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public CreditDTO findOne(Long id) {
+    public Optional<CreditDTO> findOne(Long id) {
         log.debug("Request to get Credit : {}", id);
-        Credit credit = creditRepository.findOne(id);
-        return creditMapper.toDto(credit);
+        return creditRepository.findById(id)
+            .map(creditMapper::toDto);
     }
 
     /**
      * Delete the credit by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Credit : {}", id);
-        creditRepository.delete(id);
+        creditRepository.deleteById(id);
     }
 }

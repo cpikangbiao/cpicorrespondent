@@ -1,11 +1,9 @@
 package com.cpi.correspondent.service.dto;
-
-
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Credit entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.Credit} entity.
  */
 public class CreditDTO implements Serializable {
 
@@ -26,6 +24,7 @@ public class CreditDTO implements Serializable {
     private String corrBankName;
 
     private String corrBankAddress;
+
 
     public Long getId() {
         return id;
@@ -109,7 +108,7 @@ public class CreditDTO implements Serializable {
         }
 
         CreditDTO creditDTO = (CreditDTO) o;
-        if(creditDTO.getId() == null || getId() == null) {
+        if (creditDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), creditDTO.getId());

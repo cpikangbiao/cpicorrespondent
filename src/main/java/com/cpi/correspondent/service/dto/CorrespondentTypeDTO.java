@@ -1,12 +1,10 @@
 package com.cpi.correspondent.service.dto;
-
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the CorrespondentType entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.CorrespondentType} entity.
  */
 public class CorrespondentTypeDTO implements Serializable {
 
@@ -17,6 +15,7 @@ public class CorrespondentTypeDTO implements Serializable {
 
     @NotNull
     private Integer sortNum;
+
 
     public Long getId() {
         return id;
@@ -52,7 +51,7 @@ public class CorrespondentTypeDTO implements Serializable {
         }
 
         CorrespondentTypeDTO correspondentTypeDTO = (CorrespondentTypeDTO) o;
-        if(correspondentTypeDTO.getId() == null || getId() == null) {
+        if (correspondentTypeDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), correspondentTypeDTO.getId());

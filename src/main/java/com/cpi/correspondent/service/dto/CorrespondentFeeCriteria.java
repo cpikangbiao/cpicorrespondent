@@ -1,6 +1,8 @@
 package com.cpi.correspondent.service.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
+import io.github.jhipster.service.Criteria;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -11,20 +13,18 @@ import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.service.filter.BigDecimalFilter;
 import io.github.jhipster.service.filter.InstantFilter;
 
-
-
-
 /**
- * Criteria class for the CorrespondentFee entity. This class is used in CorrespondentFeeResource to
- * receive all the possible filtering options from the Http GET request parameters.
- * For example the following could be a valid requests:
- * <code> /correspondent-fees?id.greaterThan=5&amp;attr1.contains=something&amp;attr2.specified=false</code>
+ * Criteria class for the {@link com.cpi.correspondent.domain.CorrespondentFee} entity. This class is used
+ * in {@link com.cpi.correspondent.web.rest.CorrespondentFeeResource} to receive all the possible filtering options from
+ * the Http GET request parameters.
+ * For example the following could be a valid request:
+ * {@code /correspondent-fees?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
  * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
-public class CorrespondentFeeCriteria implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class CorrespondentFeeCriteria implements Serializable, Criteria {
 
+    private static final long serialVersionUID = 1L;
 
     private LongFilter id;
 
@@ -46,7 +46,25 @@ public class CorrespondentFeeCriteria implements Serializable {
 
     private LongFilter cpiCorrespondentId;
 
-    public CorrespondentFeeCriteria() {
+    public CorrespondentFeeCriteria(){
+    }
+
+    public CorrespondentFeeCriteria(CorrespondentFeeCriteria other){
+        this.id = other.id == null ? null : other.id.copy();
+        this.clientNo = other.clientNo == null ? null : other.clientNo.copy();
+        this.numberId = other.numberId == null ? null : other.numberId.copy();
+        this.currency = other.currency == null ? null : other.currency.copy();
+        this.currencyRate = other.currencyRate == null ? null : other.currencyRate.copy();
+        this.cost = other.cost == null ? null : other.cost.copy();
+        this.costDate = other.costDate == null ? null : other.costDate.copy();
+        this.costDollar = other.costDollar == null ? null : other.costDollar.copy();
+        this.correspondentFeeTypeId = other.correspondentFeeTypeId == null ? null : other.correspondentFeeTypeId.copy();
+        this.cpiCorrespondentId = other.cpiCorrespondentId == null ? null : other.cpiCorrespondentId.copy();
+    }
+
+    @Override
+    public CorrespondentFeeCriteria copy() {
+        return new CorrespondentFeeCriteria(this);
     }
 
     public LongFilter getId() {
@@ -127,6 +145,45 @@ public class CorrespondentFeeCriteria implements Serializable {
 
     public void setCpiCorrespondentId(LongFilter cpiCorrespondentId) {
         this.cpiCorrespondentId = cpiCorrespondentId;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final CorrespondentFeeCriteria that = (CorrespondentFeeCriteria) o;
+        return
+            Objects.equals(id, that.id) &&
+            Objects.equals(clientNo, that.clientNo) &&
+            Objects.equals(numberId, that.numberId) &&
+            Objects.equals(currency, that.currency) &&
+            Objects.equals(currencyRate, that.currencyRate) &&
+            Objects.equals(cost, that.cost) &&
+            Objects.equals(costDate, that.costDate) &&
+            Objects.equals(costDollar, that.costDollar) &&
+            Objects.equals(correspondentFeeTypeId, that.correspondentFeeTypeId) &&
+            Objects.equals(cpiCorrespondentId, that.cpiCorrespondentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+        id,
+        clientNo,
+        numberId,
+        currency,
+        currencyRate,
+        cost,
+        costDate,
+        costDollar,
+        correspondentFeeTypeId,
+        cpiCorrespondentId
+        );
     }
 
     @Override

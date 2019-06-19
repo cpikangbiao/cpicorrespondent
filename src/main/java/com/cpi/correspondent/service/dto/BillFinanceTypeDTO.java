@@ -1,12 +1,10 @@
 package com.cpi.correspondent.service.dto;
-
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the BillFinanceType entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.BillFinanceType} entity.
  */
 public class BillFinanceTypeDTO implements Serializable {
 
@@ -17,6 +15,7 @@ public class BillFinanceTypeDTO implements Serializable {
 
     @NotNull
     private Integer sortNum;
+
 
     public Long getId() {
         return id;
@@ -52,7 +51,7 @@ public class BillFinanceTypeDTO implements Serializable {
         }
 
         BillFinanceTypeDTO billFinanceTypeDTO = (BillFinanceTypeDTO) o;
-        if(billFinanceTypeDTO.getId() == null || getId() == null) {
+        if (billFinanceTypeDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), billFinanceTypeDTO.getId());

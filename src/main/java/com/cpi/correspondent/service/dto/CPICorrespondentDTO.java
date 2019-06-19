@@ -1,16 +1,12 @@
 package com.cpi.correspondent.service.dto;
-
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the CPICorrespondent entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.CPICorrespondent} entity.
  */
 public class CPICorrespondentDTO implements Serializable {
 
@@ -37,6 +33,7 @@ public class CPICorrespondentDTO implements Serializable {
 
     @Lob
     private String remark;
+
 
     private Long correspondentTypeId;
 
@@ -188,7 +185,7 @@ public class CPICorrespondentDTO implements Serializable {
         }
 
         CPICorrespondentDTO cPICorrespondentDTO = (CPICorrespondentDTO) o;
-        if(cPICorrespondentDTO.getId() == null || getId() == null) {
+        if (cPICorrespondentDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), cPICorrespondentDTO.getId());
@@ -212,6 +209,12 @@ public class CPICorrespondentDTO implements Serializable {
             ", caseDate='" + getCaseDate() + "'" +
             ", handlerUser=" + getHandlerUser() +
             ", remark='" + getRemark() + "'" +
+            ", correspondentType=" + getCorrespondentTypeId() +
+            ", correspondentType='" + getCorrespondentTypeCorrespondentTypeName() + "'" +
+            ", club=" + getClubId() +
+            ", club='" + getClubClubName() + "'" +
+            ", clubPerson=" + getClubPersonId() +
+            ", clubPerson='" + getClubPersonClubPersonName() + "'" +
             "}";
     }
 }

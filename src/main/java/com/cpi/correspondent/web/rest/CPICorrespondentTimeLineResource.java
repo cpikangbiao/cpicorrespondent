@@ -1,6 +1,6 @@
 package com.cpi.correspondent.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+
 import com.cpi.correspondent.repository.common.UserRepository;
 import com.cpi.correspondent.repository.utility.ExcelRepository;
 import com.cpi.correspondent.service.CPICorrespondentQueryService;
@@ -58,7 +58,6 @@ public class CPICorrespondentTimeLineResource {
     }
 
     @GetMapping("/cpi-correspondents/timeline/{id}")
-    @Timed
     public ResponseEntity<List> getTimeline(@PathVariable Long id) {
         return new ResponseEntity<>(cpiCorrespondentTimeLineService.getCpiCorrespondentTimeLineBeans(id), HttpStatus.OK);
     }

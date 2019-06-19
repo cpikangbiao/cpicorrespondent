@@ -1,6 +1,6 @@
 package com.cpi.correspondent.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+
 import com.cpi.correspondent.domain.BillFinanceType;
 import com.cpi.correspondent.domain.CorrespondentBill;
 import com.cpi.correspondent.repository.CorrespondentBillRepository;
@@ -11,11 +11,14 @@ import com.cpi.correspondent.service.utility.CorrespondentBillParameterGenerator
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * REST controller for managing CorrespondentBill.
@@ -27,6 +30,8 @@ public class CorrespondentBillDocResource {
     private final Logger log = LoggerFactory.getLogger(CorrespondentBillDocResource.class);
 
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
 
     private static final String ENTITY_NAME = "correspondentBill";
 
@@ -53,19 +58,21 @@ public class CorrespondentBillDocResource {
     }
 
     @GetMapping("/correspondent-bills/pdf/{id}")
-    @Timed
     public ResponseEntity<byte[]> getPDFFileForBill(@PathVariable Long id) {
-        CorrespondentBill correspondentBill = correspondentBillRepository.findOne(id);
+        Optional<CorrespondentBill> optional = correspondentBillRepository.findById(id);
         ResponseEntity<byte[]> responseEntity  = new ResponseEntity(HttpStatus.OK);
-        if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_CREDIT)) {
-            responseEntity  = jasperReportRepository.processPDF(CORR_BILL_PDF_TEMPLATE_CREDIT,
-                correspondentBillParameterUtility.createCreditBillMap(correspondentBill));
-        } else if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_DEBIT)) {
-//            responseEntity  = jasperReportRepository.processPDF("HullCorrespondentDebitBill.jasper", createDebitBillMap(correspondentBill));
-            responseEntity  = jasperReportRepository.processPDF(CORR_BILL_PDF_TEMPLATE_DEBIT,
-                correspondentBillParameterUtility.createDebitBillMap(correspondentBill));
-        }
 
+        if (optional.isPresent()) {
+            CorrespondentBill correspondentBill = optional.get();
+            if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_CREDIT)) {
+                responseEntity  = jasperReportRepository.processPDF(CORR_BILL_PDF_TEMPLATE_CREDIT,
+                    correspondentBillParameterUtility.createCreditBillMap(correspondentBill));
+            } else if (correspondentBill.getBillFinanceType().getId().equals(BillFinanceType.BILL_FINANCE_TYPE_DEBIT)) {
+//            responseEntity  = jasperReportRepository.processPDF("HullCorrespondentDebitBill.jasper", createDebitBillMap(correspondentBill));
+                responseEntity  = jasperReportRepository.processPDF(CORR_BILL_PDF_TEMPLATE_DEBIT,
+                    correspondentBillParameterUtility.createDebitBillMap(correspondentBill));
+            }
+        }
 
         StringBuilder fileName = new StringBuilder();
         fileName.append("\"Correspondent_Bill").append(".pdf\"");
@@ -78,6 +85,17 @@ public class CorrespondentBillDocResource {
 
         return new ResponseEntity<>(responseEntity.getBody(), header, HttpStatus.OK);
     }
+
+    //    @GetMapping("/correspondent-bills/debit/duedate")
+////    public ResponseEntity<List<CorrespondentBillDTO>> getAllCorrespondentBillsOrderByDueDate(Pageable pageable) {
+//        log.debug("REST request to get getAllCorrespondentBillsOrderByDueDate");
+//        Page<CorrespondentBillDTO> page = correspondentBillQueryService.findByBillFinanceType(
+//                    BillFinanceType.BILL_FINANCE_TYPE_DEBIT,
+//                    CorrespondentBillStatus.CORRESPONDENT_BILL_STATUS_NOPAID,
+//                    pageable);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api//correspondent-bills/debit/duedate");
+//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+//    }
 
 
 }

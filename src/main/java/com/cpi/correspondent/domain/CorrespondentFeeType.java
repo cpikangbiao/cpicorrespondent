@@ -1,5 +1,4 @@
 package com.cpi.correspondent.domain;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A CorrespondentFeeType.
@@ -19,15 +17,15 @@ public class CorrespondentFeeType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final Long CORRESPONDENT_FEE_TYPE_CORRESPONDENT = new Long(5);
+    public static final long CORRESPONDENT_FEE_TYPE_CORRESPONDENT = 5;
 
-    public static final Long CORRESPONDENT_FEE_TYPE_OTHER = new Long(4);
+    public static final long CORRESPONDENT_FEE_TYPE_OTHER = 4;
 
-    public static final Long CORRESPONDENT_FEE_TYPE_SURVEYOR = new Long(1);
+    public static final long CORRESPONDENT_FEE_TYPE_SURVEYOR = 1;
 
-    public static final Long CORRESPONDENT_FEE_TYPE_LAWAY = new Long(2);
+    public static final long CORRESPONDENT_FEE_TYPE_LAWAY = 2;
 
-    public static final Long CORRESPONDENT_FEE_TYPE_EXPERT = new Long(3);
+    public static final long CORRESPONDENT_FEE_TYPE_EXPERT = 3;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,19 +80,15 @@ public class CorrespondentFeeType implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CorrespondentFeeType)) {
             return false;
         }
-        CorrespondentFeeType correspondentFeeType = (CorrespondentFeeType) o;
-        if (correspondentFeeType.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), correspondentFeeType.getId());
+        return id != null && id.equals(((CorrespondentFeeType) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

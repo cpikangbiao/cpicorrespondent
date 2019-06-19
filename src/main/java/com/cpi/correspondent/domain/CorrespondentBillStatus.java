@@ -1,5 +1,4 @@
 package com.cpi.correspondent.domain;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A CorrespondentBillStatus.
@@ -19,9 +17,9 @@ public class CorrespondentBillStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public  static final Long CORRESPONDENT_BILL_STATUS_NOPAID = new Long(1);
+    public  static final long CORRESPONDENT_BILL_STATUS_NOPAID = 1;
 
-    public  static final Long CORRESPONDENT_BILL_STATUS_PAIDED = new Long(1);
+    public  static final long CORRESPONDENT_BILL_STATUS_PAIDED = 2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,19 +74,15 @@ public class CorrespondentBillStatus implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CorrespondentBillStatus)) {
             return false;
         }
-        CorrespondentBillStatus correspondentBillStatus = (CorrespondentBillStatus) o;
-        if (correspondentBillStatus.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), correspondentBillStatus.getId());
+        return id != null && id.equals(((CorrespondentBillStatus) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

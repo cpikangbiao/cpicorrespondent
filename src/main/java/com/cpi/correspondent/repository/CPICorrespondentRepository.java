@@ -1,6 +1,7 @@
 package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CPICorrespondent;
+
 import com.cpi.correspondent.repository.other.MonthCountStatistics;
 import com.cpi.correspondent.repository.other.TypeCountStatistics;
 import com.cpi.correspondent.repository.other.YearCountStatistics;
@@ -8,13 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
 
 
 /**
- * Spring Data JPA repository for the CPICorrespondent entity.
+ * Spring Data  repository for the CPICorrespondent entity.
  */
 @SuppressWarnings("unused")
 @Repository

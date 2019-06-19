@@ -1,12 +1,10 @@
 package com.cpi.correspondent.service.dto;
-
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the CorrespondentBillStatus entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.CorrespondentBillStatus} entity.
  */
 public class CorrespondentBillStatusDTO implements Serializable {
 
@@ -17,6 +15,7 @@ public class CorrespondentBillStatusDTO implements Serializable {
 
     @NotNull
     private Integer sortNum;
+
 
     public Long getId() {
         return id;
@@ -52,7 +51,7 @@ public class CorrespondentBillStatusDTO implements Serializable {
         }
 
         CorrespondentBillStatusDTO correspondentBillStatusDTO = (CorrespondentBillStatusDTO) o;
-        if(correspondentBillStatusDTO.getId() == null || getId() == null) {
+        if (correspondentBillStatusDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), correspondentBillStatusDTO.getId());

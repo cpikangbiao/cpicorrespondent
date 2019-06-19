@@ -3,16 +3,10 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <property name="now" value="now()" dbms="h2"/>
-
-    <property name="now" value="now()" dbms="mysql"/>
     <property name="autoIncrement" value="true"/>
-
-    <property name="floatType" value="float4" dbms="postgresql, h2"/>
-    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
         Added the entity CPICorrespondent.
@@ -26,7 +20,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="jhi_year" type="varchar(255)">
+            <column name="year" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
@@ -42,11 +36,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="register_date" type="timestamp">
+            <column name="register_date" type="datetime">
                 <constraints nullable="true" />
             </column>
 
-            <column name="case_date" type="timestamp">
+            <column name="case_date" type="datetime">
                 <constraints nullable="true" />
             </column>
 
@@ -54,7 +48,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="remark" type="clob">
+            <column name="remark" type="${clobType}">
                 <constraints nullable="true" />
             </column>
 
@@ -72,9 +66,39 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+
         <dropDefaultValue tableName="cpi_correspondent" columnName="register_date" columnDataType="datetime"/>
         <dropDefaultValue tableName="cpi_correspondent" columnName="case_date" columnDataType="datetime"/>
-        
+    </changeSet>
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20180607024332-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/data/cpi_correspondent.csv"
+                  separator=";"
+                  tableName="cpi_correspondent">
+            <column name="id" type="numeric"/>
+            <column name="correspondent_code" type="string"/>
+            <column name="year" type="string"/>
+            <column name="vessel_name" type="string"/>
+            <column name="client_ref" type="string"/>
+            <column name="key_word" type="string"/>
+            <column name="register_date" type="datetime"/>
+            <column name="case_date" type="datetime"/>
+            <column name="handler_user" type="numeric"/>
+            <column name="remark" type="clob"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="20180607024332-1-relations" author="jhipster">
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

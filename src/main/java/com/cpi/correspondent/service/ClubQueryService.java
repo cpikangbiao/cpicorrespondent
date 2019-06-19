@@ -1,13 +1,14 @@
 package com.cpi.correspondent.service;
 
-
 import java.util.List;
+
+import javax.persistence.criteria.JoinType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +18,12 @@ import com.cpi.correspondent.domain.Club;
 import com.cpi.correspondent.domain.*; // for static metamodels
 import com.cpi.correspondent.repository.ClubRepository;
 import com.cpi.correspondent.service.dto.ClubCriteria;
-
 import com.cpi.correspondent.service.dto.ClubDTO;
 import com.cpi.correspondent.service.mapper.ClubMapper;
 
 /**
- * Service for executing complex queries for Club entities in the database.
- * The main input is a {@link ClubCriteria} which get's converted to {@link Specifications},
+ * Service for executing complex queries for {@link Club} entities in the database.
+ * The main input is a {@link ClubCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
  * It returns a {@link List} of {@link ClubDTO} or a {@link Page} of {@link ClubDTO} which fulfills the criteria.
  */
@@ -32,7 +32,6 @@ import com.cpi.correspondent.service.mapper.ClubMapper;
 public class ClubQueryService extends QueryService<Club> {
 
     private final Logger log = LoggerFactory.getLogger(ClubQueryService.class);
-
 
     private final ClubRepository clubRepository;
 
@@ -44,19 +43,19 @@ public class ClubQueryService extends QueryService<Club> {
     }
 
     /**
-     * Return a {@link List} of {@link ClubDTO} which matches the criteria from the database
+     * Return a {@link List} of {@link ClubDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
     public List<ClubDTO> findByCriteria(ClubCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
-        final Specifications<Club> specification = createSpecification(criteria);
+        final Specification<Club> specification = createSpecification(criteria);
         return clubMapper.toDto(clubRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link ClubDTO} which matches the criteria from the database
+     * Return a {@link Page} of {@link ClubDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
@@ -64,16 +63,28 @@ public class ClubQueryService extends QueryService<Club> {
     @Transactional(readOnly = true)
     public Page<ClubDTO> findByCriteria(ClubCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
-        final Specifications<Club> specification = createSpecification(criteria);
-        final Page<Club> result = clubRepository.findAll(specification, page);
-        return result.map(clubMapper::toDto);
+        final Specification<Club> specification = createSpecification(criteria);
+        return clubRepository.findAll(specification, page)
+            .map(clubMapper::toDto);
     }
 
     /**
-     * Function to convert ClubCriteria to a {@link Specifications}
+     * Return the number of matching entities in the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the number of matching entities.
      */
-    private Specifications<Club> createSpecification(ClubCriteria criteria) {
-        Specifications<Club> specification = Specifications.where(null);
+    @Transactional(readOnly = true)
+    public long countByCriteria(ClubCriteria criteria) {
+        log.debug("count by criteria : {}", criteria);
+        final Specification<Club> specification = createSpecification(criteria);
+        return clubRepository.count(specification);
+    }
+
+    /**
+     * Function to convert ClubCriteria to a {@link Specification}.
+     */
+    private Specification<Club> createSpecification(ClubCriteria criteria) {
+        Specification<Club> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), Club_.id));
@@ -105,5 +116,4 @@ public class ClubQueryService extends QueryService<Club> {
         }
         return specification;
     }
-
 }

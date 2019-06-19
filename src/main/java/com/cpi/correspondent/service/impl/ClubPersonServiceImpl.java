@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.ClubPersonDTO;
 import com.cpi.correspondent.service.mapper.ClubPersonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing ClubPerson.
+ * Service Implementation for managing {@link ClubPerson}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class ClubPersonServiceImpl implements ClubPersonService {
     /**
      * Save a clubPerson.
      *
-     * @param clubPersonDTO the entity to save
-     * @return the persisted entity
+     * @param clubPersonDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public ClubPersonDTO save(ClubPersonDTO clubPersonDTO) {
@@ -48,8 +50,8 @@ public class ClubPersonServiceImpl implements ClubPersonService {
     /**
      * Get all the clubPeople.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class ClubPersonServiceImpl implements ClubPersonService {
             .map(clubPersonMapper::toDto);
     }
 
+
     /**
      * Get one clubPerson by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public ClubPersonDTO findOne(Long id) {
+    public Optional<ClubPersonDTO> findOne(Long id) {
         log.debug("Request to get ClubPerson : {}", id);
-        ClubPerson clubPerson = clubPersonRepository.findOne(id);
-        return clubPersonMapper.toDto(clubPerson);
+        return clubPersonRepository.findById(id)
+            .map(clubPersonMapper::toDto);
     }
 
     /**
      * Delete the clubPerson by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete ClubPerson : {}", id);
-        clubPersonRepository.delete(id);
+        clubPersonRepository.deleteById(id);
     }
 }

@@ -7,14 +7,16 @@ import com.cpi.correspondent.service.dto.CorrespondentDocsDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentDocsMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
 /**
- * Service Implementation for managing CorrespondentDocs.
+ * Service Implementation for managing {@link CorrespondentDocs}.
  */
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class CorrespondentDocsServiceImpl implements CorrespondentDocsService {
     /**
      * Save a correspondentDocs.
      *
-     * @param correspondentDocsDTO the entity to save
-     * @return the persisted entity
+     * @param correspondentDocsDTO the entity to save.
+     * @return the persisted entity.
      */
     @Override
     public CorrespondentDocsDTO save(CorrespondentDocsDTO correspondentDocsDTO) {
@@ -48,8 +50,8 @@ public class CorrespondentDocsServiceImpl implements CorrespondentDocsService {
     /**
      * Get all the correspondentDocs.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     * @param pageable the pagination information.
+     * @return the list of entities.
      */
     @Override
     @Transactional(readOnly = true)
@@ -59,28 +61,29 @@ public class CorrespondentDocsServiceImpl implements CorrespondentDocsService {
             .map(correspondentDocsMapper::toDto);
     }
 
+
     /**
      * Get one correspondentDocs by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     * @param id the id of the entity.
+     * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public CorrespondentDocsDTO findOne(Long id) {
+    public Optional<CorrespondentDocsDTO> findOne(Long id) {
         log.debug("Request to get CorrespondentDocs : {}", id);
-        CorrespondentDocs correspondentDocs = correspondentDocsRepository.findOne(id);
-        return correspondentDocsMapper.toDto(correspondentDocs);
+        return correspondentDocsRepository.findById(id)
+            .map(correspondentDocsMapper::toDto);
     }
 
     /**
      * Delete the correspondentDocs by id.
      *
-     * @param id the id of the entity
+     * @param id the id of the entity.
      */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete CorrespondentDocs : {}", id);
-        correspondentDocsRepository.delete(id);
+        correspondentDocsRepository.deleteById(id);
     }
 }

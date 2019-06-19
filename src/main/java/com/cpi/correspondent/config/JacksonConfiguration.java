@@ -1,7 +1,12 @@
 package com.cpi.correspondent.config;
 
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
+
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -9,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.zalando.problem.ProblemModule;
-import org.zalando.problem.validation.ConstraintViolationProblemModule;
+import org.zalando.problem.violations.ConstraintViolationProblemModule;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +22,20 @@ import java.util.TimeZone;
 
 @Configuration
 public class JacksonConfiguration {
+
+    /**
+     * Support for Java date and time API.
+     * @return the corresponding Jackson module.
+     */
+    @Bean
+    public JavaTimeModule javaTimeModule() {
+        return new JavaTimeModule();
+    }
+
+    @Bean
+    public Jdk8Module jdk8TimeModule() {
+        return new Jdk8Module();
+    }
 
     /*
      * Support for Hibernate types in Jackson.

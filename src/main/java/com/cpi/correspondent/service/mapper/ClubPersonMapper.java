@@ -6,7 +6,7 @@ import com.cpi.correspondent.service.dto.ClubPersonDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity ClubPerson and its DTO ClubPersonDTO.
+ * Mapper for the entity {@link ClubPerson} and its DTO {@link ClubPersonDTO}.
  */
 @Mapper(componentModel = "spring", uses = {ClubMapper.class})
 public interface ClubPersonMapper extends EntityMapper<ClubPersonDTO, ClubPerson> {

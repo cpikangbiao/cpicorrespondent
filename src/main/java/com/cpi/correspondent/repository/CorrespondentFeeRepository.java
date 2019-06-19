@@ -1,15 +1,14 @@
 package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CorrespondentFee;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
 /**
- * Spring Data JPA repository for the CorrespondentFee entity.
+ * Spring Data  repository for the CorrespondentFee entity.
  */
 @SuppressWarnings("unused")
 @Repository

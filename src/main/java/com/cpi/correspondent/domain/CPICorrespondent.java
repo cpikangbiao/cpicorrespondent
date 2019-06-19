@@ -1,5 +1,5 @@
 package com.cpi.correspondent.domain;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,7 +8,6 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
 /**
  * A CPICorrespondent.
@@ -29,7 +28,7 @@ public class CPICorrespondent  extends AbstractAuditingEntity  implements Serial
     private String correspondentCode;
 
     @NotNull
-    @Column(name = "jhi_year", nullable = false)
+    @Column(name = "year", nullable = false)
     private String year;
 
     @NotNull
@@ -56,12 +55,15 @@ public class CPICorrespondent  extends AbstractAuditingEntity  implements Serial
     private String remark;
 
     @ManyToOne
+    @JsonIgnoreProperties("cPICorrespondents")
     private CorrespondentType correspondentType;
 
     @ManyToOne
+    @JsonIgnoreProperties("cPICorrespondents")
     private Club club;
 
     @ManyToOne
+    @JsonIgnoreProperties("cPICorrespondents")
     private ClubPerson clubPerson;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -235,19 +237,15 @@ public class CPICorrespondent  extends AbstractAuditingEntity  implements Serial
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CPICorrespondent)) {
             return false;
         }
-        CPICorrespondent cPICorrespondent = (CPICorrespondent) o;
-        if (cPICorrespondent.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), cPICorrespondent.getId());
+        return id != null && id.equals(((CPICorrespondent) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

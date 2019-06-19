@@ -1,17 +1,14 @@
 package com.cpi.correspondent.service.dto;
-
-
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
- * A DTO for the CorrespondentFeeAndBill entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.CorrespondentFeeAndBill} entity.
  */
 public class CorrespondentFeeAndBillDTO implements Serializable {
 
     private Long id;
+
 
     private Long correspondentDebitBillId;
 
@@ -91,7 +88,7 @@ public class CorrespondentFeeAndBillDTO implements Serializable {
         }
 
         CorrespondentFeeAndBillDTO correspondentFeeAndBillDTO = (CorrespondentFeeAndBillDTO) o;
-        if(correspondentFeeAndBillDTO.getId() == null || getId() == null) {
+        if (correspondentFeeAndBillDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), correspondentFeeAndBillDTO.getId());
@@ -106,6 +103,12 @@ public class CorrespondentFeeAndBillDTO implements Serializable {
     public String toString() {
         return "CorrespondentFeeAndBillDTO{" +
             "id=" + getId() +
+            ", correspondentDebitBill=" + getCorrespondentDebitBillId() +
+            ", correspondentDebitBill='" + getCorrespondentDebitBillCorrespondentBillCode() + "'" +
+            ", correspondentFee=" + getCorrespondentFeeId() +
+            ", correspondentFee='" + getCorrespondentFeeClientNo() + "'" +
+            ", correspondentCreditBill=" + getCorrespondentCreditBillId() +
+            ", correspondentCreditBill='" + getCorrespondentCreditBillCorrespondentBillCode() + "'" +
             "}";
     }
 }

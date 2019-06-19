@@ -6,7 +6,7 @@ import com.cpi.correspondent.service.dto.CorrespondentBillStatusDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity CorrespondentBillStatus and its DTO CorrespondentBillStatusDTO.
+ * Mapper for the entity {@link CorrespondentBillStatus} and its DTO {@link CorrespondentBillStatusDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CorrespondentBillStatusMapper extends EntityMapper<CorrespondentBillStatusDTO, CorrespondentBillStatus> {

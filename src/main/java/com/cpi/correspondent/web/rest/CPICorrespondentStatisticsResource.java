@@ -1,6 +1,6 @@
 package com.cpi.correspondent.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+
 import com.cpi.correspondent.repository.common.UserRepository;
 import com.cpi.correspondent.repository.other.MonthCountStatistics;
 import com.cpi.correspondent.repository.other.TypeCountStatistics;
@@ -62,31 +62,26 @@ public class CPICorrespondentStatisticsResource {
 
 
     @GetMapping("/cpi-correspondents/statistics/year")
-    @Timed
     public ResponseEntity<List<YearCountStatistics>> getStatsForGroupByYear() {
         return new ResponseEntity<>(cpiCorrespondentStatisticsService.findYearCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics/month")
-    @Timed
     public ResponseEntity<List<MonthCountStatistics>> getStatsForGroupByMonth() {
         return new ResponseEntity<>(cpiCorrespondentStatisticsService.findMonthCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics/type")
-    @Timed
     public ResponseEntity<List<TypeCountStatistics>> getStatsForType() {
         return new ResponseEntity<>(cpiCorrespondentStatisticsService.findTypeCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics/club")
-    @Timed
     public ResponseEntity<List<TypeCountStatistics>> getStatsForClub() {
         return new ResponseEntity<>(cpiCorrespondentStatisticsService.findClubCountStatistics(), HttpStatus.OK);
     }
 
     @GetMapping("/cpi-correspondents/statistics")
-    @Timed
     public ResponseEntity<byte[]> getStatsForCPICorrespondents(CPICorrespondentCriteria criteria) {
         log.debug("REST request to get CPICorrespondents by criteria: {}", criteria);
         List<CPICorrespondentDTO> cpiCorrespondentDTOS = cPICorrespondentQueryService.findByCriteria(criteria);

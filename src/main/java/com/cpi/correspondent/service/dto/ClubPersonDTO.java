@@ -1,15 +1,11 @@
 package com.cpi.correspondent.service.dto;
-
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the ClubPerson entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.ClubPerson} entity.
  */
 public class ClubPersonDTO implements Serializable {
 
@@ -34,6 +30,7 @@ public class ClubPersonDTO implements Serializable {
 
     @Lob
     private String remark;
+
 
     private Long clubId;
 
@@ -145,7 +142,7 @@ public class ClubPersonDTO implements Serializable {
         }
 
         ClubPersonDTO clubPersonDTO = (ClubPersonDTO) o;
-        if(clubPersonDTO.getId() == null || getId() == null) {
+        if (clubPersonDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), clubPersonDTO.getId());
@@ -169,6 +166,8 @@ public class ClubPersonDTO implements Serializable {
             ", address='" + getAddress() + "'" +
             ", zip='" + getZip() + "'" +
             ", remark='" + getRemark() + "'" +
+            ", club=" + getClubId() +
+            ", club='" + getClubClubName() + "'" +
             "}";
     }
 }

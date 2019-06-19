@@ -24,10 +24,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -71,10 +68,10 @@ public class CorrespondentBillCreateService {
         HashSet<Long> currencySet = new HashSet();
         Long cpiCorrespondentId = null;
         for (Long feeID : feeIDs) {
-            CorrespondentFeeDTO correspondentFeeDTO = correspondentFeeService.findOne(feeID);
-            currencySet.add(correspondentFeeDTO.getCurrency());
-            correspondentFees.add(correspondentFeeDTO);
-            cpiCorrespondentId = correspondentFeeDTO.getCpiCorrespondentId();
+            Optional<CorrespondentFeeDTO> correspondentFeeDTO = correspondentFeeService.findOne(feeID);
+            currencySet.add(correspondentFeeDTO.get().getCurrency());
+            correspondentFees.add(correspondentFeeDTO.get());
+            cpiCorrespondentId = correspondentFeeDTO.get().getCpiCorrespondentId();
         }
 
         for (Long currency : currencySet) {
@@ -94,31 +91,31 @@ public class CorrespondentBillCreateService {
     private CorrespondentBillDTO createCorrespondentBill(List<CorrespondentFeeDTO> correspondentFeeDTOs, Long billFinanceTypeId, Long cpiCorrespondentId, Long currency) {
         CorrespondentBill correspondentBill = new CorrespondentBill();
 
-        CPICorrespondent cpiCorrespondent = cpiCorrespondentRepository.findOne(cpiCorrespondentId);
-        correspondentBill.setCpiCorrespondent(cpiCorrespondent);
+        Optional<CPICorrespondent> cpiCorrespondent = cpiCorrespondentRepository.findById(cpiCorrespondentId);
+        correspondentBill.setCpiCorrespondent(cpiCorrespondent.get());
 
-        BillFinanceType billFinanceType = billFinanceTypeRepository.findOne(billFinanceTypeId);
-        correspondentBill.setBillFinanceType(billFinanceType);
+        Optional<BillFinanceType> billFinanceType = billFinanceTypeRepository.findById(billFinanceTypeId);
+        correspondentBill.setBillFinanceType(billFinanceType.get());
         correspondentBill.setAmount(new BigDecimal(0.0));
 
-        CorrespondentBillStatus correspondentBillStatus = correspondentBillStatusRepository.findOne(CorrespondentBillStatus.CORRESPONDENT_BILL_STATUS_NOPAID);
-        correspondentBill.setCorrespondentBillStatus(correspondentBillStatus);
+        Optional<CorrespondentBillStatus> correspondentBillStatus = correspondentBillStatusRepository.findById(CorrespondentBillStatus.CORRESPONDENT_BILL_STATUS_NOPAID);
+        correspondentBill.setCorrespondentBillStatus(correspondentBillStatus.get());
 
         correspondentBill.setCorrespondentBillDate(Instant.now());
         correspondentBill.setCurrency(currency);
-        correspondentBill.setCurrencyRate(new Float(1.0));
+        correspondentBill.setCurrencyRate(Float.valueOf(1));
 
         correspondentBill.setExchangeAmount(new BigDecimal(0.0));
         correspondentBill.setExchangeCurrency(currency);
         correspondentBill.setExchangeDate(Instant.now());
-        correspondentBill.setExchangeRate(new Float(1.0));
+        correspondentBill.setExchangeRate(Float.valueOf(1));
 
         //1.4.8 	2018-08-06 	新加账单时，Due Date默认为当前时间的后一个月为默认时间。 	新需求开发 	防损部 	韦毓良
         LocalDateTime localDateTime = (new Date()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         localDateTime = localDateTime.plusMonths(1);
         correspondentBill.setDueDate(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
-        correspondentBill.setYear(cpiCorrespondent.getYear());
+        correspondentBill.setYear(cpiCorrespondent.get().getYear());
         CorrespondentBill maxBill  = correspondentBillRepository.findTopByYearAndBillFinanceTypeIdOrderByNumberIdDesc(correspondentBill.getYear(), billFinanceTypeId);
         Integer maxNumber = null;
         if (maxBill != null) {
@@ -159,8 +156,8 @@ public class CorrespondentBillCreateService {
             correspondentFeeAndBill.setCorrespondentDebitBill(correspondentBill);
         }
 
-        CorrespondentFee correspondentFee = correspondentFeeRepository.findOne(correspondentFeeDTO.getId());
-        correspondentFeeAndBill.setCorrespondentFee(correspondentFee);
+        Optional<CorrespondentFee> correspondentFee = correspondentFeeRepository.findById(correspondentFeeDTO.getId());
+        correspondentFeeAndBill.setCorrespondentFee(correspondentFee.get());
 
         correspondentFeeAndBillRepository.save(correspondentFeeAndBill);
 

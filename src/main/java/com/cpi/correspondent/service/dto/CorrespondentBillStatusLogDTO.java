@@ -1,15 +1,11 @@
 package com.cpi.correspondent.service.dto;
-
-
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
- * A DTO for the CorrespondentBillStatusLog entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.CorrespondentBillStatusLog} entity.
  */
 public class CorrespondentBillStatusLogDTO implements Serializable {
 
@@ -22,6 +18,7 @@ public class CorrespondentBillStatusLogDTO implements Serializable {
     private Instant updateTime;
 
     private Long updateUser;
+
 
     private Long correspondentBillId;
 
@@ -85,7 +82,7 @@ public class CorrespondentBillStatusLogDTO implements Serializable {
         }
 
         CorrespondentBillStatusLogDTO correspondentBillStatusLogDTO = (CorrespondentBillStatusLogDTO) o;
-        if(correspondentBillStatusLogDTO.getId() == null || getId() == null) {
+        if (correspondentBillStatusLogDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), correspondentBillStatusLogDTO.getId());
@@ -103,6 +100,8 @@ public class CorrespondentBillStatusLogDTO implements Serializable {
             ", billStatusName='" + getBillStatusName() + "'" +
             ", updateTime='" + getUpdateTime() + "'" +
             ", updateUser=" + getUpdateUser() +
+            ", correspondentBill=" + getCorrespondentBillId() +
+            ", correspondentBill='" + getCorrespondentBillCorrespondentBillCode() + "'" +
             "}";
     }
 }

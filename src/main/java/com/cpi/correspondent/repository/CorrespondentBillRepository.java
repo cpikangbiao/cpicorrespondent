@@ -1,6 +1,7 @@
 package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CorrespondentBill;
+
 import com.cpi.correspondent.domain.CorrespondentFee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,12 +9,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
 /**
- * Spring Data JPA repository for the CorrespondentBill entity.
+ * Spring Data  repository for the CorrespondentBill entity.
  */
 @SuppressWarnings("unused")
 @Repository

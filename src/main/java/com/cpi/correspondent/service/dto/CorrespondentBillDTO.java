@@ -1,16 +1,12 @@
 package com.cpi.correspondent.service.dto;
-
-
 import java.time.Instant;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the CorrespondentBill entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.CorrespondentBill} entity.
  */
 public class CorrespondentBillDTO implements Serializable {
 
@@ -265,7 +261,7 @@ public class CorrespondentBillDTO implements Serializable {
         }
 
         CorrespondentBillDTO correspondentBillDTO = (CorrespondentBillDTO) o;
-        if(correspondentBillDTO.getId() == null || getId() == null) {
+        if (correspondentBillDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), correspondentBillDTO.getId());
@@ -295,6 +291,10 @@ public class CorrespondentBillDTO implements Serializable {
             ", exchangeRate=" + getExchangeRate() +
             ", exchangeAmount=" + getExchangeAmount() +
             ", remark='" + getRemark() + "'" +
+            ", cpiCorrespondent=" + getCpiCorrespondentId() +
+            ", cpiCorrespondent='" + getCpiCorrespondentCorrespondentCode() + "'" +
+            ", billFinanceType=" + getBillFinanceTypeId() +
+            ", billFinanceType='" + getBillFinanceTypeBillFinanceTypeName() + "'" +
             "}";
     }
 }

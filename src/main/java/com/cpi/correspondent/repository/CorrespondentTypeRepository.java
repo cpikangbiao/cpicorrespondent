@@ -1,13 +1,12 @@
 package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CorrespondentType;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 
 /**
- * Spring Data JPA repository for the CorrespondentType entity.
+ * Spring Data  repository for the CorrespondentType entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -1,6 +1,8 @@
 package com.cpi.correspondent.service.dto;
 
 import java.io.Serializable;
+import java.util.Objects;
+import io.github.jhipster.service.Criteria;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -11,20 +13,18 @@ import io.github.jhipster.service.filter.StringFilter;
 import io.github.jhipster.service.filter.BigDecimalFilter;
 import io.github.jhipster.service.filter.InstantFilter;
 
-
-
-
 /**
- * Criteria class for the CorrespondentBill entity. This class is used in CorrespondentBillResource to
- * receive all the possible filtering options from the Http GET request parameters.
- * For example the following could be a valid requests:
- * <code> /correspondent-bills?id.greaterThan=5&amp;attr1.contains=something&amp;attr2.specified=false</code>
+ * Criteria class for the {@link com.cpi.correspondent.domain.CorrespondentBill} entity. This class is used
+ * in {@link com.cpi.correspondent.web.rest.CorrespondentBillResource} to receive all the possible filtering options from
+ * the Http GET request parameters.
+ * For example the following could be a valid request:
+ * {@code /correspondent-bills?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
  * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
-public class CorrespondentBillCriteria implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class CorrespondentBillCriteria implements Serializable, Criteria {
 
+    private static final long serialVersionUID = 1L;
 
     private LongFilter id;
 
@@ -64,7 +64,31 @@ public class CorrespondentBillCriteria implements Serializable {
 
     private LongFilter billFinanceTypeId;
 
-    public CorrespondentBillCriteria() {
+    public CorrespondentBillCriteria(){
+    }
+
+    public CorrespondentBillCriteria(CorrespondentBillCriteria other){
+        this.id = other.id == null ? null : other.id.copy();
+        this.numberId = other.numberId == null ? null : other.numberId.copy();
+        this.year = other.year == null ? null : other.year.copy();
+        this.correspondentBillCode = other.correspondentBillCode == null ? null : other.correspondentBillCode.copy();
+        this.correspondentBillDate = other.correspondentBillDate == null ? null : other.correspondentBillDate.copy();
+        this.receiver = other.receiver == null ? null : other.receiver.copy();
+        this.dueDate = other.dueDate == null ? null : other.dueDate.copy();
+        this.amount = other.amount == null ? null : other.amount.copy();
+        this.currency = other.currency == null ? null : other.currency.copy();
+        this.currencyRate = other.currencyRate == null ? null : other.currencyRate.copy();
+        this.exchangeDate = other.exchangeDate == null ? null : other.exchangeDate.copy();
+        this.exchangeCurrency = other.exchangeCurrency == null ? null : other.exchangeCurrency.copy();
+        this.exchangeRate = other.exchangeRate == null ? null : other.exchangeRate.copy();
+        this.exchangeAmount = other.exchangeAmount == null ? null : other.exchangeAmount.copy();
+        this.cpiCorrespondentId = other.cpiCorrespondentId == null ? null : other.cpiCorrespondentId.copy();
+        this.billFinanceTypeId = other.billFinanceTypeId == null ? null : other.billFinanceTypeId.copy();
+    }
+
+    @Override
+    public CorrespondentBillCriteria copy() {
+        return new CorrespondentBillCriteria(this);
     }
 
     public LongFilter getId() {
@@ -217,6 +241,57 @@ public class CorrespondentBillCriteria implements Serializable {
 
     public void setBillFinanceTypeId(LongFilter billFinanceTypeId) {
         this.billFinanceTypeId = billFinanceTypeId;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final CorrespondentBillCriteria that = (CorrespondentBillCriteria) o;
+        return
+            Objects.equals(id, that.id) &&
+            Objects.equals(numberId, that.numberId) &&
+            Objects.equals(year, that.year) &&
+            Objects.equals(correspondentBillCode, that.correspondentBillCode) &&
+            Objects.equals(correspondentBillDate, that.correspondentBillDate) &&
+            Objects.equals(receiver, that.receiver) &&
+            Objects.equals(dueDate, that.dueDate) &&
+            Objects.equals(amount, that.amount) &&
+            Objects.equals(currency, that.currency) &&
+            Objects.equals(currencyRate, that.currencyRate) &&
+            Objects.equals(exchangeDate, that.exchangeDate) &&
+            Objects.equals(exchangeCurrency, that.exchangeCurrency) &&
+            Objects.equals(exchangeRate, that.exchangeRate) &&
+            Objects.equals(exchangeAmount, that.exchangeAmount) &&
+            Objects.equals(cpiCorrespondentId, that.cpiCorrespondentId) &&
+            Objects.equals(billFinanceTypeId, that.billFinanceTypeId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+        id,
+        numberId,
+        year,
+        correspondentBillCode,
+        correspondentBillDate,
+        receiver,
+        dueDate,
+        amount,
+        currency,
+        currencyRate,
+        exchangeDate,
+        exchangeCurrency,
+        exchangeRate,
+        exchangeAmount,
+        cpiCorrespondentId,
+        billFinanceTypeId
+        );
     }
 
     @Override

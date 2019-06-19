@@ -72,7 +72,7 @@ public class CpiCorrespondentTimeLineService {
         List<CpiCorrespondentTimeLineBean> CpiCorrespondentTimeLineBeans = new ArrayList<>();
         // For Common
         StringBuilder incidenttemp = new StringBuilder();
-        CPICorrespondent cpiCorrespondent = cpiCorrespondentRepository.findOne(id);
+        CPICorrespondent cpiCorrespondent = cpiCorrespondentRepository.findById(id).get();
         incidenttemp.append("The Time of Case By ").append(userRepository.findUserByID(cpiCorrespondent.getHandlerUser()).getLogin());
         CpiCorrespondentTimeLineBean cpiCorrespondentTimeLineBean = new CpiCorrespondentTimeLineBean(
             cpiCorrespondent.getCaseDate(),

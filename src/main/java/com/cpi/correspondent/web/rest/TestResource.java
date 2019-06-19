@@ -34,8 +34,7 @@ public class TestResource {
 //    }
 //
 //    @GetMapping("/test/pdf")
-//    @Timed
-//    public ResponseEntity<byte[]> processPDF()  {
+////    public ResponseEntity<byte[]> processPDF()  {
 //        log.debug("REST request to upload excel xls file for parse ");
 //
 //        Map<String, Object> parameter = new HashMap<String, Object>();
@@ -50,8 +49,7 @@ public class TestResource {
 
 
 //    @GetMapping("/test/statistics")
-//    @Timed
-//    public ResponseEntity<byte[]> getStatsForCPICorrespondents() {
+////    public ResponseEntity<byte[]> getStatsForCPICorrespondents() {
 //        Page<CPICorrespondentDTO> cpiCorrespondentDTOS = cPICorrespondentService.findAll(null);
 //        List<CPICorrespondentBean> cpiCorrespondentBeans = new ArrayList<>();
 //        for (CPICorrespondentDTO cpiCorrespondentDTO : cpiCorrespondentDTOS) {

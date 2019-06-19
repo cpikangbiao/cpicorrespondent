@@ -1,6 +1,6 @@
 package com.cpi.correspondent.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+
 import com.cpi.correspondent.domain.BillFinanceType;
 import com.cpi.correspondent.domain.CorrespondentBill;
 import com.cpi.correspondent.domain.CorrespondentFee;
@@ -11,10 +11,12 @@ import com.cpi.correspondent.service.CorrespondentBillCreateService;
 import com.cpi.correspondent.service.dto.CorrespondentBillDTO;
 import com.cpi.correspondent.service.mapper.CorrespondentBillMapper;
 import com.cpi.correspondent.web.rest.errors.BadRequestAlertException;
-import com.cpi.correspondent.web.rest.util.HeaderUtil;
+
+import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,9 @@ public class CorrespondentBillCreateResource {
 
     private static final String ENTITY_NAME = "correspondentBill";
 
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     @Autowired
     private CorrespondentFeeAndBillRepository correspondentFeeAndBillRepository;
 
@@ -48,7 +53,6 @@ public class CorrespondentBillCreateResource {
     }
 
     @PostMapping("/create-bill/credit")
-    @Timed
     public ResponseEntity<CorrespondentBillDTO> createCreditBill(@RequestBody List<Long> ids) throws URISyntaxException {
         log.debug("REST request to create credit bill for fees : {}", ids);
 
@@ -58,12 +62,11 @@ public class CorrespondentBillCreateResource {
 
         CorrespondentBillDTO result = correspondentBillCreateService.createCorrespondentBill(ids, BillFinanceType.BILL_FINANCE_TYPE_CREDIT);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getCorrespondentBillCode().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getCorrespondentBillCode().toString()))
             .body(result);
     }
 
     @PostMapping("/create-bill/debit")
-    @Timed
     public ResponseEntity<CorrespondentBillDTO> createDebitBill(@RequestBody List<Long> ids) throws URISyntaxException {
         log.debug("REST request to create credit bill for fees : {}", ids);
 
@@ -73,20 +76,19 @@ public class CorrespondentBillCreateResource {
 
         CorrespondentBillDTO result = correspondentBillCreateService.createCorrespondentBill(ids, BillFinanceType.BILL_FINANCE_TYPE_DEBIT);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getCorrespondentBillCode().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getCorrespondentBillCode().toString()))
             .body(result);
     }
 
     @GetMapping("/get-bill-from-fee/credit/{id}")
-    @Timed
     public ResponseEntity<CorrespondentBillDTO> getCorrespondentCreditBillFromFee(@PathVariable Long id) {
         log.debug("REST request to get getCorrespondentCreditBillFromFee : {}", id);
-        CorrespondentFee correspondentFee = correspondentFeeRepository.findOne(id);
+        Optional<CorrespondentFee> optional = correspondentFeeRepository.findById(id);
 
         CorrespondentBillDTO correspondentBillDTO = null;
-        if (correspondentFee != null) {
+        if (optional.isPresent()) {
             CorrespondentBill correspondentBill = null;
-            List<CorrespondentFeeAndBill> correspondentFeeAndBills = correspondentFeeAndBillRepository.findAllByCorrespondentFee(correspondentFee);
+            List<CorrespondentFeeAndBill> correspondentFeeAndBills = correspondentFeeAndBillRepository.findAllByCorrespondentFee(optional.get());
             for (CorrespondentFeeAndBill correspondentFeeAndBill : correspondentFeeAndBills) {
                 if (correspondentFeeAndBill.getCorrespondentCreditBill() != null) {
                     correspondentBill = correspondentFeeAndBill.getCorrespondentCreditBill();
@@ -103,15 +105,14 @@ public class CorrespondentBillCreateResource {
     }
 
     @GetMapping("/get-bill-from-fee/debit/{id}")
-    @Timed
     public ResponseEntity<CorrespondentBillDTO> getCorrespondentDebitBillFromFee(@PathVariable Long id) {
         log.debug("REST request to get getCorrespondentDebitBillFromFee : {}", id);
-        CorrespondentFee correspondentFee = correspondentFeeRepository.findOne(id);
+        Optional<CorrespondentFee> optional = correspondentFeeRepository.findById(id);
 
         CorrespondentBillDTO correspondentBillDTO = null;
-        if (correspondentFee != null) {
+        if (optional.isPresent()) {
             CorrespondentBill correspondentBill = null;
-            List<CorrespondentFeeAndBill> correspondentFeeAndBills = correspondentFeeAndBillRepository.findAllByCorrespondentFee(correspondentFee);
+            List<CorrespondentFeeAndBill> correspondentFeeAndBills = correspondentFeeAndBillRepository.findAllByCorrespondentFee(optional.get());
             for (CorrespondentFeeAndBill correspondentFeeAndBill : correspondentFeeAndBills) {
                 if (correspondentFeeAndBill.getCorrespondentDebitBill() != null) {
                     correspondentBill = correspondentFeeAndBill.getCorrespondentDebitBill();
@@ -122,7 +123,6 @@ public class CorrespondentBillCreateResource {
             }
         }
 
-//        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(correspondentBillDTO));
         return ResponseEntity.ok()
             .body(correspondentBillDTO);
     }

@@ -1,15 +1,14 @@
 package com.cpi.correspondent.repository;
 
 import com.cpi.correspondent.domain.CorrespondentBillStatusLog;
-import org.springframework.stereotype.Repository;
-
 import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 
 /**
- * Spring Data JPA repository for the CorrespondentBillStatusLog entity.
+ * Spring Data  repository for the CorrespondentBillStatusLog entity.
  */
 @SuppressWarnings("unused")
 @Repository

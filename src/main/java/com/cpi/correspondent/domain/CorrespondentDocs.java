@@ -1,5 +1,5 @@
 package com.cpi.correspondent.domain;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
 /**
  * A CorrespondentDocs.
@@ -15,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "correspondent_docs")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class CorrespondentDocs extends AbstractAuditingEntity implements Serializable {
+public class CorrespondentDocs extends  AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +36,7 @@ public class CorrespondentDocs extends AbstractAuditingEntity implements Seriali
     private String documentContentType;
 
     @ManyToOne
+    @JsonIgnoreProperties("correspondentDocs")
     private CPICorrespondent cpiCorrespondent;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -119,19 +119,15 @@ public class CorrespondentDocs extends AbstractAuditingEntity implements Seriali
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CorrespondentDocs)) {
             return false;
         }
-        CorrespondentDocs correspondentDocs = (CorrespondentDocs) o;
-        if (correspondentDocs.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), correspondentDocs.getId());
+        return id != null && id.equals(((CorrespondentDocs) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return 31;
     }
 
     @Override

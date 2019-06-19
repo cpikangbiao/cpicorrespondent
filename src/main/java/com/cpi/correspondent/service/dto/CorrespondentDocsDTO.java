@@ -1,15 +1,11 @@
 package com.cpi.correspondent.service.dto;
-
-
 import java.time.Instant;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the CorrespondentDocs entity.
+ * A DTO for the {@link com.cpi.correspondent.domain.CorrespondentDocs} entity.
  */
 public class CorrespondentDocsDTO implements Serializable {
 
@@ -21,6 +17,7 @@ public class CorrespondentDocsDTO implements Serializable {
 
     @Lob
     private byte[] document;
+
     private String documentContentType;
 
     private Long cpiCorrespondentId;
@@ -93,7 +90,7 @@ public class CorrespondentDocsDTO implements Serializable {
         }
 
         CorrespondentDocsDTO correspondentDocsDTO = (CorrespondentDocsDTO) o;
-        if(correspondentDocsDTO.getId() == null || getId() == null) {
+        if (correspondentDocsDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), correspondentDocsDTO.getId());
@@ -111,6 +108,8 @@ public class CorrespondentDocsDTO implements Serializable {
             ", documentName='" + getDocumentName() + "'" +
             ", uploadDate='" + getUploadDate() + "'" +
             ", document='" + getDocument() + "'" +
+            ", cpiCorrespondent=" + getCpiCorrespondentId() +
+            ", cpiCorrespondent='" + getCpiCorrespondentCorrespondentCode() + "'" +
             "}";
     }
 }
